@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>Home PAGE</h1>
-    <h5 @click="$router.push('/about')">ABOUT {{txtGeneric}}</h5>
+    <h5 @click="$router.push('/about')">ABOUT {{textGeneric}}</h5>
   </div>
 </template>
 
