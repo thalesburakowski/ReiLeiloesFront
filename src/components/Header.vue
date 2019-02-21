@@ -1,40 +1,27 @@
 <template>
   <div>
-    <div class="topbar">      
-      <router-link to="/" class="topbar-title">
-        Rei leilões
-      </router-link>      
+    <div class="topbar">
+      <router-link to="/" class="topbar-title">Rei leilões</router-link>
       <div class="topbar-search">
         <input type="text" class="topbar-search-input">
         <button class="topbar-search__button">
           <i class="fas fa-search"></i>
         </button>
       </div>
-      <div class="topbar__icon"  @click="userMenu= !userMenu"><i class="fas fa-user-circle"></i></div>
+      <div class="topbar__icon" @click="userMenu= !userMenu">
+        <i class="fas fa-user-circle"></i>
+      </div>
     </div>
-    
+
     <div class="user-menu" v-if="userMenu">
       <span class="user-menu__holder-links">
-        <router-link to="/dados" class="user-menu__link">
-        Meus Dados
-      </router-link>
-      <router-link to="/cartao" class="user-menu__link">
-        Meus Cartões
-      </router-link>
-      <router-link to="/endereco" class="user-menu__link">
-        Meus  Endereços
-      </router-link>
-      <router-link to="/conta-bancaria" class="user-menu__link">
-        Minha Conta Bancária
-      </router-link>
-      <router-link to="/historico" class="user-menu__link">
-        Meu histórico
-      </router-link>
-      <router-link to="/logout" class="user-menu__link">
-        Sair
-      </router-link>
+        <router-link to="/dados" class="user-menu__link">Meus Dados</router-link>
+        <router-link to="/cartao" class="user-menu__link">Meus Cartões</router-link>
+        <router-link to="/endereco" class="user-menu__link">Meus Endereços</router-link>
+        <router-link to="/conta-bancaria" class="user-menu__link">Minha Conta Bancária</router-link>
+        <router-link to="/historico" class="user-menu__link">Meu histórico</router-link>
+        <a href="#" class="user-menu__link" @click="logout()">Sair</a>
       </span>
-      
     </div>
   </div>
 </template>
@@ -42,9 +29,14 @@
 <script>
 export default {
   name: "Header",
- data() {
+  data() {
     return {
-    userMenu: true,
+      userMenu: true
+    };
+  },
+  methods: {
+    logout: () => {
+      console.log("saiu");
     }
   }
 };
@@ -80,13 +72,13 @@ export default {
     justify-content: center;
     align-items: center;
     .topbar-search-input {
-      padding-left: .5rem;
+      padding-left: 0.5rem;
       width: 95%;
       background-color: white;
       border-radius: 8px;
     }
 
-    &__button{
+    &__button {
       background: transparent;
       border: none;
       margin-left: -2rem;
@@ -101,24 +93,22 @@ export default {
     color: white;
     font-size: 2rem;
   }
-
 }
 
-.user-menu{
+.user-menu {
   background-color: transparent;
   top: $topbar-height;
   right: 4rem;
   position: absolute;
   z-index: 999;
 
-  &__holder-links{
+  &__holder-links {
     background-color: white;
     width: 12rem;
     display: flex;
     align-self: flex-end;
     align-items: center;
     flex-direction: column;
-    
   }
 
   &__link {
@@ -128,5 +118,4 @@ export default {
     margin: 5px;
   }
 }
-
 </style>

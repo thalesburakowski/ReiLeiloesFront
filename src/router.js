@@ -8,7 +8,7 @@ import BankAccount from "./views/BankAccount.vue";
 import CreditCard from "./views/CreditCard.vue";
 import Login from "./views/Login.vue";
 import Register from "./views/Register.vue";
-import history from "./views/History.vue";
+import History from "./views/History.vue";
 
 Vue.use(Router);
 

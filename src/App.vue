@@ -4,7 +4,7 @@
     <div id="nav">
       <!-- <router-view> -->
       <!-- <router-link to="/">Home</router-link>|
-      <router-link to="/about">About</router-link> -->
+      <router-link to="/about">About</router-link>-->
       <router-view/>
     </div>
     <!-- <Footer></Footer> -->
@@ -16,18 +16,18 @@ import Header from "@/components/Header.vue";
 export default {
   name: "App",
   components: {
-    Header,
+    Header
   }
 };
 </script>
 
 <style lang="scss">
-@import './assets/styles/reset';
-@import './assets/styles/fonts';
-@import './assets/styles/variables';
-@import './assets/styles/geral';
-@import './assets/styles/list';
-@import './assets/styles/create-edit';
+@import "./assets/styles/reset";
+@import "./assets/styles/fonts";
+@import "./assets/styles/variables";
+@import "./assets/styles/geral";
+@import "./assets/styles/list";
+@import "./assets/styles/create-edit";
 
 #app {
   #nav {
