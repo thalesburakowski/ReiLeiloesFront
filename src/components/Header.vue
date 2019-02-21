@@ -31,7 +31,7 @@ export default {
   name: "Header",
   data() {
     return {
-      userMenu: true
+      userMenu: false
     };
   },
   methods: {
@@ -39,6 +39,11 @@ export default {
       console.log("saiu");
     }
   }
+  // watch: {
+  //   '$route' (to, from) {
+  //     this.userMenu = false;
+  //   }
+  // }
 };
 </script>
 
