@@ -7,7 +7,11 @@
 <script>
 export default {
   name: "Auction",
-  data() {}
+  data() {
+    return{
+      
+    }
+  }
 };
 </script>
 

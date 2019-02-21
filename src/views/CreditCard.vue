@@ -7,7 +7,11 @@
 <script>
 export default {
   name: "CreditCard",
-  data() {}
+  data() {
+    return{
+      
+    }
+  }
 };
 </script>
 <style lang="sass" scoped>
