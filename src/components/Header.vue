@@ -1,16 +1,52 @@
 <template>
-  <div class="topbar">
-    <div class="topbar-title">Rei Leilões</div>
-    <div class="topbar-search">
-      <input type="text" class="topbar-search-input">
+  <div>
+    <div class="topbar">      
+      <router-link to="/" class="topbar-title">
+        Rei leilões
+      </router-link>      
+      <div class="topbar-search">
+        <input type="text" class="topbar-search-input">
+        <button class="topbar-search__button">
+          <i class="fas fa-search"></i>
+        </button>
+      </div>
+      <div class="topbar__icon"  @click="userMenu= !userMenu"><i class="fas fa-user-circle"></i></div>
     </div>
-    <div></div>
+    
+    <div class="user-menu" v-if="userMenu">
+      <span class="user-menu__holder-links">
+        <router-link to="/dados" class="user-menu__link">
+        Meus Dados
+      </router-link>
+      <router-link to="/cartao" class="user-menu__link">
+        Meus Cartões
+      </router-link>
+      <router-link to="/endereco" class="user-menu__link">
+        Meus  Endereços
+      </router-link>
+      <router-link to="/conta-bancaria" class="user-menu__link">
+        Minha Conta Bancária
+      </router-link>
+      <router-link to="/historico" class="user-menu__link">
+        Meu histórico
+      </router-link>
+      <router-link to="/logout" class="user-menu__link">
+        Sair
+      </router-link>
+      </span>
+      
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: "Header"
+  name: "Header",
+ data() {
+    return {
+    userMenu: true,
+    }
+  }
 };
 </script>
 
@@ -29,7 +65,7 @@ export default {
     rgba(65, 30, 90, 1) 0%,
     rgba(40, 10, 60, 1) 100%
   );
-  .topbar-title {
+  &-title {
     margin-left: 2vw;
     padding-left: 1em;
     font-size: 1.5rem;
@@ -37,84 +73,59 @@ export default {
     align-self: center;
     text-transform: uppercase;
     color: white;
+    text-decoration: none;
   }
-  .topbar-search {
+  &-search {
     display: flex;
     justify-content: center;
     align-items: center;
     .topbar-search-input {
+      padding-left: .5rem;
       width: 95%;
       background-color: white;
       border-radius: 8px;
     }
+
+    &__button{
+      background: transparent;
+      border: none;
+      margin-left: -2rem;
+      outline: 0;
+    }
   }
-  .icon {
+  &__icon {
     display: flex;
     justify-content: center;
     align-self: center;
     color: white;
+    font-size: 2rem;
   }
-  .user {
+
+}
+
+.user-menu{
+  display: flex;
+  flex-direction: column;
+  background-color: transparent;
+  padding-top: $topbar-height;
+  padding-right: 1rem;
+
+  &__holder-links{
+    background-color: white;
+    width: 10rem;
     display: flex;
-    justify-content: center;
-    align-self: center;
-    height: 1.5em;
-    border-right: 1px solid white;
-    .name {
-      display: flex;
-      align-self: center;
-      color: white;
-    }
+    align-self: flex-end;
+    align-items: center;
+    flex-direction: column;
+    
   }
-  .logout {
-    display: flex;
-    justify-content: space-evenly;
-    align-content: center;
-    font-size: 1.2rem;
-    cursor: pointer;
+
+  &__link {
+    text-decoration: none;
+    color: #222;
+    font-size: 1rem;
+    margin: 5px;
   }
 }
 
-.router {
-  display: flex;
-  position: fixed;
-  background-color: white;
-  width: 100%;
-  height: 3rem;
-  top: 3rem;
-  left: $sidebar-width;
-  padding-left: 2rem;
-  -webkit-box-shadow: 0px 3px 40px 0px rgba(0, 0, 0, 0.1);
-  -moz-box-shadow: 0px 3px 40px 0px rgba(0, 0, 0, 0.1);
-  box-shadow: 0px 3px 40px 0px rgba(0, 0, 0, 0.1);
-  .routes {
-    display: flex;
-    position: relative;
-    align-items: center;
-    height: 100%;
-    color: $purple-light;
-    .name {
-      text-transform: capitalize;
-      cursor: pointer;
-      font-family: "Roboto-Regular";
-    }
-    .next {
-      margin-left: 0.5rem;
-      margin-right: 0.5rem;
-    }
-    .actual {
-      position: absolute;
-      bottom: 0;
-      background: linear-gradient(90deg, white 0%, #ffb914 35%, #f0462d 100%);
-      border-radius: 3px;
-      width: 100%;
-      height: 10%;
-    }
-  }
-  .routes:last-child {
-    .name {
-      cursor: default;
-    }
-  }
-}
 </style>
