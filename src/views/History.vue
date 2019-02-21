@@ -5,7 +5,11 @@
 <script>
 export default {
   name: "History",
-  data() {}
+  data() {
+    return{
+      
+    }
+  }
 };
 </script>
 <style lang="sass" scoped>

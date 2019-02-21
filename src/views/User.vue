@@ -7,7 +7,11 @@
 <script>
 export default {
   name: "User",
-  data() {}
+  data() {
+    return{
+      
+    }
+  }
 };
 </script>
 <style lang="sass" scoped>
