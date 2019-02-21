@@ -1,4 +1,8 @@
-<template></template>
+<template>
+  <div>
+
+  </div>
+</template>
 
 <script>
 export default {
@@ -6,3 +10,8 @@ export default {
   data() {}
 };
 </script>
+
+<style lang="sass" scoped>
+
+</style>
+

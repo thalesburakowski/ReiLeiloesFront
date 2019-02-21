@@ -95,7 +95,8 @@ export default {
   }
   &__icon {
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
+    margin-right: 9rem;
     align-self: center;
     color: white;
     font-size: 2rem;
@@ -104,15 +105,15 @@ export default {
 }
 
 .user-menu{
-  display: flex;
-  flex-direction: column;
   background-color: transparent;
-  padding-top: $topbar-height;
-  padding-right: 1rem;
+  top: $topbar-height;
+  right: 4rem;
+  position: absolute;
+  z-index: 999;
 
   &__holder-links{
     background-color: white;
-    width: 10rem;
+    width: 12rem;
     display: flex;
     align-self: flex-end;
     align-items: center;
