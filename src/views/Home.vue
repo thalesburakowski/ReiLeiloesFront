@@ -19,16 +19,15 @@
     </div>
     <div class="table">
       <div class="table-line">
-        <div class="table-line-title" v-for="title in titles" :key="title">{{title}}</div>
+        <div class="table-line-title" v-for="title in titles" :key="title">{{ title }}</div>
       </div>
       <div v-for="auction in auctions" :key="auction">
         <div class="table-line">
-          <div class="item">{{auction.name}}</div>
-          <div class="item">{{auction.category}}</div>
-          <div class="item">{{auction.starts}}</div>
-          <div class="item">{{auction.ends}}</div>
-          <div class="item">{{auction.value}}</div>
-          
+          <div class="item">{{ auction.name }}</div>
+          <div class="item">{{ auction.category }}</div>
+          <div class="item">{{ auction.starts }}</div>
+          <div class="item">{{ auction.ends }}</div>
+          <div class="item">{{ auction.value }}</div>
         </div>
       </div>
     </div>
@@ -37,34 +36,34 @@
 
 <script>
 // @ is an alias to /src
-import Multiselect from "vue-multiselect";
+import Multiselect from 'vue-multiselect'
 
 export default {
-  name: "home",
+  name: 'home',
   components: { Multiselect },
   data() {
     return {
       value: null,
       options: [
-        "Obras de arte",
-        "Colecionaveis",
-        "Brinquedos",
-        "Automotivo",
-        "Outros"
+        'Obras de arte',
+        'Colecionaveis',
+        'Brinquedos',
+        'Automotivo',
+        'Outros',
       ],
-      titles: ["Nome", "Categoria", "Início", "Tempo Restante", "Valor Atual"],
+      titles: ['Nome', 'Categoria', 'Início', 'Tempo Restante', 'Valor Atual'],
       auctions: [
         {
-          name: "Teste Leilão",
-          category: "Outros",
-          starts: "20/20/2019",
-          ends: "17 horas",
-          value: 233.5
-        }
-      ]
-    };
-  }
-};
+          name: 'Teste Leilão',
+          category: 'Outros',
+          starts: '20/20/2019',
+          ends: '17 horas',
+          value: 233.5,
+        },
+      ],
+    }
+  },
+}
 </script>
 
 <style lang="scss">
@@ -76,7 +75,7 @@ export default {
     display: flex;
     justify-content: center;
     align-self: center;
-    font-family: "Dosis-Medium";
+    font-family: 'Dosis-Medium';
     margin-right: 2rem;
   }
   .page-advanced-search-select {
