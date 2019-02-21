@@ -1,5 +1,4 @@
 <template>
-import { watch } from 'fs';
   <div>
     <div class="topbar">      
       <router-link to="/" class="topbar-title">
@@ -16,7 +15,7 @@ import { watch } from 'fs';
     
     <div class="user-menu" v-if="userMenu">
       <span class="user-menu__holder-links">
-        <router-link to="/dados" class="user-menu__link" @click="userMenu= !userMenu">
+        <router-link to="/dados" class="user-menu__link">
         Meus Dados
       </router-link>
       <router-link to="/cartao" class="user-menu__link">
@@ -48,11 +47,11 @@ export default {
     userMenu: false,
     }
   },
-  // watch: {
-  //   '$route' (to, from) {
-  //     this.userMenu = false;
-  //   }
-  // }
+  watch: {
+    '$route' (to, from) {
+      this.userMenu = false;
+    }
+  }
 };
 </script>
 
