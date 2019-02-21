@@ -11,14 +11,12 @@
   </div>
 </template>
 <script>
-import Footer from "@/components/Footer.vue";
 import Header from "@/components/Header.vue";
 
 export default {
   name: "App",
   components: {
     Header,
-    Footer
   }
 };
 </script>
@@ -29,6 +27,8 @@ export default {
 @import './assets/styles/variables';
 @import './assets/styles/geral';
 @import './assets/styles/list';
+@import './assets/styles/create-edit';
+
 #app {
   #nav {
     margin-top: $topbar-height;

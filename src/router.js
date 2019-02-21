@@ -1,6 +1,14 @@
 import Vue from "vue";
 import Router from "vue-router";
 import Home from "./views/Home.vue";
+import User from "./views/User.vue";
+import Address from "./views/Address.vue";
+import Auction from "./views/Auction.vue";
+import BankAccount from "./views/BankAccount.vue";
+import CreditCard from "./views/CreditCard.vue";
+import Login from "./views/Login.vue";
+import Register from "./views/Register.vue";
+import history from "./views/History.vue";
 
 Vue.use(Router);
 
@@ -10,17 +18,49 @@ export default new Router({
   routes: [
     {
       path: "/",
-      name: "home",
+      name: "Inicio",
       component: Home
     },
     {
-      path: "/about",
-      name: "about",
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () =>
-        import(/* webpackChunkName: "about" */ "./views/About.vue")
-    }
+      path: "/login",
+      name: "login",
+      component: Login
+    },
+    {
+      path: "/register",
+      name: "register",
+      component: Register
+    },
+    {
+      path: "/dados",
+      name: "user",
+      component: User
+    },
+    {
+      path: "/endereco",
+      name: "address",
+      component: Address
+    },
+    {
+      path: "/leilao",
+      name: "auction",
+      component: Auction
+    },
+    {
+      path: "/conta-bancaria",
+      name: "bankAccount",
+      component: BankAccount
+    },
+    {
+      path: "/cartao",
+      name: "creditCard",
+      component: CreditCard
+    },
+    {
+      path: "/historico",
+      name: "history",
+      component: History
+    },
+
   ]
 });
