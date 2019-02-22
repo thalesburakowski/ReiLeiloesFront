@@ -19,7 +19,7 @@
         </div>
       </div>
       <div class="save">
-        <button class="button button-principal">Login</button>
+        <button class="button button-principal" @click="login">Login</button>
       </div>
     </div>
   </div>
@@ -50,6 +50,11 @@ export default {
   name: 'Login',
   data() {
     return {}
+  },
+  methods: {
+    login() {
+      this.$router.push('/')
+    },
   },
 }
 </script>
