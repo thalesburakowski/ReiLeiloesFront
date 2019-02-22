@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="header">
     <div class="topbar">
       <router-link to="/" class="topbar-title">Rei leilões</router-link>
       <div class="topbar-search">
@@ -28,30 +28,31 @@
 
 <script>
 export default {
-  name: "Header",
+  name: 'Header',
   data() {
     return {
-      userMenu: false
-    };
+      userMenu: false,
+    }
   },
   methods: {
-    logout: () => {
-      console.log("saiu");
-    }
-  }
-  // watch: {
-  //   '$route' (to, from) {
-  //     this.userMenu = false;
-  //   }
-  // }
-};
+    logout() {
+      this.$router.push('/login')
+    },
+  },
+  watch: {
+    $route(to, from) {
+      this.userMenu = false
+    },
+  },
+}
 </script>
 
 <style lang="scss" scoped>
-@import "@/assets/styles/variables.scss";
+@import '@/assets/styles/variables.scss';
 .topbar {
   display: grid;
   position: fixed;
+  z-index: 999;
   top: 0;
   grid-template-columns: 20% 60% 20%;
   height: $topbar-height;
@@ -66,7 +67,7 @@ export default {
     margin-left: 2vw;
     padding-left: 1em;
     font-size: 1.5rem;
-    font-family: "Roboto-Regular";
+    font-family: 'Roboto-Regular';
     align-self: center;
     text-transform: uppercase;
     color: white;
