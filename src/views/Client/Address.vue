@@ -118,7 +118,7 @@
 
 <script>
 import SweetAlert from '../../components/SweetAlert'
-import Swal from 'sweetalert2'
+
 export default {
   name: 'Address',
   data() {
@@ -138,6 +138,17 @@ export default {
           name: 'Home',
           complement: '',
         },
+        {
+          id: 2,
+          zipcode: '04147-201',
+          street: 'Ruas das amoras',
+          number: '1250',
+          neighborhood: 'Bairro das flores',
+          state: 'São Paulo',
+          city: 'São Paulo',
+          name: 'Casa da Mamãe',
+          complement: '120B',
+        },
       ],
       modalAddress: {},
     }
@@ -146,14 +157,24 @@ export default {
     SweetAlert,
   },
   methods: {
-    addAddress() {},
-    deleteAddress() {
-      SweetAlert.showConfirmationModal()
+    async addAddress() {
+      this.showModal = false
+      await SweetAlert.showSuccessModal()
     },
-    createAddress() {
-      SweetAlert.showSuccessModal()
+    async deleteAddress() {
+      let result = await SweetAlert.showConfirmationModal()
+      if (result.value) {
+        SweetAlert.showSuccessModal()
+      }
     },
-    updateAddress() {},
+    async createAddress() {
+      this.showModal = false
+      await SweetAlert.showSuccessModal()
+    },
+    async updateAddress() {
+      this.showModal = false
+      await SweetAlert.showSuccessModal()
+    },
   },
 }
 </script>
@@ -183,7 +204,7 @@ export default {
   text-align: left;
   // width: 80%;
   .line-inputs {
-    grid-template-columns: repeat(3, 28%);
+    grid-template-columns: repeat(3, 29%);
     grid-column-gap: 70px;
     grid-row-gap: 2rem;
 
@@ -199,7 +220,7 @@ export default {
 
 .form {
   margin-bottom: 2rem;
-  box-shadow: 2px 5px 15px rgba(#ffb914, 0.2);
+  box-shadow: 2px 5px 15px #ccc;
 }
 
 .title-form {
