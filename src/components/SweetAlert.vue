@@ -5,13 +5,12 @@ async function showSuccessModal(
   message = 'Operção realizada com sucesso.',
   title = 'Sucesso!'
 ) {
-  return Swal({
+  return Swal.fire({
     title,
     text: message,
     type: 'success',
-    confirmButtonClass: 'btn btn-success',
+    confirmButtonClass: 'button button-principal',
     buttonsStyling: false,
-    animation: false,
   })
 }
 
@@ -19,32 +18,29 @@ async function showFailModal(
   message = 'Essa operação não pode ser concluída.',
   title = 'Erro!'
 ) {
-  return Swal({
+  return Swal.fire({
     title,
     text: message,
     type: 'error',
-    confirmButtonClass: 'btn btn-danger',
+    confirmButtonClass: 'button sweet-btn button-principal',
     buttonsStyling: false,
-    animation: false,
   })
 }
 
 async function showConfirmationModal(
-  message = 'Você tem certeza?.',
+  message = 'Você tem certeza que deseja fazer isso?.',
   title = 'Atenção!'
 ) {
-  return Swal({
+  return Swal.fire({
     title,
     text: message,
     type: 'warning',
-    confirmButtonClass: 'btn btn-danger',
     buttonsStyling: false,
-    animation: false,
     showCancelButton: true,
     confirmButtonText: 'Confirmar',
     cancelButtonText: 'Cancelar',
-    confirmButtonClass: 'btn btn-success',
-    cancelButtonClass: 'btn btn-danger',
+    confirmButtonClass: 'button sweet-btn button-principal',
+    cancelButtonClass: 'button sweet-btn button-cancel',
   })
 }
 export default {

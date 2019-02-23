@@ -50,7 +50,7 @@
         <button class="button button-cancel" @click="deleteAddress(address)">EXCLUIR</button>
         <button
           class="button button-principal"
-          @click="showModal = true, modalAddress = address, newAddress = false "
+          @click="showModal = true, modalAddress = address, newAddress = false"
         >EDITAR</button>
       </div>
     </div>
@@ -117,7 +117,8 @@
 </template>
 
 <script>
-// import Alert from '@components/SweetAlert'
+import SweetAlert from '../../components/SweetAlert'
+import Swal from 'sweetalert2'
 export default {
   name: 'Address',
   data() {
@@ -141,11 +142,16 @@ export default {
       modalAddress: {},
     }
   },
+  components: {
+    SweetAlert,
+  },
   methods: {
     addAddress() {},
-    deleteAddress() {},
+    deleteAddress() {
+      SweetAlert.showConfirmationModal()
+    },
     createAddress() {
-      // await Alert.showSuccessModal();
+      SweetAlert.showSuccessModal()
     },
     updateAddress() {},
   },
