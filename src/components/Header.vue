@@ -98,6 +98,7 @@ export default {
       background-color: white;
       border-radius: 8px;
       height: 2rem;
+      font-size: 1rem;
     }
 
     &__button {
@@ -105,6 +106,8 @@ export default {
       border: none;
       margin-left: -2rem;
       outline: 0;
+      font-size: 1.2rem;
+      color: $text-color;
     }
   }
   &__icon {
