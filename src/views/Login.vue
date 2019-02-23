@@ -25,7 +25,21 @@
   </div>
 </template>
 
-<style lang="scss">
+<script>
+export default {
+  name: 'Login',
+  data() {
+    return {}
+  },
+  methods: {
+    login() {
+      this.$router.push('/')
+    },
+  },
+}
+</script>
+
+<style lang="scss" scoped>
 .page {
   .page-title {
     margin-left: 21vw;
@@ -44,17 +58,3 @@
   }
 }
 </style>
-
-<script>
-export default {
-  name: 'Login',
-  data() {
-    return {}
-  },
-  methods: {
-    login() {
-      this.$router.push('/')
-    },
-  },
-}
-</script>
