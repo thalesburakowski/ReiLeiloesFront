@@ -25,26 +25,6 @@
   </div>
 </template>
 
-<style lang="scss">
-.page {
-  .page-title {
-    margin-left: 21vw;
-  }
-  .fields {
-    margin-left: 20vw;
-    width: 50%;
-    .line-inputs {
-      grid-template-columns: 100%;
-      grid-gap: 2em;
-    }
-    .save {
-      justify-content: flex-end;
-      margin-right: 2rem;
-    }
-  }
-}
-</style>
-
 <script>
 export default {
   name: 'Login',
@@ -58,3 +38,23 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.page {
+  .page-title {
+    margin-left: 30vw;
+  }
+  .fields {
+    margin-left: 29vw;
+    width: 35%;
+    .line-inputs {
+      grid-template-columns: 100%;
+      grid-gap: 2em;
+    }
+    .save {
+      justify-content: flex-end;
+      margin-right: 2rem;
+    }
+  }
+}
+</style>

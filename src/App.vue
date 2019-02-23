@@ -11,23 +11,23 @@
   </div>
 </template>
 <script>
-import Header from "@/components/Header.vue";
-
+import Header from '@/components/Header.vue'
+import vueFilters from '@/globalFilter'
 export default {
-  name: "App",
+  name: 'App',
   components: {
-    Header
-  }
-};
+    Header,
+  },
+}
 </script>
 
 <style lang="scss">
-@import "./assets/styles/reset";
-@import "./assets/styles/fonts";
-@import "./assets/styles/variables";
-@import "./assets/styles/geral";
-@import "./assets/styles/list";
-@import "./assets/styles/create-edit";
+@import './assets/styles/reset';
+@import './assets/styles/fonts';
+@import './assets/styles/variables';
+@import './assets/styles/geral';
+@import './assets/styles/list';
+@import './assets/styles/create-edit';
 
 #app {
   #nav {

@@ -24,9 +24,9 @@
         <span class="auction__img-holder">
           <img :src="auction.url" alt class="auction__img">
         </span>
-        <div class="auction__name">{{auction.name}}</div>
-        <div class="auction__date">{{auction.closingTime}}</div>
-        <div class="auction__price">R$ {{auction.price}}</div>
+        <div class="auction__name">{{ auction.name }}</div>
+        <div class="auction__date">Lances até {{ auction.finalDate }}</div>
+        <div class="auction__price">R$ {{ auction.price }}</div>
       </div>
     </div>
   </div>
@@ -136,12 +136,12 @@ export default {
 
   &__img-holder {
     height: 15rem;
-    width: 12rem;
+    width: 13rem;
     overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 16px;
+    border-radius: 8px;
     box-shadow: 2px 5px 10px #888;
     margin-bottom: 1.2rem;
 
@@ -152,7 +152,7 @@ export default {
   }
 
   &__img {
-    min-width: 12rem;
+    min-width: 13rem;
     min-height: 15rem;
     max-height: 20rem;
     max-width: 15rem;
