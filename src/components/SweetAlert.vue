@@ -28,7 +28,7 @@ async function showFailModal(
 }
 
 async function showConfirmationModal(
-  message = 'Você tem certeza que deseja fazer isso?.',
+  message = 'Você tem certeza que deseja fazer isso?',
   title = 'Atenção!'
 ) {
   return Swal.fire({
@@ -37,6 +37,7 @@ async function showConfirmationModal(
     type: 'warning',
     buttonsStyling: false,
     showCancelButton: true,
+    reverseButtons: true,
     confirmButtonText: 'Confirmar',
     cancelButtonText: 'Cancelar',
     confirmButtonClass: 'button sweet-btn button-principal',
