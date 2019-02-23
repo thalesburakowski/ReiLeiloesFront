@@ -96,7 +96,7 @@ export default {
       padding-left: 0.5rem;
       width: 95%;
       background-color: white;
-      border-radius: 8px;
+      border-radius: 4px;
       height: 2rem;
       font-size: 1rem;
     }
