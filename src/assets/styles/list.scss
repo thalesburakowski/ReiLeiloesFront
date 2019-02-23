@@ -60,6 +60,13 @@ $border-color: #CCCCCC;
                     color: white;
                     background-color: $purple-light;
                 }
+                .check {
+                    color: #39FF14;
+                }
+                .check:hover {
+                    color: white;
+                    background-color: #39FF14;
+                }
                 .trash {
                     color: $red-light;
                 }
@@ -74,10 +81,10 @@ $border-color: #CCCCCC;
             border-bottom: solid 1px $border-color;
         }
     }
-    .line:first{
+    .table-line:first{
         cursor: default;
     }
-    .line:nth-child(odd) {
+    .table-line:nth-child(odd) {
         background-color: #FAFAFA;
     }
 }

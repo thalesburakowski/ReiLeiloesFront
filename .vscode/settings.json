@@ -4,5 +4,6 @@
   "eslint.alwaysShowStatus": true,
   "[javascript]": {
     "editor.formatOnSave": false
-  }
+  },
+  "files.useExperimentalFileWatcher": true,
 }

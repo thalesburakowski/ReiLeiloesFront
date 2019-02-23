@@ -8,7 +8,7 @@
           <i class="fas fa-search"></i>
         </button>
       </div>
-      <div class="topbar__icon" @click="userMenu= !userMenu">
+      <div class="topbar__icon" @click="userMenu = !userMenu">
         <i class="fas fa-user-circle"></i>
       </div>
     </div>
@@ -20,6 +20,7 @@
         <router-link to="/endereco" class="user-menu__link">Meus Endereços</router-link>
         <router-link to="/conta-bancaria" class="user-menu__link">Minha Conta Bancária</router-link>
         <router-link to="/historico" class="user-menu__link">Meu histórico</router-link>
+        <router-link to="/autorizacao-leiloes" class="user-menu__link">Autorização de Leilões</router-link>
         <a href="#" class="user-menu__link" @click="logout()">Sair</a>
       </span>
     </div>

@@ -5,14 +5,14 @@
       <div class="line-inputs">
         <div>
           <label class="label-input">
-            <input type="text" required>
+            <input type="text" required />
             <div class="label-text">Usuario</div>
           </label>
         </div>
         <div>
           <div>
             <label class="label-input">
-              <input type="password" maxlength="80" required>
+              <input type="password" maxlength="80" required />
               <div class="label-text">Senha</div>
             </label>
           </div>
@@ -25,14 +25,14 @@
   </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .page {
   .page-title {
-    margin-left: 21vw;
+    margin-left: 30vw;
   }
   .fields {
-    margin-left: 20vw;
-    width: 50%;
+    margin-left: 29vw;
+    width: 35%;
     .line-inputs {
       grid-template-columns: 100%;
       grid-gap: 2em;

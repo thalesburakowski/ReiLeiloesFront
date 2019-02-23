@@ -22,11 +22,11 @@
         @click="clickProduct(product)"
       >
         <span class="auction__img-holder">
-          <img :src="product.url" alt class="auction__img">
+          <img :src="product.url" alt class="auction__img" />
         </span>
-        <div class="auction__name">{{product.name}}</div>
-        <div class="auction__date">Lances até {{product.finalDate}}</div>
-        <div class="auction__price">R$ {{product.price}}</div>
+        <div class="auction__name">{{ product.name }}</div>
+        <div class="auction__date">Lances até {{ product.finalDate }}</div>
+        <div class="auction__price">R$ {{ product.price }}</div>
       </div>
     </div>
   </div>
