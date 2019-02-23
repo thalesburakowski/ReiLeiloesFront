@@ -1,7 +1,9 @@
 <template>
   <div class="header">
     <div class="topbar">
-      <router-link to="/" class="topbar-title">Rei leilões</router-link>
+      <router-link to="/" class="topbar-logo-holder">
+        <img src="../assets/imgs/logo.jpg" class="topbar-logo" alt>
+      </router-link>
       <div class="topbar-search">
         <input type="text" class="topbar-search-input">
         <button class="topbar-search__button">
@@ -54,34 +56,47 @@ export default {
   position: fixed;
   z-index: 999;
   top: 0;
-  grid-template-columns: 20% 60% 20%;
+  grid-template-columns: 30% 40% 30%;
   height: $topbar-height;
   width: 100%;
-  background: rgb(65, 30, 90);
-  background: linear-gradient(
-    250deg,
-    rgba(65, 30, 90, 1) 0%,
-    rgba(40, 10, 60, 1) 100%
-  );
-  &-title {
-    margin-left: 2vw;
-    padding-left: 1em;
-    font-size: 1.5rem;
-    font-family: 'Roboto-Regular';
-    align-self: center;
-    text-transform: uppercase;
-    color: white;
-    text-decoration: none;
+  background: #222;
+  // background: linear-gradient(
+  //   250deg,
+  //   rgba(65, 30, 90, 1) 0%,
+  //   rgba(40, 10, 60, 1) 100%
+  // );
+  // &-title {
+  //   margin-left: 2vw;
+  //   padding-left: 1em;
+  //   font-size: 1.5rem;
+  //   font-family: 'Roboto-Regular';
+  //   align-self: center;
+  //   text-transform: uppercase;
+  //   color: white;
+  //   text-decoration: none;
+  // }
+  &-logo-holder {
+    height: 5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
   }
+  &-logo {
+    height: 12rem;
+  }
+
   &-search {
     display: flex;
     justify-content: center;
     align-items: center;
+
     .topbar-search-input {
       padding-left: 0.5rem;
       width: 95%;
       background-color: white;
       border-radius: 8px;
+      height: 2rem;
     }
 
     &__button {
@@ -105,8 +120,9 @@ export default {
   background-color: transparent;
   top: $topbar-height;
   right: 4rem;
-  position: absolute;
+  position: fixed;
   z-index: 999;
+  box-shadow: 2px 5px 10px #888;
 
   &__holder-links {
     background-color: white;
