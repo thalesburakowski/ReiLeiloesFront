@@ -53,7 +53,7 @@ export default {
     }
     .save {
       justify-content: flex-end;
-      margin-right: 2rem;
+      // margin-right: 2rem;
     }
   }
 }
