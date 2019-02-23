@@ -11,7 +11,6 @@ async function showSuccessModal(
     type: 'success',
     confirmButtonClass: 'button button-principal',
     buttonsStyling: false,
-    animation: false,
   })
 }
 
@@ -25,7 +24,6 @@ async function showFailModal(
     type: 'error',
     confirmButtonClass: 'button sweet-btn button-principal',
     buttonsStyling: false,
-    animation: false,
   })
 }
 
@@ -38,7 +36,6 @@ async function showConfirmationModal(
     text: message,
     type: 'warning',
     buttonsStyling: false,
-    animation: false,
     showCancelButton: true,
     confirmButtonText: 'Confirmar',
     cancelButtonText: 'Cancelar',
