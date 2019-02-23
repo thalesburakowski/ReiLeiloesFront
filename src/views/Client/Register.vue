@@ -1,6 +1,33 @@
 <template>
-  <div>
-    <h1>Cadastro</h1>
+  <div class="page">
+    <h1 class="page-title">Cadastro</h1>
+    <div class="fields">
+      <div class="line-inputs">
+        <div>
+          <label class="label-input">
+            <input type="text" required />
+            <div class="label-text">Usuario</div>
+          </label>
+        </div>
+      </div>
+      <div class="line-inputs">
+        <label class="label-input">
+          <input type="password" maxlength="80" required />
+          <div class="label-text">Senha</div>
+        </label>
+      </div>
+      <div class="line-inputs">
+        <label class="label-input">
+          <input type="password" maxlength="80" required />
+          <div class="label-text">Confirme sua senha</div>
+        </label>
+      </div>
+      <div class="save">
+        <button class="button button-principal" @click="register">
+          Cadastrar
+        </button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -10,6 +37,30 @@ export default {
   data() {
     return {}
   },
+  methods: {
+    register() {
+      this.$router.push('/')
+    },
+  },
 }
 </script>
-<style lang="sass" scoped></style>
+
+<style lang="scss" scoped>
+.page {
+  .page-title {
+    margin-left: 30vw;
+  }
+  .fields {
+    margin-left: 29vw;
+    width: 35%;
+    .line-inputs {
+      grid-template-columns: 100%;
+      grid-gap: 2em;
+    }
+    .save {
+      justify-content: flex-end;
+      // margin-right: 2rem;
+    }
+  }
+}
+</style>

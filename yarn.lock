@@ -6610,7 +6610,7 @@ prettier@1.16.3:
   version "1.16.3"
   resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.16.3.tgz#8c62168453badef702f34b45b6ee899574a6a65d"
 
-prettier@^1.15.2, prettier@^1.16.4:
+prettier@^1.15.2:
   version "1.16.4"
   resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.16.4.tgz#73e37e73e018ad2db9c76742e2647e21790c9717"
 
@@ -7783,6 +7783,11 @@ svgo@^1.0.0:
     stable "~0.1.6"
     unquote "~1.1.1"
     util.promisify "~1.0.0"
+
+sweetalert2@^8.2.3:
+  version "8.2.4"
+  resolved "https://registry.yarnpkg.com/sweetalert2/-/sweetalert2-8.2.4.tgz#d1f0c7367bc015e83582e86146e88e2508d8a968"
+  integrity sha512-r0Eu4tfloXr6W7RslNOM0kfBeE6Tzs6sYjaKHDoD1pWxLkuxZ5t54GWcQClvkGWa+yqgJri3SXlMWob1mZZBaA==
 
 symbol-tree@^3.2.2:
   version "3.2.2"

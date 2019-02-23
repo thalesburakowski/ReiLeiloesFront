@@ -9,14 +9,12 @@
             <div class="label-text">Usuario</div>
           </label>
         </div>
-        <div>
-          <div>
-            <label class="label-input">
-              <input type="password" maxlength="80" required>
-              <div class="label-text">Senha</div>
-            </label>
-          </div>
-        </div>
+      </div>
+      <div class="line-inputs">
+        <label class="label-input">
+          <input type="password" maxlength="80" required>
+          <div class="label-text">Senha</div>
+        </label>
       </div>
       <div class="save">
         <button class="button button-principal" @click="login">Login</button>

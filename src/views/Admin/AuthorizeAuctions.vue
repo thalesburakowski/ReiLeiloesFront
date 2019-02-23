@@ -5,7 +5,9 @@
     </div>
     <div class="table">
       <div class="table-line">
-        <div class="table-line-title" v-for="title in titles" :key="title">{{ title }}</div>
+        <div class="table-line-title" v-for="title in titles" :key="title">
+          {{ title }}
+        </div>
         <div class="table-line-title action">Ações</div>
       </div>
       <div v-for="auction in auctions" :key="auction.id">
@@ -95,7 +97,7 @@ export default {
   },
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .page {
   & .page-title {
     margin-left: 0;
