@@ -22,7 +22,7 @@
         @click="clickAuction(auction)"
       >
         <span class="auction__img-holder">
-          <img :src="auction.url" alt class="auction__img">
+          <img :src="auction.url" alt class="auction__img" />
         </span>
         <div class="auction__name">{{ auction.name }}</div>
         <div class="auction__date">{{ auction.closingTime }}</div>
