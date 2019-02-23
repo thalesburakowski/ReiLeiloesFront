@@ -4,12 +4,13 @@
       <h1 class="page-title">Seus Leilões</h1>
     </div>
     <div class="table">
-      <div class="table-line">
-        <div class="table-line-title" v-for="title in titles" :key="title">
-          {{ title }}
+      <span class="table-complete-first-line">
+        <div class="table-line">
+          <div class="table-line-title" v-for="title in titles" :key="title">{{ title }}</div>
+          <div class="table-line-title action">Excluir</div>
         </div>
-        <div class="table-line-title action">Excluir</div>
-      </div>
+      </span>
+
       <div v-for="auction in auctions" :key="auction.id">
         <div class="table-line" @click="clickAuction(auction.id)">
           <div class="item">{{ auction.name }}</div>
