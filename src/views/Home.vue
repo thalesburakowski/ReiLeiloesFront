@@ -24,9 +24,9 @@
         <span class="auction__img-holder">
           <img :src="auction.url" alt class="auction__img">
         </span>
-        <div class="auction__name">{{auction.name}}</div>
-        <div class="auction__date">{{auction.closingTime}}</div>
-        <div class="auction__price">R$ {{auction.price}}</div>
+        <div class="auction__name">{{ auction.name }}</div>
+        <div class="auction__date">Lances até {{ auction.finalDate }}</div>
+        <div class="auction__price">R$ {{ auction.price }}</div>
       </div>
     </div>
   </div>

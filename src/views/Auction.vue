@@ -1,21 +1,14 @@
 <template>
-  <div>
-
-  </div>
+  <div></div>
 </template>
 
 <script>
 export default {
-  name: "Auction",
+  name: 'Auction',
   data() {
-    return{
-      
-    }
-  }
-};
+    return {}
+  },
+}
 </script>
 
-<style lang="sass" scoped>
-
-</style>
-
+<style lang="sass" scoped></style>

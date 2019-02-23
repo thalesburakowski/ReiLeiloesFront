@@ -42,11 +42,11 @@ export default {
 <style lang="scss" scoped>
 .page {
   .page-title {
-    margin-left: 21vw;
+    margin-left: 30vw;
   }
   .fields {
-    margin-left: 20vw;
-    width: 50%;
+    margin-left: 29vw;
+    width: 35%;
     .line-inputs {
       grid-template-columns: 100%;
       grid-gap: 2em;
