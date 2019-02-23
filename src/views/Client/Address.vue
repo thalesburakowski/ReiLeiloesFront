@@ -14,7 +14,7 @@
     </div>
 
     <!-- *********************************Listagem -->
-    <div class="fields" v-for="address in addresses" :key="address.id">
+    <div class="fields form" v-for="address in addresses" :key="address.id">
       <h2 class="title-form">{{address.name}}</h2>
       <div class="line-inputs">
         <label class="label-input">
@@ -58,7 +58,7 @@
     <div :class="{ show: showModal }" class="modal">
       <!-- Modal content -->
       <div class="modal-content w3-animate-zoom">
-        <div class="fields form">
+        <div class="fields">
           <h2 v-if="newAddress" class="title-form">Novo Endereço</h2>
           <h2 v-else class="title-form">{{modalAddress.name}}</h2>
           <div class="line-inputs">
@@ -199,6 +199,7 @@ export default {
 
 .form {
   margin-bottom: 2rem;
+  box-shadow: 2px 5px 15px rgba(#ffb914, 0.2);
 }
 
 .title-form {

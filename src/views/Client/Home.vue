@@ -25,7 +25,7 @@
           <img :src="auction.url" alt class="auction__img">
         </span>
         <div class="auction__name">{{ auction.name }}</div>
-        <div class="auction__date">Lances até {{ auction.finalDate }}</div>
+        <div class="auction__date">{{ auction.closingTime }}</div>
         <div class="auction__price">R$ {{ auction.price }}</div>
       </div>
     </div>
@@ -52,35 +52,68 @@ export default {
       auctions: [
         {
           id: 1,
-          name: 'Cadeira',
+          name: 'Smartwatch Samsung Gear',
           closingTime: 'Tempo restante - 12:20:23',
-          price: '05,02',
+          price: '50,00',
           url:
-            'https://www.cadeirasparaescritorio.ind.br/media/product/29b/cadeira-eames-dkr-4-pes-em-madeira-assento-estofado-amarelo-306.jpg',
+            'https://images.livrariasaraiva.com.br/imagemnet/imagem.aspx/?pro_id=10148606&qld=90&l=430&a=-1=1005256167',
         },
         {
           id: 2,
-          name: 'Oscar',
-          closingTime: 'Tempo restante - 12:20:23',
-          price: '11,00',
+          name: 'Fone de Ouvido',
+          closingTime: 'Tempo restante - 06:20:23',
+          price: '60,00',
           url:
-            'https://images-americanas.b2w.io/produtos/01/00/sku/10660/6/10660641_1GG.jpg',
+            'https://images.livrariasaraiva.com.br/imagemnet/imagem.aspx/?pro_id=10505294&qld=90&l=430&a=-1',
         },
+
         {
           id: 3,
-          name: 'Várias Canetas',
+          name: 'Smartphone Galaxy J8',
           closingTime: 'Tempo restante - 12:20:23',
-          price: '9,99',
+          price: '399,99',
           url:
-            'https://images-submarino.b2w.io/produtos/01/00/sku/12910/5/12910575_1GG.jpg',
+            'https://images.livrariasaraiva.com.br/imagemnet/imagem.aspx/?pro_id=10288158&qld=90&l=430&a=-1=1005640192',
         },
         {
           id: 4,
-          name: 'Várias Canetas',
+          name: 'Jump Force - PS4',
           closingTime: 'Tempo restante - 12:20:23',
           price: '9,99',
           url:
-            'https://images-submarino.b2w.io/produtos/01/00/sku/12910/5/12910575_1GG.jpg',
+            'https://images.livrariasaraiva.com.br/imagemnet/imagem.aspx/?pro_id=10506211&qld=90&l=430&a=-1=1006603491',
+        },
+        {
+          id: 29,
+          name: 'Fone De Ouvido Supra Auricular Philips ',
+          closingTime: 'Tempo restante - 12:20:23',
+          price: '05,02',
+          url:
+            'https://images.livrariasaraiva.com.br/imagemnet/imagem.aspx/?pro_id=10148648&qld=90&l=430&a=-1=1005256288',
+        },
+        {
+          id: 25,
+          name: 'Mac Pro Apple Me253bz/A',
+          closingTime: 'Tempo restante - 12:20:23',
+          price: '2.000,00',
+          url:
+            'https://images.livrariasaraiva.com.br/imagemnet/imagem.aspx/?pro_id=6761417&qld=90&l=430&a=-1=1006148497',
+        },
+        {
+          id: 32,
+          name: ' Câmera Digital Sony Action',
+          closingTime: 'Tempo restante - 02:20:23',
+          price: '129,99',
+          url:
+            'https://images.livrariasaraiva.com.br/imagemnet/imagem.aspx/?pro_id=10148614&qld=90&l=430&a=-1=1005256186',
+        },
+        {
+          id: 40,
+          name: 'Caixa De Som Bluetooth',
+          closingTime: 'Tempo restante - 12:20:23',
+          price: '99,99',
+          url:
+            'https://images.livrariasaraiva.com.br/imagemnet/imagem.aspx/?pro_id=10148413&qld=90&l=430&a=-1=1005255732',
         },
       ],
     }
@@ -120,6 +153,7 @@ export default {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-gap: 2rem;
+  grid-row-gap: 6rem;
   justify-items: center;
 }
 
@@ -141,9 +175,10 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 8px;
-    box-shadow: 2px 5px 10px #888;
-    margin-bottom: 1.2rem;
+    border-radius: 5px;
+    // box-shadow: 2px 5px 15px rgba(#ffb914, 0.2);
+    margin: auto;
+    margin-bottom: 1rem;
 
     &:hover {
       transition: all 0.2s;
@@ -152,10 +187,14 @@ export default {
   }
 
   &__img {
-    min-width: 13rem;
-    min-height: 15rem;
-    max-height: 20rem;
-    max-width: 15rem;
+    // min-width: 13rem;
+    // min-height: 15rem;
+    max-height: 14rem;
+    max-width: 12rem;
+    border-radius: 5px;
+    // max-height: 17rem;
+    // max-width: 15rem;
+    flex-shrink: 0;
   }
 
   &__name {

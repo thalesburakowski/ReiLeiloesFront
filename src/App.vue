@@ -33,5 +33,7 @@ export default {
   #nav {
     margin-top: $topbar-height;
   }
+  height: 100%;
+  background: linear-gradient(to bottom, $background, #fff);
 }
 </style>
