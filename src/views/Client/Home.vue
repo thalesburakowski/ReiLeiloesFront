@@ -87,7 +87,7 @@ export default {
           id: 29,
           name: 'Fone De Ouvido Supra Auricular Philips ',
           closingTime: 'Tempo restante - 12:20:23',
-          price: '05,02',
+          price: '50,00',
           url:
             'https://images.livrariasaraiva.com.br/imagemnet/imagem.aspx/?pro_id=10148648&qld=90&l=430&a=-1=1005256288',
         },
