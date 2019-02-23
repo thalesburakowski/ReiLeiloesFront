@@ -14,7 +14,7 @@
     </div>
 
     <!-- *********************************Listagem -->
-    <div class="fields" v-for="address in addresses" key="address.id">
+    <div class="fields" v-for="address in addresses" :key="address.id">
       <h2 class="title-form">{{address.name}}</h2>
       <div class="line-inputs">
         <label class="label-input">
@@ -38,11 +38,11 @@
           <div class="label-text valid-field">Número</div>
         </label>
         <label class="label-input">
-          <input type="text" disabled :value="address.neighborhood">
+          <input type="text" disabled required :value="address.neighborhood">
           <div class="label-text valid-field">Bairro</div>
         </label>
         <label class="label-input">
-          <input type="text" disabled required>
+          <input type="text" disabled :value="address.complement">
           <div class="label-text valid-field">Complemento</div>
         </label>
       </div>
@@ -55,7 +55,7 @@
       </div>
     </div>
 
-    <div v-bind:class="{ show: showModal }" class="modal">
+    <div :class="{ show: showModal }" class="modal">
       <!-- Modal content -->
       <div class="modal-content w3-animate-zoom">
         <div class="fields form">
@@ -90,7 +90,7 @@
             </label>
             
             <label class="label-input">
-              <input type="text" required>
+              <input type="text">
               <div class="label-text">Complemento</div>
             </label>
             <label v-if="newAddress" class="label-input">
@@ -135,6 +135,7 @@ export default {
           state: 'São Paulo',
           city: 'São Paulo',
           name: 'Home',
+          complement: '',
         },
       ],
       modalAddress: {},
