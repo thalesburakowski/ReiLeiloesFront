@@ -4,60 +4,13 @@
     <div class="button-holder">
       <button
         class="btn-add-adrress button button-principal"
-        @click="showNewAddressFields = !showNewAddressFields"
+        @click="showModal = true, newAddress = true"
       >
-        <span v-if="!showNewAddressFields">
+        <span>
           <i class="fas fa-plus"></i>
         </span>
-        <span v-if="showNewAddressFields">
-          <i class="fas fa-minus"></i>
-        </span> &nbsp; Adicionar Endereço
+        &nbsp; Adicionar Endereço
       </button>
-    </div>
-
-    <div class="fields form" v-if="showNewAddressFields">
-      <h2 class="title-form">Novo Endereço</h2>
-      <div class="line-inputs">
-        <label class="label-input">
-          <input type="text" required>
-          <div class="label-text">Estado</div>
-        </label>
-        <label class="label-input">
-          <input type="text" required>
-          <div class="label-text">Cidade</div>
-        </label>
-        
-        <label class="label-input">
-          <input type="text" required>
-          <div class="label-text">Cep</div>
-        </label>
-        <label class="label-input">
-          <input type="text" required>
-          <div class="label-text">Rua</div>
-        </label>
-        
-        <label class="label-input">
-          <input type="text" required>
-          <div class="label-text">Número</div>
-        </label>
-        <label class="label-input">
-          <input type="text" required>
-          <div class="label-text">Bairro</div>
-        </label>
-        
-        <label class="label-input">
-          <input type="text" required>
-          <div class="label-text">Complemento</div>
-        </label>
-        <label class="label-input">
-          <input type="text" required>
-          <div class="label-text">Nome</div>
-        </label>
-      </div>
-      <div class="form__actions">
-        <button class="button button-cancel" @click="showNewAddressFields = false">CANCELAR</button>
-        <button class="button button-principal" @click="addAdress">ADICIONAR</button>
-      </div>
     </div>
 
     <!-- *********************************Listagem -->
@@ -95,17 +48,83 @@
       </div>
       <div class="form__actions">
         <button class="button button-cancel" @click="deleteAddress(address)">EXCLUIR</button>
+        <button
+          class="button button-principal"
+          @click="showModal = true, modalAddress = address, newAddress = false "
+        >EDITAR</button>
+      </div>
+    </div>
+
+    <div v-bind:class="{ show: showModal }" class="modal">
+      <!-- Modal content -->
+      <div class="modal-content">
+        <div class="fields form">
+          <h2 v-if="newAddress" class="title-form">Novo Endereço</h2>
+          <h2 v-else class="title-form">{{modalAddress.name}}</h2>
+          <div class="line-inputs">
+            <label class="label-input">
+              <input type="text" required :value="modalAddress.state">
+              <div class="label-text">Estado</div>
+            </label>
+            <label class="label-input">
+              <input type="text" required :value="modalAddress.city">
+              <div class="label-text">Cidade</div>
+            </label>
+            
+            <label class="label-input">
+              <input type="text" required :value="modalAddress.zipcode">
+              <div class="label-text">Cep</div>
+            </label>
+            <label class="label-input">
+              <input type="text" required :value="modalAddress.street">
+              <div class="label-text">Rua</div>
+            </label>
+            
+            <label class="label-input">
+              <input type="text" required :value="modalAddress.number">
+              <div class="label-text">Número</div>
+            </label>
+            <label class="label-input">
+              <input type="text" required :value="modalAddress.neighborhood">
+              <div class="label-text">Bairro</div>
+            </label>
+            
+            <label class="label-input">
+              <input type="text" required>
+              <div class="label-text">Complemento</div>
+            </label>
+            <label v-if="newAddress" class="label-input">
+              <input type="text" required>
+              <div class="label-text">Nome</div>
+            </label>
+          </div>
+          <div class="form__actions">
+            <button
+              class="button button-cancel"
+              @click="showModal = false, modalAddress = {}"
+            >CANCELAR</button>
+            <button
+              v-if="newAddress"
+              class="button button-principal"
+              @click="createAddress"
+            >ADICIONAR</button>
+            <button v-else class="button button-principal" @click="updateAddress">ATUALIZAR</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+// import Alert from '@components/SweetAlert'
 export default {
   name: 'Address',
   data() {
     return {
       showNewAddressFields: false,
+      newAddress: false,
+      showModal: false,
       addresses: [
         {
           id: 1,
@@ -118,16 +137,26 @@ export default {
           name: 'Home',
         },
       ],
+      modalAddress: {},
     }
   },
   methods: {
     addAddress() {},
     deleteAddress() {},
+    createAddress() {
+      // await Alert.showSuccessModal();
+    },
+    updateAddress() {},
   },
 }
 </script>
 <style lang="scss" scoped>
 @import '@/assets/styles/variables.scss';
+@import '@/assets/styles/modal.scss';
+
+.show {
+  display: block;
+}
 
 .button-holder {
   display: flex;

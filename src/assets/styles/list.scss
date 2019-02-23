@@ -1,140 +1,141 @@
-$border-color: #CCCCCC;
+$border-color: #cccccc;
 .title-new {
-    display: flex;
-    justify-content: space-between;
-    // padding-bottom: 2.5vw;
-    border-bottom: 1px solid $border-color;
-    .button-principal {
-        align-self: flex-end;
-    }
+  display: flex;
+  justify-content: space-between;
+  // padding-bottom: 2.5vw;
+  border-bottom: 1px solid $border-color;
+  .button-principal {
+    align-self: flex-end;
+  }
 }
 
 .table {
-    .table-line {
-        display: grid;
-        background-color: white;
-        height: 3em;
-        cursor: pointer;
-        .fa-trash-alt{
-            z-index: 99;
-        }
-        .table-line-title {
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            height: 100%;
-            background-color: $background;
-            font-family: "Dosis-Medium";
-            color: $text-color;
-            cursor: default;
-            &.action {
-                justify-content: center;
-            }
-        }
-        .title:first-child {
-            padding-left: 10%;
-        }
-        .item {
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            text-align: justify;
-            height: 100%;
-            color: $text-color;
-            font-family: "Roboto-Regular";
-            .actions {
-                display: flex;
-                justify-content: space-around;
-                width: 100%;
-                .fas,
-                .far {
-                    padding: 3px;
-                }
-                .icon {
-                    cursor: pointer;
-                }
-                .edit {
-                    color: $purple-light;
-                }
-                .edit:hover {
-                    color: white;
-                    background-color: $purple-light;
-                }
-                .check {
-                    color: #39FF14;
-                }
-                .check:hover {
-                    color: white;
-                    background-color: #39FF14;
-                }
-                .trash {
-                    color: $red-light;
-                }
-                .trash:hover {
-                    color: white;
-                    background-color: $red-light;
-                }
-            }
-        }
-        .item::nth-child(4) {
-            padding-bottom: 0.5em;
-            border-bottom: solid 1px $border-color;
-        }
+  .table-line {
+    display: grid;
+    background-color: white;
+    height: 3em;
+    margin-bottom: 3px;
+    cursor: pointer;
+    .fa-trash-alt {
+      z-index: 99;
     }
-    .table-line:first{
-        cursor: default;
+    .table-line-title {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      height: 100%;
+      background-color: $background;
+      font-family: 'Dosis-Medium';
+      color: $text-color;
+      cursor: default;
+      &.action {
+        justify-content: center;
+      }
     }
-    .table-line:nth-child(odd) {
-        background-color: #FAFAFA;
+    .title:first-child {
+      padding-left: 10%;
     }
+    .item {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      text-align: justify;
+      height: 100%;
+      color: $text-color;
+      font-family: 'Roboto-Regular';
+      .actions {
+        display: flex;
+        justify-content: space-around;
+        width: 100%;
+        .fas,
+        .far {
+          padding: 3px;
+        }
+        .icon {
+          cursor: pointer;
+        }
+        .edit {
+          color: $purple-light;
+        }
+        .edit:hover {
+          color: white;
+          background-color: $purple-light;
+        }
+        .check {
+          color: #39ff14;
+        }
+        .check:hover {
+          color: white;
+          background-color: #39ff14;
+        }
+        .trash {
+          color: $red-light;
+        }
+        .trash:hover {
+          color: white;
+          background-color: $red-light;
+        }
+      }
+    }
+    .item::nth-child(4) {
+      padding-bottom: 0.5em;
+      border-bottom: solid 1px $border-color;
+    }
+  }
+  .table-line:first {
+    cursor: default;
+  }
+  .table-line:nth-child(odd) {
+    background-color: #fafafa;
+  }
 }
 
 .ngx-pagination {
-    position: relative;
-    top: 100%;
-    width: 100%;
-    margin-top: 1rem;
-    margin-bottom: 0 !important;
-    li {
-        height: 1rem;
-        padding-top: 0.5rem !important;
-        padding-bottom: 0.5rem !important;
-    }
-    .pagination-previous,
-    .pagination-next {
-        span {
-            font-family: "Roboto-Regular";
-            font-weight: normal;
-        }
-        li {
-            color: #DCA014;
-        }
-        a {
-            color: #DCA014;
-            font-family: "Roboto-Regular";
-            font-weight: normal;
-        }
-    }
-    .pagination-previous.disabled,
-    .pagination-next.disabled {
-        span {
-            font-family: "Roboto-Regular";
-            font-weight: normal;
-            color: #CCCCCC;
-        }
-        a {
-            color: #CCCCCC;
-        }
-    }
+  position: relative;
+  top: 100%;
+  width: 100%;
+  margin-top: 1rem;
+  margin-bottom: 0 !important;
+  li {
+    height: 1rem;
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
+  }
+  .pagination-previous,
+  .pagination-next {
     span {
-        font-family: "Roboto-Medium";
-        color: #DCA014;
+      font-family: 'Roboto-Regular';
+      font-weight: normal;
     }
-    li.current {
-        background: #DCA014;
-        border-radius: 8px;
-        span {
-            color: white;
-        }
+    li {
+      color: #dca014;
     }
+    a {
+      color: #dca014;
+      font-family: 'Roboto-Regular';
+      font-weight: normal;
+    }
+  }
+  .pagination-previous.disabled,
+  .pagination-next.disabled {
+    span {
+      font-family: 'Roboto-Regular';
+      font-weight: normal;
+      color: #cccccc;
+    }
+    a {
+      color: #cccccc;
+    }
+  }
+  span {
+    font-family: 'Roboto-Medium';
+    color: #dca014;
+  }
+  li.current {
+    background: #dca014;
+    border-radius: 8px;
+    span {
+      color: white;
+    }
+  }
 }
