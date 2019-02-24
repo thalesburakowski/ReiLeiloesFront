@@ -3,38 +3,47 @@ $border-color: #cccccc;
   display: flex;
   justify-content: space-between;
   // padding-bottom: 2.5vw;
-  border-bottom: 1px solid $border-color;
+  // border-bottom: 1px solid $border-color;
   .button-principal {
     align-self: flex-end;
   }
 }
 
 .table {
+  // margin-top: 1rem;
+  box-shadow: 2px 5px 15px #ccc;
+
   .table-line {
     display: grid;
-    background-color: white;
     height: 3em;
-    margin-bottom: 3px;
+    border-bottom: 1px solid rgba(#ccc, 0.5);
     cursor: pointer;
+
     .fa-trash-alt {
       z-index: 99;
     }
+
     .table-line-title {
       display: flex;
       justify-content: flex-start;
       align-items: center;
       height: 100%;
-      background-color: $background;
+
       font-family: 'Dosis-Medium';
       color: $text-color;
       cursor: default;
+      text-transform: uppercase;
+      font-weight: 600;
+
       &.action {
         justify-content: center;
       }
+
+      &:first-child {
+        padding-left: 1rem;
+      }
     }
-    .title:first-child {
-      padding-left: 10%;
-    }
+
     .item {
       display: flex;
       justify-content: flex-start;

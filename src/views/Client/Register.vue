@@ -5,27 +5,30 @@
       <div class="line-inputs">
         <div>
           <label class="label-input">
-            <input type="text" required />
+            <input type="text" required>
             <div class="label-text">Usuario</div>
           </label>
         </div>
       </div>
       <div class="line-inputs">
         <label class="label-input">
-          <input type="password" maxlength="80" required />
+          <input type="password" maxlength="80" required>
           <div class="label-text">Senha</div>
         </label>
       </div>
       <div class="line-inputs">
         <label class="label-input">
-          <input type="password" maxlength="80" required />
+          <input type="password" maxlength="80" required>
           <div class="label-text">Confirme sua senha</div>
         </label>
       </div>
       <div class="save">
-        <button class="button button-principal" @click="register">
-          Cadastrar
-        </button>
+        <button class="button button-cancel" @click="login">Login</button>
+        <button
+          class="button button-principal"
+          style="margin-left: 10px;"
+          @click="register"
+        >Cadastrar</button>
       </div>
     </div>
   </div>
@@ -41,6 +44,9 @@ export default {
     register() {
       this.$router.push('/')
     },
+    login() {
+      this.$router.push('/login')
+    },
   },
 }
 </script>
@@ -53,6 +59,7 @@ export default {
   .fields {
     margin-left: 29vw;
     width: 35%;
+    box-shadow: 2px 5px 15px #ccc;
     .line-inputs {
       grid-template-columns: 100%;
       grid-gap: 2em;

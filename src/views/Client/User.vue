@@ -26,7 +26,7 @@
           <div class="label-text">RG</div>
         </label>
         <label class="label-input">
-          <input type="text" v-model="model.birthDate" v-mask="'##/##/####'" required>
+          <input type="text" v-model="model.birthDate" required>
           <div class="label-text">Data Nascimento</div>
         </label>
       </div>
@@ -59,11 +59,15 @@ export default {
       },
     }
   },
+  methods: {
+    register() {},
+  },
 }
 </script>
 <style lang="scss" scoped>
 .page {
   .fields {
+    box-shadow: 2px 5px 15px #ccc;
     .line-inputs {
       grid-template-columns: repeat(3, 28%);
       grid-column-gap: 70px;

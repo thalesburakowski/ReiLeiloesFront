@@ -17,7 +17,8 @@
         </label>
       </div>
       <div class="save">
-        <button class="button button-principal" @click="login">Login</button>
+        <button class="button button-cancel" @click="register">Cadastrar</button>
+        <button class="button button-principal" style="margin-left: 10px;" @click="login">Login</button>
       </div>
     </div>
   </div>
@@ -33,6 +34,9 @@ export default {
     login() {
       this.$router.push('/')
     },
+    register() {
+      this.$router.push('/cadastrar')
+    },
   },
 }
 </script>
@@ -43,6 +47,7 @@ export default {
     margin-left: 30vw;
   }
   .fields {
+    box-shadow: 2px 5px 15px #ccc;
     margin-left: 29vw;
     width: 35%;
     .line-inputs {
@@ -51,7 +56,6 @@ export default {
     }
     .save {
       justify-content: flex-end;
-      // margin-right: 2rem;
     }
   }
 }
