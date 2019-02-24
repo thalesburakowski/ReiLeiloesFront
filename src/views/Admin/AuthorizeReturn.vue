@@ -9,7 +9,7 @@
         <div class="table-line-title action">Motivo</div>
       </div>
       <div v-for="request in devolutionRequests" :key="request.id">
-        <div class="table-line" @click="request(request.id)">
+        <div class="table-line" @click="showReason(request.id)">
           <div class="item">{{ request.client }}</div>
           <div class="item">{{ request.seller }}</div>
           <div class="item">{{ request.category }}</div>
@@ -38,10 +38,25 @@
             </label>
           </div>
           <div class="form__actions">
-            <button
-              class="button button-cancel"
-              @click="showModal = false, modalAddress = {}"
-            >CANCELAR</button>
+            <button class="button button-cancel" @click="showModal = false">CANCELAR</button>
+            <button class="button button-principal" @click="createAddress">CONFIRMAR</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div :class="{ show: showReasonModal }" class="modal">
+      <!-- Modal content -->
+      <div class="modal-content modal-content--small w3-animate-zoom">
+        <div class="fields">
+          <h2 v-if="reason.title" class="title-form">{{reason.title}}</h2>
+          <div class="line-inputs">
+            <label class="label-input">
+              <textarea :value="reason.text" required></textarea>
+            </label>
+          </div>
+          <div class="form__actions">
+            <button class="button button-cancel" @click="showReasonModal = false">CANCELAR</button>
             <button class="button button-principal" @click="createAddress">CONFIRMAR</button>
           </div>
         </div>
@@ -51,12 +66,20 @@
 </template>
 
 <script>
+import SweetAlert from '../../components/SweetAlert'
+
 export default {
   name: 'AuthorizeReturn',
   data() {
     return {
       showModal: false,
+      showReasonModal: false,
       accept: undefined,
+      reason: {
+        title: 'Me enviaram um tijolo!',
+        text:
+          'Olha só, eu achei totalmente desnecessário o que o leiloeiro fez, ele me enviou um tijolo!',
+      },
       titles: ['Cliente', 'Leiloeiro', 'Mercadoria', 'Valor Vendido', 'Razão'],
       devolutionRequests: [
         {
@@ -95,9 +118,11 @@ export default {
     }
   },
   methods: {
-    request(id) {
+    showReason(id) {
       // this.$router.push(`/mercadoria/:${id}`);
       console.log('redirect', id)
+      await SweetAlert.showSuccessModal()
+      this.showReasonModal = true
     },
     async createAddress() {
       this.showModal = false
