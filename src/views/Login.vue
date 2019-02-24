@@ -17,7 +17,7 @@
         </label>
       </div>
       <div class="save">
-        <button class="button button-cancel" @click="register">Cadastrar</button>
+        <router-link to="/cadastrar" class="link">Não tem uma conta? Faça o cadastro</router-link>
         <button class="button button-principal" style="margin-left: 10px;" @click="login">Login</button>
       </div>
     </div>
@@ -34,14 +34,13 @@ export default {
     login() {
       this.$router.push('/')
     },
-    register() {
-      this.$router.push('/cadastrar')
-    },
   },
 }
 </script>
 
 <style lang="scss" scoped>
+@import '@/assets/styles/variables.scss';
+
 .page {
   .page-title {
     margin-left: 30vw;
@@ -55,7 +54,7 @@ export default {
       grid-gap: 2em;
     }
     .save {
-      justify-content: flex-end;
+      justify-content: space-between;
     }
   }
 }

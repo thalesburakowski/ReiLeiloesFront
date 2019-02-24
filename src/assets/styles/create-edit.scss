@@ -85,5 +85,9 @@
   .save {
     display: flex;
     justify-content: space-around;
+    .link {
+      color: $text-color;
+      text-decoration: none;
+    }
   }
 }

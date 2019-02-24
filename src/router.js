@@ -8,6 +8,7 @@ import BankAccount from './views/Client/BankAccount.vue'
 import CreditCard from './views/Client/CreditCard.vue'
 import Login from './views/Login.vue'
 import Register from './views/Client/Register.vue'
+import AdminRegister from './views/Admin/Register.vue'
 import History from './views/Client/History.vue'
 import Wallet from './views/Client/Wallet.vue'
 import AuthorizeAuctions from './views/Admin/AuthorizeAuctions.vue'
@@ -33,6 +34,11 @@ export default new Router({
       path: '/cadastrar',
       name: 'register',
       component: Register,
+    },
+    {
+      path: '/cadastrar-admin',
+      name: 'registerAdmin',
+      component: AdminRegister,
     },
     {
       path: '/dados',

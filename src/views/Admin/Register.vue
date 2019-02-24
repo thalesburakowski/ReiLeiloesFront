@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <h1 class="page-title">Cadastro</h1>
+    <h1 class="page-title">Cadastro de Administradores</h1>
     <div class="fields">
       <div class="line-inputs">
         <div>
@@ -23,7 +23,6 @@
         </label>
       </div>
       <div class="save">
-        <router-link to="/login" class="link">Já tem uma conta? Faça o login</router-link>
         <button
           class="button button-principal"
           style="margin-left: 10px;"
@@ -36,7 +35,7 @@
 
 <script>
 export default {
-  name: 'Register',
+  name: 'AdminRegister',
   data() {
     return {}
   },
@@ -63,7 +62,7 @@ export default {
       grid-gap: 2em;
     }
     .save {
-      justify-content: space-between;
+      justify-content: flex-end;
     }
   }
 }
