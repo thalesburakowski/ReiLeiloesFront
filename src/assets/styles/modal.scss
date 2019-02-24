@@ -59,4 +59,7 @@
   border: 1px solid #888;
   width: 80%;
   border-radius: 0.5rem;
+  &--small {
+    width: 50%;
+  }
 }

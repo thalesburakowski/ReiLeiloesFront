@@ -10,6 +10,7 @@ import Login from './views/Login.vue'
 import Register from './views/Client/Register.vue'
 import History from './views/Client/History.vue'
 import AuthorizeAuctions from './views/Admin/AuthorizeAuctions.vue'
+import AuthorizeReturn from './views/Admin/AuthorizeReturn.vue'
 
 Vue.use(Router)
 
@@ -66,6 +67,11 @@ export default new Router({
       path: '/autorizacao-leiloes',
       name: 'AuthorizeAuctions',
       component: AuthorizeAuctions,
+    },
+    {
+      path: '/autorizacao-troca',
+      name: 'AuthorizeAuctions',
+      component: AuthorizeReturn,
     },
   ],
 })

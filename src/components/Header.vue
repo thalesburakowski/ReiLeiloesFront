@@ -23,6 +23,7 @@
         <router-link to="/conta-bancaria" class="user-menu__link">Minha Conta Bancária</router-link>
         <router-link to="/historico" class="user-menu__link">Meu histórico</router-link>
         <router-link to="/autorizacao-leiloes" class="user-menu__link">Autorização de Leilões</router-link>
+        <router-link to="/autorizacao-troca" class="user-menu__link">Autorização de Trocas</router-link>
         <a href="#" class="user-menu__link" @click="logout()">Sair</a>
       </span>
     </div>

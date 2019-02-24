@@ -61,9 +61,17 @@ body {
   }
 }
 
+textarea {
+  border: 1px solid #cccccc !important;
+  border-radius: 8px;
+  height: 6rem !important;
+  padding: 0.5rem;
+}
+
 input[type='text'],
 input[type='email'],
-input[type='password'] {
+input[type='password'],
+textarea {
   width: 100%;
   height: 2em;
   // padding: 0 0.5rem;
@@ -85,7 +93,8 @@ input[type='password'] {
   }
   input[type='text'],
   input[type='email'],
-  input[type='password'] {
+  input[type='password'],
+  textarea {
     &:focus {
       &:not(:read-only) + .label-text {
         transform: translateY(-1rem);
