@@ -68,7 +68,7 @@
     <div :class="{ show: showModal }" class="modal">
       <!-- Modal content -->
       <div class="modal-content w3-animate-zoom">
-        <div class="fields">
+        <div class="fields fields--no-shadow">
           <h2 v-if="newCreditCard" class="title-form">Novo Cartão</h2>
           <h2 v-else class="title-form">{{modalcreditCard.name}}</h2>
           <div class="line-inputs">

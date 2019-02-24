@@ -58,7 +58,7 @@
     <div :class="{ show: showModal }" class="modal">
       <!-- Modal content -->
       <div class="modal-content w3-animate-zoom">
-        <div class="fields">
+        <div class="fields fields--no-shadow">
           <h2 v-if="newAddress" class="title-form">Novo Endereço</h2>
           <h2 v-else class="title-form">{{modalAddress.name}}</h2>
           <div class="line-inputs">

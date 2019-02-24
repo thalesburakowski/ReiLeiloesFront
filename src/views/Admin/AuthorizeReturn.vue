@@ -9,12 +9,12 @@
         <div class="table-line-title action">Motivo</div>
       </div>
       <div v-for="request in devolutionRequests" :key="request.id">
-        <div class="table-line" @click="showReason(request.id)">
-          <div class="item">{{ request.client }}</div>
-          <div class="item">{{ request.seller }}</div>
-          <div class="item">{{ request.category }}</div>
-          <div class="item">R$ {{ request.value | number }}</div>
-          <div class="item">{{ request.reason }}</div>
+        <div class="table-line">
+          <div class="item" @click="showReason(request.id)">{{ request.client }}</div>
+          <div class="item" @click="showReason(request.id)">{{ request.seller }}</div>
+          <div class="item" @click="showReason(request.id)">{{ request.category }}</div>
+          <div class="item" @click="showReason(request.id)">R$ {{ request.value | number }}</div>
+          <div class="item" @click="showReason(request.id)">{{ request.reason }}</div>
           <div class="item">
             <div class="actions">
               <!-- <i class="icon edit fas fa-marker"></i> -->
@@ -29,7 +29,7 @@
     <div :class="{ show: showModal }" class="modal">
       <!-- Modal content -->
       <div class="modal-content modal-content--small w3-animate-zoom">
-        <div class="fields">
+        <div class="fields fields--no-shadow">
           <h2 v-if="accept" class="title-form">Motivo para o cancelamento do leilão</h2>
           <h2 v-else class="title-form">Motivo para o não cancelamento do leilão</h2>
           <div class="line-inputs">
@@ -39,7 +39,7 @@
           </div>
           <div class="form__actions">
             <button class="button button-cancel" @click="showModal = false">CANCELAR</button>
-            <button class="button button-principal" @click="createAddress">CONFIRMAR</button>
+            <button class="button button-principal" @click="acceptReason">CONFIRMAR</button>
           </div>
         </div>
       </div>
@@ -48,16 +48,15 @@
     <div :class="{ show: showReasonModal }" class="modal">
       <!-- Modal content -->
       <div class="modal-content modal-content--small w3-animate-zoom">
-        <div class="fields">
+        <div class="fields fields--no-shadow">
           <h2 v-if="reason.title" class="title-form">{{reason.title}}</h2>
           <div class="line-inputs">
             <label class="label-input">
-              <textarea :value="reason.text" required></textarea>
+              <textarea :value="reason.text" disabled></textarea>
             </label>
           </div>
           <div class="form__actions">
-            <button class="button button-cancel" @click="showReasonModal = false">CANCELAR</button>
-            <button class="button button-principal" @click="createAddress">CONFIRMAR</button>
+            <button class="button button-principal" @click="showReasonModal = false">ENTENDI</button>
           </div>
         </div>
       </div>
@@ -120,13 +119,17 @@ export default {
   methods: {
     async showReason(id) {
       // this.$router.push(`/mercadoria/:${id}`);
-      console.log('redirect', id)
-      await SweetAlert.showSuccessModal()
       this.showReasonModal = true
+      console.log('redirect', id)
+
+      // await SweetAlert.showSuccessModal()
     },
-    async createAddress() {
+    async acceptReason() {
+      const result = await SweetAlert.showConfirmationModal()
+      if (result.value) {
+        SweetAlert.showSuccessModal()
+      }
       this.showModal = false
-      await SweetAlert.showSuccessModal()
     },
   },
 }
