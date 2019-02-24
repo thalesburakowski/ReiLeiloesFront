@@ -40,6 +40,8 @@
         <router-link to="/carteira" class="user-menu__link">Carteira</router-link>
         <router-link to="/autorizacao-leiloes" class="user-menu__link">Autorização de Leilões</router-link>
         <router-link to="/autorizacao-troca" class="user-menu__link">Autorização de Trocas</router-link>
+        <router-link to="/analise" class="user-menu__link">Gráficos</router-link>
+        <router-link to="/cadastrar-admin" class="user-menu__link">Cadastrar Admin</router-link>
         <a href="#" class="user-menu__link" @click="logout()">Sair</a>
       </span>
     </div>
