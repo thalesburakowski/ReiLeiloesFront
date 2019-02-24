@@ -121,6 +121,7 @@ export default {
   methods: {
     clickAuction(auction) {
       // this.$router.push(`/mercadoria/:${auction.id}`);
+      this.$router.push('/leilao')
       console.log('redirect')
     },
   },
