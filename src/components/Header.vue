@@ -188,17 +188,19 @@ export default {
 
   &__holder-links {
     background-color: white;
-    width: 21rem;
+    width: 23rem;
     display: flex;
     align-self: flex-end;
     align-items: center;
     flex-direction: column;
+    padding: 0 1rem;
   }
 
   &__link {
     text-decoration: none;
     color: #222;
     font-size: 1rem;
+    width: 100%;
     text-align: left;
     border-bottom: 1px solid #ccc;
     padding: 1rem;
