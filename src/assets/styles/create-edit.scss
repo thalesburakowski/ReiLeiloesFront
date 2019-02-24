@@ -13,6 +13,8 @@
   background-color: white;
   padding: 2rem;
   border-radius: 5px;
+  box-shadow: 2px 5px 15px #ccc;
+
   input[type='text'],
   input[type='email'],
   input[type='password'] {
@@ -85,5 +87,9 @@
   .save {
     display: flex;
     justify-content: space-around;
+    .link {
+      color: $text-color;
+      text-decoration: none;
+    }
   }
 }

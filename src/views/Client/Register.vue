@@ -23,7 +23,7 @@
         </label>
       </div>
       <div class="save">
-        <button class="button button-cancel" @click="login">Login</button>
+        <router-link to="/login" class="link">Já tem uma conta? Faça o login</router-link>
         <button
           class="button button-principal"
           style="margin-left: 10px;"
@@ -44,14 +44,12 @@ export default {
     register() {
       this.$router.push('/')
     },
-    login() {
-      this.$router.push('/login')
-    },
   },
 }
 </script>
 
 <style lang="scss" scoped>
+@import '@/assets/styles/variables.scss';
 .page {
   .page-title {
     margin-left: 30vw;
@@ -59,14 +57,12 @@ export default {
   .fields {
     margin-left: 29vw;
     width: 35%;
-    box-shadow: 2px 5px 15px #ccc;
     .line-inputs {
       grid-template-columns: 100%;
       grid-gap: 2em;
     }
     .save {
-      justify-content: flex-end;
-      // margin-right: 2rem;
+      justify-content: space-between;
     }
   }
 }

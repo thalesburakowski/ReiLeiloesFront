@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <h1 class="page-title">Login</h1>
+    <h1 class="page-title">Cadastro de Administradores</h1>
     <div class="fields">
       <div class="line-inputs">
         <div>
@@ -16,9 +16,18 @@
           <div class="label-text">Senha</div>
         </label>
       </div>
+      <div class="line-inputs">
+        <label class="label-input">
+          <input type="password" maxlength="80" required>
+          <div class="label-text">Confirme sua senha</div>
+        </label>
+      </div>
       <div class="save">
-        <router-link to="/cadastrar" class="link">Não tem uma conta? Faça o cadastro</router-link>
-        <button class="button button-principal" style="margin-left: 10px;" @click="login">Login</button>
+        <button
+          class="button button-principal"
+          style="margin-left: 10px;"
+          @click="register"
+        >Cadastrar</button>
       </div>
     </div>
   </div>
@@ -26,12 +35,12 @@
 
 <script>
 export default {
-  name: 'Login',
+  name: 'AdminRegister',
   data() {
     return {}
   },
   methods: {
-    login() {
+    register() {
       this.$router.push('/')
     },
   },
@@ -40,7 +49,6 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/assets/styles/variables.scss';
-
 .page {
   .page-title {
     margin-left: 30vw;
@@ -53,7 +61,7 @@ export default {
       grid-gap: 2em;
     }
     .save {
-      justify-content: space-between;
+      justify-content: flex-end;
     }
   }
 }
