@@ -9,6 +9,7 @@
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
+    "chart.js": "^2.7.3",
     "sweetalert2": "^8.2.3",
     "vue": "^2.6.6",
     "vue-multiselect": "^2.1.3",

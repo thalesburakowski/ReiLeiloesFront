@@ -72,7 +72,6 @@ export default {
 <style lang="scss" scoped>
 .page {
   .fields {
-    box-shadow: 2px 5px 15px #ccc;
     .line-inputs {
       grid-template-columns: repeat(3, 28%);
       grid-column-gap: 70px;

@@ -46,7 +46,6 @@ export default {
     margin-left: 30vw;
   }
   .fields {
-    box-shadow: 2px 5px 15px #ccc;
     margin-left: 29vw;
     width: 35%;
     .line-inputs {

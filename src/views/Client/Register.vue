@@ -57,7 +57,6 @@ export default {
   .fields {
     margin-left: 29vw;
     width: 35%;
-    box-shadow: 2px 5px 15px #ccc;
     .line-inputs {
       grid-template-columns: 100%;
       grid-gap: 2em;

@@ -220,7 +220,6 @@ export default {
 
 .form {
   margin-bottom: 2rem;
-  box-shadow: 2px 5px 15px #ccc;
 }
 
 .title-form {
