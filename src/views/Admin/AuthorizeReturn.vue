@@ -118,7 +118,7 @@ export default {
     }
   },
   methods: {
-    showReason(id) {
+    async showReason(id) {
       // this.$router.push(`/mercadoria/:${id}`);
       console.log('redirect', id)
       await SweetAlert.showSuccessModal()
