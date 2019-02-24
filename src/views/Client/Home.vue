@@ -9,8 +9,8 @@
           :multiple="true"
           :close-on-select="false"
           placeholder="Pesquise por categorias"
-          selectLabel="Pressione Enter para selecionar"
-          deselectLabel="Pressione Enter para remover"
+          selectLabel
+          deselectLabel
         ></Multiselect>
       </div>
     </div>
@@ -22,7 +22,7 @@
         @click="clickAuction(auction)"
       >
         <span class="auction__img-holder">
-          <img :src="auction.url" alt class="auction__img" />
+          <img :src="auction.url" alt class="auction__img">
         </span>
         <div class="auction__name">{{ auction.name }}</div>
         <div class="auction__date">{{ auction.closingTime }}</div>
@@ -209,6 +209,30 @@ export default {
     font-size: 1.5rem;
     color: $green;
   }
+}
+</style>
+
+
+<style lang="scss">
+.multiselect__option--highlight {
+  outline: none;
+  color: #fff;
+  background: linear-gradient(90deg, #f0462d 0%, #ffb914 100%) !important;
+}
+.multiselect__tag {
+  background: linear-gradient(90deg, #f0462d 0%, #ffb914 100%) !important;
+}
+
+.multiselect__tag-icon:after {
+  color: white !important;
+  font-size: 1rem !important;
+  margin-top: -2px !important;
+}
+
+.multiselect__tag-icon:focus,
+.multiselect__tag-icon:hover {
+  background: #f0462d !important;
+  color: white !important;
 }
 </style>
 
