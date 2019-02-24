@@ -37,13 +37,15 @@
         </label>
       </div>
       <div class="save">
-        <button class="button button-principal" @click="register">Cadastrar</button>
+        <button class="button button-principal" @click="register">Atualizar</button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import SweetAlert from '../../components/SweetAlert'
+
 export default {
   name: 'User',
   data() {
@@ -59,8 +61,11 @@ export default {
       },
     }
   },
+  components: { SweetAlert },
   methods: {
-    register() {},
+    async register() {
+      await SweetAlert.showSuccessModal()
+    },
   },
 }
 </script>

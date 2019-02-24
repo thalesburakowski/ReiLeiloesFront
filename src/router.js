@@ -9,6 +9,7 @@ import CreditCard from './views/Client/CreditCard.vue'
 import Login from './views/Login.vue'
 import Register from './views/Client/Register.vue'
 import History from './views/Client/History.vue'
+import Wallet from './views/Client/Wallet.vue'
 import AuthorizeAuctions from './views/Admin/AuthorizeAuctions.vue'
 import AuthorizeReturn from './views/Admin/AuthorizeReturn.vue'
 
@@ -72,6 +73,11 @@ export default new Router({
       path: '/autorizacao-troca',
       name: 'AuthorizeAuctions',
       component: AuthorizeReturn,
+    }, 
+    {
+      path: '/carteira',
+      name: 'Wallet',
+      component: Wallet,
     },
   ],
 })

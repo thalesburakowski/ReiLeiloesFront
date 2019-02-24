@@ -10,9 +10,24 @@
           <i class="fas fa-search"></i>
         </button>
       </div>
-      <div class="topbar__icon" @click="userMenu = !userMenu">
+      <div class="topbar__icon" @click="notifyMenu = !notifyMenu, userMenu = false">
+        <i class="far fa-bell"></i>
+        <span class="topbar__icon__notify"></span>
+      </div>
+      <div class="topbar__icon" @click="userMenu = !userMenu, notifyMenu = false">
         <i class="fas fa-user-circle"></i>
       </div>
+    </div>
+
+    <div class="notify-menu" v-if="notifyMenu">
+      <span class="notify-menu__holder-links">
+        <router-link
+          to="/"
+          class="notify-menu__link"
+          v-for="notify in notifies"
+          :key="notify.id"
+        >{{notify.auctionName}} - {{notify.message}}</router-link>
+      </span>
     </div>
 
     <div class="user-menu" v-if="userMenu">
@@ -22,6 +37,7 @@
         <router-link to="/endereco" class="user-menu__link">Meus Endereços</router-link>
         <router-link to="/conta-bancaria" class="user-menu__link">Minha Conta Bancária</router-link>
         <router-link to="/historico" class="user-menu__link">Meu histórico</router-link>
+        <router-link to="/carteira" class="user-menu__link">Carteira</router-link>
         <router-link to="/autorizacao-leiloes" class="user-menu__link">Autorização de Leilões</router-link>
         <router-link to="/autorizacao-troca" class="user-menu__link">Autorização de Trocas</router-link>
         <a href="#" class="user-menu__link" @click="logout()">Sair</a>
@@ -36,6 +52,19 @@ export default {
   data() {
     return {
       userMenu: false,
+      notifyMenu: false,
+      notifies: [
+        {
+          id: 1,
+          auctionName: 'Smartphone Galaxy J8',
+          message: 'Seu lance foi encoberto!',
+        },
+        {
+          id: 1,
+          auctionName: 'Smartwatch Samsung Gear',
+          message: 'Esse leilão está perto de encerrar!',
+        },
+      ],
     }
   },
   methods: {
@@ -46,6 +75,7 @@ export default {
   watch: {
     $route(to, from) {
       this.userMenu = false
+      this.notifyMenu = false
     },
   },
 }
@@ -58,25 +88,11 @@ export default {
   position: fixed;
   z-index: 999;
   top: 0;
-  grid-template-columns: 30% 40% 30%;
+  grid-template-columns: 30% 40% 10% 10%;
   height: $topbar-height;
   width: 100%;
   background: #222;
-  // background: linear-gradient(
-  //   250deg,
-  //   rgba(65, 30, 90, 1) 0%,
-  //   rgba(40, 10, 60, 1) 100%
-  // );
-  // &-title {
-  //   margin-left: 2vw;
-  //   padding-left: 1em;
-  //   font-size: 1.5rem;
-  //   font-family: 'Roboto-Regular';
-  //   align-self: center;
-  //   text-transform: uppercase;
-  //   color: white;
-  //   text-decoration: none;
-  // }
+
   &-logo-holder {
     height: 5rem;
     display: flex;
@@ -114,17 +130,26 @@ export default {
   &__icon {
     display: flex;
     justify-content: flex-end;
-    margin-right: 9rem;
     align-self: center;
     color: white;
-    font-size: 2rem;
+    font-size: 1.8rem;
+    cursor: pointer;
+
+    &__notify {
+      height: 12px;
+      width: 12px;
+      background-color: #ffb914;
+      border-radius: 50%;
+      position: relative;
+      right: 25px;
+    }
   }
 }
 
 .user-menu {
   background-color: transparent;
   top: $topbar-height;
-  right: 4rem;
+  right: 4%;
   position: fixed;
   z-index: 999;
   box-shadow: 2px 5px 10px #888;
@@ -142,7 +167,49 @@ export default {
     text-decoration: none;
     color: #222;
     font-size: 1rem;
-    margin: 5px;
+    padding: 12px 0;
+    width: 100%;
+    text-align: center;
+    border-bottom: 1px solid #ccc;
+
+    &:hover {
+      font-size: 1.1rem;
+      color: #454545;
+    }
+  }
+}
+
+.notify-menu {
+  background-color: transparent;
+  top: $topbar-height;
+  right: 0;
+  position: fixed;
+  z-index: 999;
+  box-shadow: 2px 5px 10px #888;
+
+  &__holder-links {
+    background-color: white;
+    width: 23rem;
+    display: flex;
+    align-self: flex-end;
+    align-items: center;
+    flex-direction: column;
+    padding: 0 1rem;
+  }
+
+  &__link {
+    text-decoration: none;
+    color: #222;
+    font-size: 1rem;
+    width: 100%;
+    text-align: left;
+    border-bottom: 1px solid #ccc;
+    padding: 1rem;
+
+    &:hover {
+      font-size: 1.05rem;
+      color: #454545;
+    }
   }
 }
 </style>
