@@ -110,7 +110,7 @@ export default {
   },
   methods: {
     clickAuction(id) {
-      // this.$router.push(`/mercadoria/:${id}`);
+      this.$router.push(`/leilao`)
       console.log('redirect', id)
     },
     async authorizeAuction(accept) {

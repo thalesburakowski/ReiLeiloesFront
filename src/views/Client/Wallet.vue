@@ -87,7 +87,12 @@ export default {
     }
   },
   methods: {
-    register() {},
+    async register() {
+      const result = await SweetAlert.showConfirmationModal()
+      if (result.value) {
+        SweetAlert.showSuccessModal()
+      }
+    },
   },
 }
 </script>

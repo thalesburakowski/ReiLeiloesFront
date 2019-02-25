@@ -36,8 +36,31 @@
           <div class="label-text">Nome de Usuário</div>
         </label>
       </div>
-      <div class="save">
-        <button class="button button-principal" @click="register">Atualizar</button>
+      <div class="form__actions">
+        <button class="button button-cancel" @click="showModal = true">Alterar Senha</button>
+        <button class="button button-principal" @click="register">Confirmar</button>
+      </div>
+    </div>
+    <div :class="{ show: showModal }" class="modal">
+      <!-- Modal content -->
+      <div class="modal-content modal-content--small w3-animate-zoom">
+        <div class="fields fields--no-shadow">
+          <h2 class="title-form">Alterar senha</h2>
+          <div class="line-inputs line-inputs--form">
+            <label class="label-input">
+              <input type="password" required>
+              <div class="label-text">Nova senha</div>
+            </label>
+            <label class="label-input">
+              <input type="password" required>
+              <div class="label-text">Confirmar nova senha</div>
+            </label>
+          </div>
+          <div class="form__actions">
+            <button class="button button-cancel" @click="showModal = false">CANCELAR</button>
+            <button class="button button-principal" @click="changePassword">ATUALIZAR</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -50,6 +73,7 @@ export default {
   name: 'User',
   data() {
     return {
+      showModal: false,
       model: {
         name: '',
         lastName: '',
@@ -64,18 +88,47 @@ export default {
   components: { SweetAlert },
   methods: {
     async register() {
-      await SweetAlert.showSuccessModal()
+      const result = await SweetAlert.showConfirmationModal()
+      if (result.value) {
+        SweetAlert.showSuccessModal()
+      }
+    },
+
+    async changePassword() {
+      const result = await SweetAlert.showConfirmationModal()
+      if (result.value) {
+        SweetAlert.showSuccessModal()
+      }
     },
   },
 }
 </script>
 <style lang="scss" scoped>
+@import '@/assets/styles/variables.scss';
+@import '@/assets/styles/modal.scss';
 .page {
   .fields {
+    .form__actions {
+      display: flex;
+      justify-content: flex-end;
+    }
+    .button {
+      margin-right: 1rem;
+    }
+
+    .title-form {
+      font-size: 1.8rem;
+      color: $text-color;
+      margin-bottom: 1.5rem;
+      text-align: left;
+    }
     .line-inputs {
       grid-template-columns: repeat(3, 28%);
       grid-column-gap: 70px;
       grid-row-gap: 2rem;
+      &--form {
+        grid-template-columns: repeat(2, 45%);
+      }
     }
     .save {
       justify-content: flex-end;
