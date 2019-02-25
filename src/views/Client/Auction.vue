@@ -119,6 +119,8 @@ export default {
 }
 </script>
 
+
+
 <style lang="scss" scoped>
 @import '@/assets/styles/variables.scss';
 @import '@/assets/styles/modal.scss';
@@ -270,3 +272,22 @@ export default {
 }
 </style>
 
+
+
+<style lang="scss">
+.VueCarousel-dot--active {
+  background: linear-gradient(
+    90deg,
+    rgba(240, 70, 45, 1) 0%,
+    rgba(255, 185, 20, 1) 100%
+  ) !important;
+
+  outline: 0px !important;
+  border: none !important;
+  padding: 0px !important;
+}
+
+.VueCarousel-dot {
+  outline: 0px !important;
+}
+</style>

@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <h1 class="page-title">Conta Bancária</h1>
+    <h1 class="page-title">Minha Conta Bancária</h1>
 
     <div v-if="!bankAccount" class="warnig-message">
       <h3 class="warnig-message__title">Você ainda não possui uma conta bancária cadastrada</h3>

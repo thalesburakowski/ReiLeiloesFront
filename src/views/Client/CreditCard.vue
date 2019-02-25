@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <h1 class="page-title">Cartões</h1>
+    <h1 class="page-title">Meus Cartões</h1>
 
     <div v-if="!creditCards" class="warnig-message warnig-message--card">
       <h3 class="warnig-message__title">Você ainda não possui um cartão cadastrado</h3>

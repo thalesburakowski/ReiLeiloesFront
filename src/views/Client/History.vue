@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <div class="title-new">
-      <h1 class="page-title">Seus Leilões</h1>
+      <h1 class="page-title">Meu Histórico</h1>
     </div>
     <div class="table">
       <span class="table-complete-first-line">
