@@ -8,61 +8,8 @@
 <script>
 import Chart from 'chart.js'
 
-const options = {
-  responsive: true,
-  title: {
-    display: true,
-  },
-  tooltips: {
-    mode: 'index',
-    intersect: false,
-  },
-  hover: {
-    mode: 'nearest',
-    intersect: true,
-  },
-  scales: {
-    xAxes: [
-      {
-        display: true,
-        scaleLabel: {
-          display: true,
-          labelString: 'Meses',
-        },
-      },
-    ],
-    yAxes: [
-      {
-        display: true,
-        scaleLabel: {
-          display: true,
-          labelString: 'Valor',
-        },
-      },
-    ],
-  },
-}
-
-const backgroundColors = [
-  'rgba(255, 99, 132, 0.2)',
-  'rgba(54, 162, 235, 0.2)',
-  'rgba(255, 206, 86, 0.2)',
-  'rgba(75, 192, 192, 0.2)',
-  'rgba(153, 102, 255, 0.2)',
-  'rgba(255, 159, 64, 0.2)',
-]
-
-const borderColors = [
-  'rgba(255,99,132,1)',
-  'rgba(54, 162, 235, 1)',
-  'rgba(255, 206, 86, 1)',
-  'rgba(75, 192, 192, 1)',
-  'rgba(153, 102, 255, 1)',
-  'rgba(255, 159, 64, 1)',
-]
-
 export default {
-  props: ['index', 'labels', 'datasets'],
+  props: ['index', 'labels', 'datasets', 'type'],
   data() {
     return {
       backgroundColors: [
@@ -82,12 +29,47 @@ export default {
         'rgba(153, 102, 255, 1)',
         'rgba(255, 159, 64, 1)',
       ],
+
+      options: {
+        responsive: true,
+        title: {
+          display: true,
+        },
+        tooltips: {
+          mode: 'index',
+          intersect: false,
+        },
+        hover: {
+          mode: 'nearest',
+          intersect: true,
+        },
+        scales: {
+          xAxes: [
+            {
+              display: true,
+              scaleLabel: {
+                display: true,
+                labelString: 'Meses',
+              },
+            },
+          ],
+          yAxes: [
+            {
+              display: true,
+              scaleLabel: {
+                display: true,
+                labelString: 'Valor',
+              },
+            },
+          ],
+        },
+      },
     }
   },
   methods: {
     renderChart: function() {
       new Chart(`chart-${this.index}`, {
-        type: 'line',
+        type: this.type,
         data: {
           labels: this.labels,
           datasets: this.datasets.map((data, index) => {
@@ -103,6 +85,7 @@ export default {
             }
           }),
         },
+        options: this.options,
       })
     },
   },

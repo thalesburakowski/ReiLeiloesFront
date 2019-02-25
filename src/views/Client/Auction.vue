@@ -104,7 +104,6 @@ export default {
       bids: [
         { id: 1, username: '@mariazinha', price: 'R$ 150,00' },
         { id: 2, username: '@manoBrownnie', price: 'R$ 180,00' },
-        { id: 4, username: '@mariazinha', price: 'R$ 200,00' },
         { id: 5, username: '@paulinha', price: 'R$ 220,00' },
         // { id: 1, username: '@mariazinha', price: 'R$ 150,00' },
         // { id: 2, username: '@manoBrownnie', price: 'R$ 180,00' },
@@ -118,6 +117,8 @@ export default {
   },
 }
 </script>
+
+
 
 <style lang="scss" scoped>
 @import '@/assets/styles/variables.scss';
@@ -200,10 +201,10 @@ export default {
     // overflow-y: scroll;
     // width: 80%;
     border-bottom: 1px solid #ccc;
-    max-width: 30rem;
+    max-width: 25rem;
     padding-top: 1.5rem;
     margin: auto;
-    height: 30rem;
+    height: 25rem;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -211,8 +212,8 @@ export default {
 
     &__message {
       text-align: left;
-      width: 15rem;
-      margin: 1rem 2rem;
+      width: 10rem;
+      margin: 0.7rem 2rem;
       // background-color: white;
       background: linear-gradient(
         90deg,
@@ -226,7 +227,7 @@ export default {
         // color: #ffb914;
         color: white;
         // align-self: flex-end;
-        margin-bottom: 1rem;
+        margin-bottom: 0.5rem;
       }
 
       &__price {
@@ -249,7 +250,7 @@ export default {
   }
   &__actions {
     display: flex;
-    max-width: 30rem;
+    max-width: 25rem;
     justify-content: space-between;
     margin: auto;
     &__button {
@@ -270,3 +271,22 @@ export default {
 }
 </style>
 
+
+
+<style lang="scss">
+.VueCarousel-dot--active {
+  background: linear-gradient(
+    90deg,
+    rgba(240, 70, 45, 1) 0%,
+    rgba(255, 185, 20, 1) 100%
+  ) !important;
+
+  outline: 0px !important;
+  border: none !important;
+  padding: 0px !important;
+}
+
+.VueCarousel-dot {
+  outline: 0px !important;
+}
+</style>

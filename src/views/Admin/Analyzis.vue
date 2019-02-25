@@ -4,7 +4,7 @@
     <div class="fields">
       <div class="analize" v-for="(item, index) in datas" :key="index">
         <h2 class="title-form">{{item.title}}</h2>
-        <Chart :index="index" :labels="item.labels" :datasets="item.datasets"></Chart>
+        <Chart :index="index" :labels="item.labels" :datasets="item.datasets" :type="item.type"></Chart>
       </div>
     </div>
   </div>
@@ -29,7 +29,8 @@ export default {
     getAnalyzis() {
       return [
         {
-          title: 'Venda de Produtos',
+          type: 'line',
+          title: 'Leilões realizados',
           labels: [
             'Jan',
             'Fev',
@@ -46,21 +47,22 @@ export default {
           ],
           datasets: [
             {
-              label: 'Vendas Produto 1',
-              data: [12, 19, 3, 5, 2, 3, 5, 2, 3, 5, 5, 42],
+              label: 'Quantidade de leilões realizadas',
+              data: [12, 19, 25, 18, 32, 30, 27, 25, 30, 45, 25, 42],
             },
-            {
-              label: 'Vendas Produto 2',
-              data: [42, 19, 23, 5, 21, 23, 55, 2, 3, 15, 5, 2],
-            },
-            {
-              label: 'Vendas Produto 3',
-              data: [12, 19, 43, 35, 12, 3, 5, 42, 43, 5, 5, 12],
-            },
+            // {
+            //   label: 'Vendas Produto 2',
+            //   data: [42, 19, 23, 5, 21, 23, 55, 2, 3, 15, 5, 2],
+            // },
+            // {
+            //   label: 'Vendas Produto 3',
+            //   data: [12, 19, 43, 35, 12, 3, 5, 42, 43, 5, 5, 12],
+            // },
           ],
         },
         {
-          title: 'Venda de Produtos 2',
+          type: 'line',
+          title: 'Leilões por Categorias',
           labels: [
             'Jan',
             'Fev',
@@ -77,20 +79,21 @@ export default {
           ],
           datasets: [
             {
-              label: 'Vendas Produto 1',
+              label: 'Livros',
               data: [12, 19, 3, 5, 2, 3, 5, 2, 3, 5, 5, 2],
             },
             {
-              label: 'Vendas Produto 2',
+              label: 'Tecnologia',
               data: [42, 19, 23, 5, 21, 23, 55, 2, 3, 15, 5, 2],
             },
             {
-              label: 'Vendas Produto 3',
-              data: [12, 19, 43, 35, 12, 3, 5, 42, 43, 5, 5, 2],
+              label: 'Taylor Swift Fans',
+              data: [30, 45, 46, 50, 58, 60, 63, 70, 72, 75, 80, 90],
             },
           ],
         },
         {
+          type: 'bar',
           title: 'Venda de Produtos 3',
           labels: [
             'Jan',
@@ -122,6 +125,7 @@ export default {
           ],
         },
         {
+          type: 'line',
           title: 'Venda de Produtos 4',
           labels: [
             'Jan',

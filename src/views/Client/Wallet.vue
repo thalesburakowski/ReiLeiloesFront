@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <h1 class="page-title">Sua Carteira</h1>
+    <h1 class="page-title">Minha Carteira</h1>
 
     <span class="page__info">Você possui R$ 150,00 de Créditos</span>
     <span class="main-grid">

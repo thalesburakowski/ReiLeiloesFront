@@ -32,16 +32,16 @@
 
     <div class="user-menu" v-if="userMenu">
       <span class="user-menu__holder-links">
-        <router-link to="/dados" class="user-menu__link">Meus Dados</router-link>
-        <router-link to="/cartao" class="user-menu__link">Meus Cartões</router-link>
-        <router-link to="/endereco" class="user-menu__link">Meus Endereços</router-link>
-        <router-link to="/conta-bancaria" class="user-menu__link">Minha Conta Bancária</router-link>
-        <router-link to="/historico" class="user-menu__link">Meu histórico</router-link>
+        <router-link to="/dados" class="user-menu__link">Informações Pessoais</router-link>
+        <router-link to="/conta-bancaria" class="user-menu__link">Conta Bancária</router-link>
+        <router-link to="/historico" class="user-menu__link">Histórico</router-link>
+        <router-link to="/endereco" class="user-menu__link">Endereços</router-link>
+        <router-link to="/cartao" class="user-menu__link">Cartões</router-link>
         <router-link to="/carteira" class="user-menu__link">Carteira</router-link>
-        <router-link to="/autorizacao-leiloes" class="user-menu__link">Autorização de Leilões</router-link>
-        <router-link to="/autorizacao-troca" class="user-menu__link">Autorização de Trocas</router-link>
-        <router-link to="/analise" class="user-menu__link">Gráficos</router-link>
-        <router-link to="/cadastrar-admin" class="user-menu__link">Cadastrar Admin</router-link>
+        <router-link to="/autorizacao-leiloes" class="user-menu__link">ADMIN - Leilões</router-link>
+        <router-link to="/autorizacao-troca" class="user-menu__link">ADMIN - Trocas</router-link>
+        <router-link to="/analise" class="user-menu__link">ADMIN - Gráficos</router-link>
+        <router-link to="/cadastrar-admin" class="user-menu__link">ADMIN - Cadastrar</router-link>
         <a href="#" class="user-menu__link" @click="logout()">Sair</a>
       </span>
     </div>

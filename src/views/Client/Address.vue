@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <h1 class="page-title">Endereços</h1>
+    <h1 class="page-title">Meus Endereços</h1>
     <div class="button-holder">
       <button
         class="btn-add-adrress button button-principal"
