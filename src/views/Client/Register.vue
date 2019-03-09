@@ -49,9 +49,9 @@ export default {
   methods: {
     async register() {
       let response = await UserAPI.create({
-        email: this.email,
-        password: this.password,
-        confirmPassword: this.confirmPassword,
+        Email: this.email,
+        Password: this.password,
+        ConfirmationPassword: this.confirmPassword,
       })
     },
   },
