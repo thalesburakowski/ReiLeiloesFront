@@ -5,20 +5,20 @@
       <div class="line-inputs">
         <div>
           <label class="label-input">
-            <input type="text" required>
-            <div class="label-text">Usuario</div>
+            <input type="text" required v-model="email">
+            <div class="label-text">E-mail</div>
           </label>
         </div>
       </div>
       <div class="line-inputs">
         <label class="label-input">
-          <input type="password" maxlength="80" required>
+          <input type="password" maxlength="80" required v-model="password">
           <div class="label-text">Senha</div>
         </label>
       </div>
       <div class="line-inputs">
         <label class="label-input">
-          <input type="password" maxlength="80" required>
+          <input type="password" maxlength="80" required v-model="confirmPassword">
           <div class="label-text">Confirme sua senha</div>
         </label>
       </div>
@@ -35,14 +35,24 @@
 </template>
 
 <script>
+import UserAPI from '@/api/user'
+import { log } from 'util'
 export default {
   name: 'Register',
   data() {
-    return {}
+    return {
+      email: '',
+      password: '',
+      confirmPassword: '',
+    }
   },
   methods: {
-    register() {
-      this.$router.push('/')
+    async register() {
+      let response = await UserAPI.create({
+        email: this.email,
+        password: this.password,
+        confirmPassword: this.confirmPassword,
+      })
     },
   },
 }
