@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import UserAPI from '@/api/user'
+import UserAPI from '@/api/User'
 import SweetAlert from '../../components/SweetAlert'
 
 export default {

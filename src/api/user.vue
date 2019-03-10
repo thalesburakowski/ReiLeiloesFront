@@ -1,6 +1,5 @@
 <script>
-const axios = require('axios')
-
+import axios from 'axios'
 const serverUrl = 'https://localhost:44348/api/user'
 
 export default {

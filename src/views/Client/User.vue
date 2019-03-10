@@ -73,7 +73,8 @@
 
 <script>
 import SweetAlert from '../../components/SweetAlert'
-import UserAPI from '@/api/user'
+import UserAPI from '@/api/User'
+import ProfileAPI from '@/api/Profile'
 
 export default {
   name: 'User',
@@ -99,8 +100,17 @@ export default {
   components: { SweetAlert },
   methods: {
     async register() {
-      const result = await SweetAlert.showConfirmationModal()
+      const result = await SweetAlert.showConfirmationModal(
+        'Realmente deseja cadastrar esses dados? Depois eles não poderão ser alterados!'
+      )
       if (result.value) {
+        const userId = JSON.parse(localStorage.getItem('user')).id
+        const response = await ProfileAPI.create({ ...this.model, userId })
+        if (response.entities) {
+          SweetAlert.showSuccessModal()
+        } else {
+          SweetAlert.showFailModal(response.msg)
+        }
         SweetAlert.showSuccessModal()
       }
     },
@@ -111,7 +121,6 @@ export default {
       console.log(result)
       if (result.value) {
         const userId = JSON.parse(localStorage.getItem('user')).id
-        console.log(userId)
         const response = await UserAPI.delete(userId)
         if (response.entities) {
           SweetAlert.showSuccessModal()
