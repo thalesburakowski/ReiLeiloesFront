@@ -5,14 +5,14 @@
       <div class="line-inputs">
         <div>
           <label class="label-input">
-            <input type="text" required>
-            <div class="label-text">Usuario</div>
+            <input type="text" required v-model="email">
+            <div class="label-text">E-mail</div>
           </label>
         </div>
       </div>
       <div class="line-inputs">
         <label class="label-input">
-          <input type="password" maxlength="80" required>
+          <input type="password" maxlength="80" required v-model="password">
           <div class="label-text">Senha</div>
         </label>
       </div>
@@ -25,14 +25,27 @@
 </template>
 
 <script>
+import UserAPI from '@/api/user'
+import SweetAlert from '../components/SweetAlert'
+
 export default {
   name: 'Login',
   data() {
-    return {}
+    return {
+      email: '',
+      password: '',
+    }
   },
   methods: {
-    login() {
-      this.$router.push('/')
+    async login() {
+      const response = await UserAPI.login({
+        Email: this.email,
+        Password: this.password,
+      })
+      if (response.entities) {
+        localStorage.setItem('user', JSON.stringify(response.entities[0]))
+        this.$router.push('/')
+      } else SweetAlert.showFailModal(response.msg)
     },
   },
 }

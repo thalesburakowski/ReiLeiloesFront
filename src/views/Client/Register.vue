@@ -36,7 +36,8 @@
 
 <script>
 import UserAPI from '@/api/user'
-import { log } from 'util'
+import SweetAlert from '../../components/SweetAlert'
+
 export default {
   name: 'Register',
   data() {
@@ -48,11 +49,16 @@ export default {
   },
   methods: {
     async register() {
-      let response = await UserAPI.create({
+      console.log('chamou')
+      const response = await UserAPI.create({
         Email: this.email,
         Password: this.password,
         ConfirmationPassword: this.confirmPassword,
       })
+
+      response.entities
+        ? this.$router.push('/')
+        : SweetAlert.showFailModal(response.msg)
     },
   },
 }

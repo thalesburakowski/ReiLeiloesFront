@@ -5,10 +5,16 @@ const serverUrl = 'https://localhost:44348/api/user'
 
 export default {
   create: async function(userData) {
-    console.log(userData)
-    let response = await axios.post(`${serverUrl}/create`, userData)
-    console.log(response)
-    return response
+    const response = await axios.post(`${serverUrl}/create`, userData)
+    return response.data
+  },
+  login: async function(userData) {
+    const response = await axios.post(`${serverUrl}/login`, userData)
+    return response.data
+  },
+  changePassword: async function(userData) {
+    const response = await axios.put(`${serverUrl}`, userData)
+    return response.data
   },
 }
 </script>

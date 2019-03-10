@@ -48,11 +48,15 @@
           <h2 class="title-form">Alterar senha</h2>
           <div class="line-inputs line-inputs--form">
             <label class="label-input">
-              <input type="password" required>
+              <input type="password" required v-model="modelPassword.Password">
+              <div class="label-text">Senha atual</div>
+            </label>
+            <label class="label-input">
+              <input type="password" required v-model="modelPassword.NewPassword">
               <div class="label-text">Nova senha</div>
             </label>
             <label class="label-input">
-              <input type="password" required>
+              <input type="password" required v-model="modelPassword.ConfirmationPassword">
               <div class="label-text">Confirmar nova senha</div>
             </label>
           </div>
@@ -68,6 +72,7 @@
 
 <script>
 import SweetAlert from '../../components/SweetAlert'
+import UserAPI from '@/api/user'
 
 export default {
   name: 'User',
@@ -83,6 +88,11 @@ export default {
         bithDate: '',
         username: '',
       },
+      modelPassword: {
+        Password: '',
+        NewPassword: '',
+        ConfirmationPassword: '',
+      },
     }
   },
   components: { SweetAlert },
@@ -97,7 +107,17 @@ export default {
     async changePassword() {
       const result = await SweetAlert.showConfirmationModal()
       if (result.value) {
-        SweetAlert.showSuccessModal()
+        console.log('entrou aqui')
+        const user = JSON.parse(localStorage.getItem('user'))
+        const { email: Email, id: Id } = user
+        const userData = { ...this.modelPassword, Email, Id }
+        const response = await UserAPI.changePassword(userData)
+        console.log(response)
+        if (response.entities) {
+          SweetAlert.showSuccessModal()
+        } else {
+          SweetAlert.showFailModal(response.msg)
+        }
       }
     },
   },
@@ -124,10 +144,10 @@ export default {
     }
     .line-inputs {
       grid-template-columns: repeat(3, 28%);
-      grid-column-gap: 70px;
+      grid-column-gap: 40px;
       grid-row-gap: 2rem;
       &--form {
-        grid-template-columns: repeat(2, 45%);
+        grid-template-columns: repeat(3, 30%);
       }
     }
     .save {
