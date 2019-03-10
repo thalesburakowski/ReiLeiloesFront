@@ -16,5 +16,9 @@ export default {
     const response = await axios.put(`${serverUrl}`, userData)
     return response.data
   },
+  delete: async function(id) {
+    const response = await axios.delete(`${serverUrl}/${id}`)
+    return response.data
+  },
 }
 </script>

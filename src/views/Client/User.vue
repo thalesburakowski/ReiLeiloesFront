@@ -4,39 +4,40 @@
     <div class="fields">
       <div class="line-inputs">
         <label class="label-input">
-          <input type="text" v-model="model.name" maxlength="80" required>
+          <input type="text" v-model="model.Name" maxlength="80" required>
           <div class="label-text">Nome</div>
         </label>
         <label class="label-input">
-          <input type="text" v-model="model.lastName" required>
+          <input type="text" v-model="model.LastName" required>
           <div class="label-text">Sobrenome</div>
         </label>
         <label class="label-input">
-          <input type="text" v-model="model.email" maxlength="80" required>
+          <input type="text" v-model="model.Email" maxlength="80" required>
           <div class="label-text">Email</div>
         </label>
       </div>
       <div class="line-inputs">
         <label class="label-input">
-          <input type="text" v-model="model.cpf" maxlength="80" required>
+          <input type="text" v-model="model.Cpf" maxlength="80" required>
           <div class="label-text">CPF</div>
         </label>
         <label class="label-input">
-          <input type="text" v-model="model.rg" maxlength="80" required>
+          <input type="text" v-model="model.Rg" maxlength="80" required>
           <div class="label-text">RG</div>
         </label>
         <label class="label-input">
-          <input type="text" v-model="model.birthDate" required>
+          <input type="text" v-model="model.BirthDate" required>
           <div class="label-text">Data Nascimento</div>
         </label>
       </div>
       <div class="line-inputs">
         <label class="label-input">
-          <input type="text" v-model="model.username" required>
+          <input type="text" v-model="model.NickName" required>
           <div class="label-text">Nome de Usuário</div>
         </label>
       </div>
       <div class="form__actions">
+        <button class="button button-cancel" @click="inativateAccount">INATIVAR CONTA</button>
         <button class="button button-cancel" @click="showModal = true">Alterar Senha</button>
         <button class="button button-principal" @click="register">Confirmar</button>
       </div>
@@ -80,13 +81,13 @@ export default {
     return {
       showModal: false,
       model: {
-        name: '',
-        lastName: '',
-        email: '',
-        cpf: '',
-        rg: '',
-        bithDate: '',
-        username: '',
+        Name: '',
+        LastName: '',
+        Email: '',
+        Cpf: '',
+        Rg: '',
+        BithDate: '',
+        NickName: '',
       },
       modelPassword: {
         Password: '',
@@ -103,16 +104,30 @@ export default {
         SweetAlert.showSuccessModal()
       }
     },
+    async inativateAccount() {
+      const result = await SweetAlert.showConfirmationModal(
+        'VOCÊ DESEJA REALMENTE INATIVAR SUA CONTA?'
+      )
+      console.log(result)
+      if (result.value) {
+        const userId = JSON.parse(localStorage.getItem('user')).id
+        console.log(userId)
+        const response = await UserAPI.delete(userId)
+        if (response.entities) {
+          SweetAlert.showSuccessModal()
+        } else {
+          SweetAlert.showFailModal(response.msg)
+        }
+      }
+    },
 
     async changePassword() {
       const result = await SweetAlert.showConfirmationModal()
       if (result.value) {
-        console.log('entrou aqui')
         const user = JSON.parse(localStorage.getItem('user'))
         const { email: Email, id: Id } = user
         const userData = { ...this.modelPassword, Email, Id }
         const response = await UserAPI.changePassword(userData)
-        console.log(response)
         if (response.entities) {
           SweetAlert.showSuccessModal()
         } else {
