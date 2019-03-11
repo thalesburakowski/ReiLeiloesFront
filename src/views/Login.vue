@@ -26,8 +26,8 @@
 
 <script>
 import UserAPI from '@/api/User'
+import ProfileAPI from '@/api/Profile'
 import SweetAlert from '../components/SweetAlert'
-
 export default {
   name: 'Login',
   data() {
@@ -44,6 +44,13 @@ export default {
       })
       if (response.entities) {
         localStorage.setItem('user', JSON.stringify(response.entities[0]))
+        const profileResponse = await ProfileAPI.getProfile(
+          response.entities[0].id
+        )
+        localStorage.setItem(
+          'profileId',
+          JSON.stringify(profileResponse.entities[0].id)
+        )
         this.$router.push('/')
       } else SweetAlert.showFailModal(response.msg)
     },

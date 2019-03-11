@@ -4,7 +4,7 @@
     <div class="button-holder">
       <button
         class="btn-add-adrress button button-principal"
-        @click="showModal = true, newAddress = true"
+        @click="showModal = true, newAddress = true, cleanModel()"
       >
         <span>
           <i class="fas fa-plus"></i>
@@ -26,7 +26,7 @@
           <div class="label-text valid-field">Cidade</div>
         </label>
         <label class="label-input">
-          <input type="text" disabled :value="address.zipcode">
+          <input type="text" disabled :value="address.zipCode">
           <div class="label-text valid-field">Cep</div>
         </label>
         <label class="label-input">
@@ -38,7 +38,7 @@
           <div class="label-text valid-field">Número</div>
         </label>
         <label class="label-input">
-          <input type="text" disabled required :value="address.neighborhood">
+          <input type="text" disabled required :value="address.neighboorhood">
           <div class="label-text valid-field">Bairro</div>
         </label>
         <label class="label-input">
@@ -47,10 +47,10 @@
         </label>
       </div>
       <div class="form__actions">
-        <button class="button button-cancel" @click="deleteAddress(address)">EXCLUIR</button>
+        <button class="button button-cancel" @click="deleteAddress(address.id)">EXCLUIR</button>
         <button
           class="button button-principal"
-          @click="showModal = true, modalAddress = address, newAddress = false"
+          @click="showModal = true, assingToModalAddress(address), newAddress = false"
         >EDITAR</button>
       </div>
     </div>
@@ -60,55 +60,61 @@
       <div class="modal-content w3-animate-zoom">
         <div class="fields fields--no-shadow">
           <h2 v-if="newAddress" class="title-form">Novo Endereço</h2>
-          <h2 v-else class="title-form">{{modalAddress.name}}</h2>
+          <!-- <h2 v-else class="title-form">{{modalAddress.name}}</h2> -->
           <div class="line-inputs">
             <label class="label-input">
-              <input type="text" required :value="modalAddress.state">
-              <div class="label-text">Estado</div>
+              <input type="text" required v-model="modalAddress.state" :disabled="!newAddress">
+              <div class="label-text" :class="[!newAddress ? 'valid-field' : '']">Estado</div>
             </label>
             <label class="label-input">
-              <input type="text" required :value="modalAddress.city">
-              <div class="label-text">Cidade</div>
+              <input type="text" required v-model="modalAddress.city" :disabled="!newAddress">
+              <div class="label-text" :class="[!newAddress ? 'valid-field' : '']">Cidade</div>
             </label>
             
             <label class="label-input">
-              <input type="text" required :value="modalAddress.zipcode">
-              <div class="label-text">Cep</div>
+              <input type="text" required v-model="modalAddress.zipCode" :disabled="!newAddress">
+              <div class="label-text" :class="[!newAddress ? 'valid-field' : '']">Cep</div>
             </label>
             <label class="label-input">
-              <input type="text" required :value="modalAddress.street">
-              <div class="label-text">Rua</div>
+              <input type="text" required v-model="modalAddress.street" :disabled="!newAddress">
+              <div class="label-text" :class="[!newAddress ? 'valid-field' : '']">Rua</div>
             </label>
             
             <label class="label-input">
-              <input type="text" required :value="modalAddress.number">
-              <div class="label-text">Número</div>
+              <input type="text" required v-model="modalAddress.number" :disabled="!newAddress">
+              <div class="label-text" :class="[!newAddress ? 'valid-field' : '']">Número</div>
             </label>
             <label class="label-input">
-              <input type="text" required :value="modalAddress.neighborhood">
-              <div class="label-text">Bairro</div>
+              <input
+                type="text"
+                required
+                v-model="modalAddress.neighboorhood"
+                :disabled="!newAddress"
+              >
+              <div class="label-text" :class="[!newAddress ? 'valid-field' : '']">Bairro</div>
             </label>
             
             <label class="label-input">
-              <input type="text">
-              <div class="label-text">Complemento</div>
+              <input type="text" v-model="modalAddress.complement" :disabled="!newAddress">
+              <div class="label-text" :class="[!newAddress ? 'valid-field' : '']">Complemento</div>
             </label>
-            <label v-if="newAddress" class="label-input">
-              <input type="text" required>
+            <label class="label-input">
+              <input type="text" v-model="modalAddress.name" required>
               <div class="label-text">Nome</div>
             </label>
           </div>
           <div class="form__actions">
-            <button
-              class="button button-cancel"
-              @click="showModal = false, modalAddress = {}"
-            >CANCELAR</button>
+            <button class="button button-cancel" @click="showModal = false, cleanModel">CANCELAR</button>
             <button
               v-if="newAddress"
               class="button button-principal"
               @click="createAddress"
             >ADICIONAR</button>
-            <button v-else class="button button-principal" @click="updateAddress">ATUALIZAR</button>
+            <button
+              v-else
+              class="button button-principal"
+              @click="updateAddress(modalAddress)"
+            >ATUALIZAR</button>
           </div>
         </div>
       </div>
@@ -118,6 +124,7 @@
 
 <script>
 import SweetAlert from '../../components/SweetAlert'
+import AddressAPI from '@/api/Address'
 
 export default {
   name: 'Address',
@@ -126,52 +133,75 @@ export default {
       showNewAddressFields: false,
       newAddress: false,
       showModal: false,
-      addresses: [
-        {
-          id: 1,
-          zipcode: '08000-201',
-          street: 'Avenida PUalista',
-          number: '1250',
-          neighborhood: 'Consolação',
-          state: 'São Paulo',
-          city: 'São Paulo',
-          name: 'Home',
-          complement: '',
-        },
-        {
-          id: 2,
-          zipcode: '04147-201',
-          street: 'Ruas das amoras',
-          number: '1250',
-          neighborhood: 'Bairro das flores',
-          state: 'São Paulo',
-          city: 'São Paulo',
-          name: 'Casa da Mamãe',
-          complement: '120B',
-        },
-      ],
-      modalAddress: {},
+      addresses: [],
+      modalAddress: {
+        zipCode: '',
+        street: '',
+        number: '',
+        neighboorhood: '',
+        state: '',
+        city: '',
+        name: '',
+        complement: '',
+      },
     }
   },
   components: {
     SweetAlert,
   },
+  mounted: function() {
+    this.getAddress()
+  },
   methods: {
+    cleanModel() {
+      this.modalAddress = {
+        zipCode: '',
+        street: '',
+        number: '',
+        neighboorhood: '',
+        state: '',
+        city: '',
+        name: '',
+        complement: '',
+      }
+    },
+    assingToModalAddress(address) {
+      this.modalAddress = Object.assign(this.modalAddress, address)
+    },
+    async getAddress() {
+      const response = await AddressAPI.getAddress()
+      if (response.msg) await SweetAlert.showFailModal(response.msg)
+      this.addresses = response.entities
+    },
     async addAddress() {
       this.showModal = false
       await SweetAlert.showSuccessModal()
     },
-    async deleteAddress() {
-      let result = await SweetAlert.showConfirmationModal()
+    async deleteAddress(id) {
+      const result = await SweetAlert.showConfirmationModal()
       if (result.value) {
-        SweetAlert.showSuccessModal()
+        this.getAddress()
+        const response = await AddressAPI.delete(id)
+        if (response.msg) await SweetAlert.showFailModal(response.msg)
+        else await SweetAlert.showSuccessModal()
       }
     },
     async createAddress() {
       this.showModal = false
-      await SweetAlert.showSuccessModal()
+      const response = await AddressAPI.create(this.modalAddress)
+      if (response.msg) await SweetAlert.showFailModal(response.msg)
+      else await SweetAlert.showSuccessModal()
+      this.getAddress()
+      this.cleanModel()
     },
-    async updateAddress() {
+    async updateAddress(modalAddress) {
+      const response = await AddressAPI.updateAddress({
+        id: modalAddress.id,
+        name: modalAddress.name,
+      })
+      if (response.msg) await SweetAlert.showFailModal(response.msg)
+      else await SweetAlert.showSuccessModal()
+      this.getAddress()
       this.showModal = false
       await SweetAlert.showSuccessModal()
     },
@@ -216,6 +246,14 @@ export default {
 
 .valid-field {
   transform: translateY(-1rem) !important;
+}
+
+.valid-field-modal {
+  transform: translateY(1rem) !important;
+}
+
+.valid-field-modal-2 {
+  transform: translateY(1rem) !important;
 }
 
 .form {

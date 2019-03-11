@@ -6,5 +6,9 @@ export default {
     const response = await axios.post(`${serverUrl}`, userData)
     return response.data
   },
+  getProfile: async function(profileId) {
+    const response = await axios.get(`${serverUrl}/${profileId}`)
+    return response.data
+  },
 }
 </script>

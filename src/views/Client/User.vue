@@ -4,42 +4,41 @@
     <div class="fields">
       <div class="line-inputs">
         <label class="label-input">
-          <input type="text" v-model="model.Name" maxlength="80" required>
+          <input type="text" v-model="model.name" maxlength="80" required>
           <div class="label-text">Nome</div>
         </label>
         <label class="label-input">
-          <input type="text" v-model="model.LastName" required>
+          <input type="text" v-model="model.lastName" required>
           <div class="label-text">Sobrenome</div>
         </label>
-        <label class="label-input">
-          <input type="text" v-model="model.Email" maxlength="80" required>
+        <!-- <label class="label-input">
+          <input type="text" v-model="model.email" maxlength="80" required>
           <div class="label-text">Email</div>
+        </label>-->
+        <label class="label-input">
+          <input type="text" v-model="model.cpf" maxlength="80" v-mask="'###.###.###-##'" required>
+          <div class="label-text">CPF</div>
         </label>
       </div>
       <div class="line-inputs">
         <label class="label-input">
-          <input type="text" v-model="model.Cpf" maxlength="80" required>
-          <div class="label-text">CPF</div>
-        </label>
-        <label class="label-input">
-          <input type="text" v-model="model.Rg" maxlength="80" required>
+          <input type="text" v-model="model.rg" maxlength="80" required>
           <div class="label-text">RG</div>
         </label>
         <label class="label-input">
-          <input type="text" v-model="model.BirthDate" required>
+          <input type="text" v-model="model.birthDate" v-mask="'##/##/####'" required>
           <div class="label-text">Data Nascimento</div>
         </label>
-      </div>
-      <div class="line-inputs">
         <label class="label-input">
-          <input type="text" v-model="model.NickName" required>
+          <input type="text" v-model="model.nickName" required>
           <div class="label-text">Nome de Usuário</div>
         </label>
       </div>
+
       <div class="form__actions">
-        <button class="button button-cancel" @click="inativateAccount">INATIVAR CONTA</button>
+        <button class="button button-cancel" @click="inativateAccount">Inativar Conta</button>
         <button class="button button-cancel" @click="showModal = true">Alterar Senha</button>
-        <button class="button button-principal" @click="register">Confirmar</button>
+        <button class="button button-principal" v-if="!model.id" @click="register">Confirmar</button>
       </div>
     </div>
     <div :class="{ show: showModal }" class="modal">
@@ -49,15 +48,15 @@
           <h2 class="title-form">Alterar senha</h2>
           <div class="line-inputs line-inputs--form">
             <label class="label-input">
-              <input type="password" required v-model="modelPassword.Password">
+              <input type="password" required v-model="modelPassword.password">
               <div class="label-text">Senha atual</div>
             </label>
             <label class="label-input">
-              <input type="password" required v-model="modelPassword.NewPassword">
+              <input type="password" required v-model="modelPassword.newPassword">
               <div class="label-text">Nova senha</div>
             </label>
             <label class="label-input">
-              <input type="password" required v-model="modelPassword.ConfirmationPassword">
+              <input type="password" required v-model="modelPassword.confirmationPassword">
               <div class="label-text">Confirmar nova senha</div>
             </label>
           </div>
@@ -75,6 +74,7 @@
 import SweetAlert from '../../components/SweetAlert'
 import UserAPI from '@/api/User'
 import ProfileAPI from '@/api/Profile'
+import moment from 'moment'
 
 export default {
   name: 'User',
@@ -82,31 +82,58 @@ export default {
     return {
       showModal: false,
       model: {
-        Name: '',
-        LastName: '',
-        Email: '',
-        Cpf: '',
-        Rg: '',
-        BithDate: '',
-        NickName: '',
+        name: '',
+        lastName: '',
+        email: '',
+        cpf: '',
+        rg: '',
+        birthDate: '',
+        nickName: '',
       },
       modelPassword: {
-        Password: '',
-        NewPassword: '',
-        ConfirmationPassword: '',
+        password: '',
+        newPassword: '',
+        confirmationPassword: '',
       },
     }
   },
   components: { SweetAlert },
+  mounted: function() {
+    this.getProfile()
+  },
   methods: {
+    async getProfile() {
+      const userId = JSON.parse(localStorage.getItem('user')).id
+      const response = await ProfileAPI.getProfile(userId)
+      if (response.entities) {
+        response.entities[0].birthDate = new Date(
+          response.entities[0].birthDate
+        )
+          .toLocaleString('en-GB', { timeZone: 'UTC' })
+          .split(',')[0]
+        this.model = response.entities[0]
+      } else {
+        SweetAlert.showFailModal(response.msg)
+      }
+    },
     async register() {
       const result = await SweetAlert.showConfirmationModal(
         'Realmente deseja cadastrar esses dados? Depois eles não poderão ser alterados!'
       )
       if (result.value) {
+        console.log(JSON.parse(localStorage.getItem('user')))
         const userId = JSON.parse(localStorage.getItem('user')).id
-        const response = await ProfileAPI.create({ ...this.model, userId })
+        let BirthDate = this.model.birthDate.split('/')
+        BirthDate = new Date(
+          `${BirthDate[2]}-${BirthDate[1]}-${BirthDate[0]}`
+        ).toISOString()
+        const response = await ProfileAPI.create({
+          ...this.model,
+          BirthDate,
+          userId,
+        })
         if (response.entities) {
+          this.model = response.entities[0]
           SweetAlert.showSuccessModal()
         } else {
           SweetAlert.showFailModal(response.msg)
@@ -116,7 +143,7 @@ export default {
     },
     async inativateAccount() {
       const result = await SweetAlert.showConfirmationModal(
-        'VOCÊ DESEJA REALMENTE INATIVAR SUA CONTA?'
+        'Você deseja realmente inativar sua conta?'
       )
       console.log(result)
       if (result.value) {

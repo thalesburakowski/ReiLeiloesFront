@@ -72,6 +72,7 @@ export default {
   methods: {
     logout() {
       localStorage.removeItem('user')
+      localStorage.removeItem('profileId')
       this.$router.push('/login')
     },
   },

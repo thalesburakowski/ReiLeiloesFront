@@ -49,16 +49,15 @@ export default {
   },
   methods: {
     async register() {
-      console.log('chamou')
       const response = await UserAPI.create({
         Email: this.email,
         Password: this.password,
         ConfirmationPassword: this.confirmPassword,
       })
-
-      response.entities
-        ? this.$router.push('/')
-        : SweetAlert.showFailModal(response.msg)
+      if (response.entities) {
+        localStorage.setItem('user', JSON.stringify(response.entities[0]))
+        this.$router.push('/')
+      } else SweetAlert.showFailModal(response.msg)
     },
   },
 }
