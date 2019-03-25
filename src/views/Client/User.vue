@@ -36,7 +36,11 @@
       </div>
 
       <div class="form__actions">
-        <button class="button button-cancel" @click="inativateAccount">Inativar Conta</button>
+        <button
+          class="button button-cancel"
+          name="inativar-conta"
+          @click="inativateAccount"
+        >Inativar Conta</button>
         <button class="button button-cancel" @click="showModal = true">Alterar Senha</button>
         <button class="button button-principal" v-if="!model.id" @click="register">Confirmar</button>
       </div>

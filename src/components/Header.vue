@@ -14,7 +14,7 @@
         <i class="far fa-bell"></i>
         <span class="topbar__icon__notify"></span>
       </div>
-      <div class="topbar__icon" @click="userMenu = !userMenu, notifyMenu = false">
+      <div class="topbar__icon" name="menu" @click="userMenu = !userMenu, notifyMenu = false">
         <i class="fas fa-user-circle"></i>
       </div>
     </div>
@@ -32,7 +32,7 @@
 
     <div class="user-menu" v-if="userMenu">
       <span class="user-menu__holder-links">
-        <router-link to="/dados" class="user-menu__link">Informações Pessoais</router-link>
+        <router-link to="/dados" name="profile" class="user-menu__link">Informações Pessoais</router-link>
         <router-link to="/conta-bancaria" class="user-menu__link">Conta Bancária</router-link>
         <router-link to="/historico" class="user-menu__link">Histórico</router-link>
         <router-link to="/endereco" class="user-menu__link">Endereços</router-link>
@@ -42,7 +42,7 @@
         <router-link to="/autorizacao-troca" class="user-menu__link">ADMIN - Trocas</router-link>
         <router-link to="/analise" class="user-menu__link">ADMIN - Gráficos</router-link>
         <router-link to="/cadastrar-admin" class="user-menu__link">ADMIN - Cadastrar</router-link>
-        <a href="#" class="user-menu__link" @click="logout()">Sair</a>
+        <a href="#" class="user-menu__link" name="logout" @click="logout()">Sair</a>
       </span>
     </div>
   </div>

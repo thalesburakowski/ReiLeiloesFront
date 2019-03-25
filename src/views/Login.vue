@@ -5,19 +5,23 @@
       <div class="line-inputs">
         <div>
           <label class="label-input">
-            <input type="text" required v-model="email">
+            <input type="text" name="email" required v-model="email">
             <div class="label-text">E-mail</div>
           </label>
         </div>
       </div>
       <div class="line-inputs">
         <label class="label-input">
-          <input type="password" maxlength="80" required v-model="password">
+          <input type="password" maxlength="80" name="password" required v-model="password">
           <div class="label-text">Senha</div>
         </label>
       </div>
       <div class="save">
-        <router-link to="/cadastrar" class="link">Não tem uma conta? Faça o cadastro</router-link>
+        <router-link
+          to="/cadastrar"
+          name="cadastrar"
+          class="link"
+        >Não tem uma conta? Faça o cadastro</router-link>
         <button class="button button-principal" style="margin-left: 10px;" @click="login">Login</button>
       </div>
     </div>
