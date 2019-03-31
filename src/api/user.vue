@@ -19,5 +19,5 @@ export default {
     const response = await axios.delete(`${serverUrl}/${id}`)
     return response.data
   },
-} 
+}
 </script>
