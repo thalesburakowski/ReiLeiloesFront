@@ -47,7 +47,7 @@
             <div class="label-text valid-field">Número</div>
           </label>
           <label class="label-input">
-            <input type="text" disabled :value="creditCard.expiryDate">
+            <input type="text" disabled :value="creditCard.expireDate">
             <div class="label-text valid-field">Vencimento</div>
           </label>
           <label class="label-input">
@@ -81,7 +81,7 @@
               <div class="label-text">Número</div>
             </label>
             <label class="label-input">
-              <input type="text" required :value="modalcreditCard.expiryDate">
+              <input type="text" required :value="modalcreditCard.expireDate">
               <div class="label-text">Vencimento</div>
             </label>
             
@@ -143,21 +143,21 @@ export default {
           id: 1,
           name: 'Paulinha da Silva',
           number: '***.****.***.789',
-          expiryDate: '10/21',
+          expireDate: '10/21',
           securityCode: '**9',
         },
         {
           id: 2,
           name: 'Rogério da Silva',
           number: '***.****.***.789',
-          expiryDate: '10/21',
+          expireDate: '10/21',
           securityCode: '**9',
         },
         {
           id: 3,
           name: 'Saulo da Silva',
           number: '***.****.***.789',
-          expiryDate: '10/21',
+          expireDate: '10/21',
           securityCode: '**9',
         },
       ]),

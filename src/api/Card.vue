@@ -1,9 +1,9 @@
 <script>
 import axios from 'axios'
-const serverUrl = 'https://localhost:3000/cartao'
+const serverUrl = 'http://localhost:3000/cartao'
 export default {
-  getAll: async function(userId) {
-    const response = await axios.get(`${serverUrl}/${userId}`)
+  getAll: async function(profileId) {
+    const response = await axios.get(`${serverUrl}/${profileId}`)
     return response.data
   },
 }

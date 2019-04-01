@@ -2,14 +2,14 @@
   <div class="page">
     <h1 class="page-title">Minha Carteira</h1>
 
-    <span class="page__info">Você possui R$ 150,00 na Carteira</span>
+    <span class="page__info" :key="wallet.credits">Você possui R$ {{wallet.credits}},00 na Carteira</span>
     <!-- <div class="wallet-info">
       <span class="page__info">Você possui R$ 150,00 Pendente</span>
       <button class="button button-principal" @click="withdraw">Transferir para Minha conta</button>
       <button class="button button-principal" @click="withdraw">Transferir Créditos</button>
     </div>-->
     <span class="main-grid">
-      <span class="page__info">Transferir para uma conta bancária</span>
+      <span class="page__info">Transferir para sua conta bancária</span>
       <span class="page__info">Comprar créditos para sua carteira</span>
     </span>
 
@@ -36,7 +36,7 @@
           </label>
         </div>
 
-        <div class="line-inputs" v-if="bankAccount.id == 0">
+        <div class="line-inputs" v-if="bankAccount.id === 0">
           <label class="label-input">
             <input type="text" required v-model="bankAccount.bank">
             <div class="label-text" :class="[bankAccount.bank ? 'valid-field' : '']">Banco</div>
@@ -56,6 +56,13 @@
           <label class="label-input">
             <input type="text" required v-model="bankAccount.name">
             <div class="label-text" :class="[bankAccount.name ? 'valid-field' : '']">Nome da conta</div>
+          </label>
+          <label class="label-input">
+            <input type="text" v-mask="'###.###.###-##'" required v-model="bankAccount.ownerCpf">
+            <div
+              class="label-text"
+              :class="[bankAccount.ownerCpf ? 'valid-field' : '']"
+            >CPF do titular</div>
           </label>
         </div>
 
@@ -87,31 +94,31 @@
 
         <div class="line-inputs" v-if="creditCard.id == 0">
           <label class="label-input">
-            <input type="text" required :value="creditCard.owner">
+            <input type="text" required v-model="creditCard.owner">
             <div class="label-text">Titular</div>
           </label>
           <label class="label-input">
-            <input type="text" required :value="creditCard.number">
+            <input type="text" required v-model="creditCard.number">
             <div class="label-text">Número</div>
           </label>
           <label class="label-input">
-            <input type="text" required :value="creditCard.expiryDate">
+            <input type="text" v-mask="'##/##'" required v-model="creditCard.expireDate">
             <div class="label-text">Vencimento</div>
           </label>
 
           <label class="label-input">
-            <input type="text" required :value="creditCard.securityCode">
+            <input type="text" required v-model="creditCard.securityCode">
             <div class="label-text">Código</div>
           </label>
 
           <label class="label-input">
-            <input type="text" required :value="creditCard.name">
+            <input type="text" required v-model="creditCard.name">
             <div class="label-text">Nome do cartão</div>
           </label>
         </div>
 
         <div class="save">
-          <button class="button button-principal" @click="deposit">Inserir</button>
+          <button class="button button-principal" @click="deposit">Comprar</button>
         </div>
       </div>
     </span>
@@ -122,7 +129,6 @@
 import Multiselect from 'vue-multiselect'
 import SweetAlert from '../../components/SweetAlert'
 
-// import UserAPI from '@/api/User'
 import WalletAPI from '@/api/Wallet'
 import CreditCardAPI from '@/api/Card'
 import BankAccountAPI from '@/api/BankAccount'
@@ -138,59 +144,103 @@ export default {
         accountNumber: '',
         agencyNumber: '',
         bank: '',
-        name: 'Selecione uma conta',
+        ownerCpf: '',
+        name: 'Selecionar conta',
       },
       creditCard: {
         name: 'Selecione um cartão',
         owner: '',
         number: '',
-        expiryDate: '',
+        expireDate: '',
         securityCode: '',
       },
-      user: {
-        id: null,
-      },
+      user: {},
+      profile: {},
       ammountCreditCard: '',
       ammountBank: '',
       bankAccounts: [],
       creditCards: [],
+      wallet: {},
     }
   },
   mounted() {
+    this.getInfo()
     this.loadCreditCards()
-    this.loadBankAccounts()
-    // this.loadCredits();
-    console.log('mounted')
+    this.loadBankAccount()
+    this.loadCredits()
   },
   methods: {
+    getInfo() {
+      this.user = JSON.parse(localStorage.getItem('user'))
+      this.profile = JSON.parse(localStorage.getItem('profile'))
+    },
     async loadCreditCards() {
-      //profile.id
-      // const result = await CreditCardAPI.getAll(this.user.profileId)
+      this.creditCards = await CreditCardAPI.getAll(this.profile.id)
       this.creditCards.push({ name: 'Novo cartão', id: 0 })
     },
-    async loadBankAccounts() {
-      //profile.id
-      // const result = await BankAccountAPI.getAll(this.user.profileId)
-      this.bankAccounts = await BankAccountAPI.getAll(1)
-      this.bankAccounts.push({ name: 'Nova conta', id: 0 })
+    async loadBankAccount() {
+      this.bankAccounts = await BankAccountAPI.getBank(this.profile.id)
+      if (this.bankAccounts.length === 0)
+        this.bankAccounts.push({ name: 'Cadastrar conta', id: 0 })
     },
     async loadCredits() {
-      const response = await WalletAPI.getCredits(this.user.profileId)
+      const response = await WalletAPI.getCredits(this.profile.id)
+      this.wallet = response
     },
     async deposit() {
-      let data = this.creditCard
-      data.newCreditCard = false
-      if (this.creditCard.id == 0) {
-        data.newCreditCard = true
+      const response = await WalletAPI.deposit(this.formatDataCreditCard())
+      if (response.success) {
+        SweetAlert.showSuccessModal()
+        this.loadCreditCards()
+        this.loadCredits()
+      } else {
+        SweetAlert.showFailModal(response.message)
       }
-      data.value = this.ammountCreditCard
-      data.profileId = JSON.parse(localStorage.getItem('profile')).id
-      console.log(data)
-
-      const response = await WalletAPI.deposit(data)
     },
     async withdraw() {
-      const response = await WalletAPI.withdraw(this.user.profileId)
+      const response = await WalletAPI.withdraw(this.formatDataBankAccount())
+      if (response.success) {
+        SweetAlert.showSuccessModal()
+        this.loadCredits()
+        this.loadBankAccount()
+      } else {
+        SweetAlert.showFailModal(response.message)
+      }
+    },
+    formatDataBankAccount() {
+      let data = this.bankAccount
+      data.profileId = this.profile.id
+      data.value = this.ammountBank
+      if (this.bankAccount.id == 0) {
+        data.newBankAccount = true
+      } else {
+        data.newBankAccount = false
+      }
+      delete data.id
+      return data
+    },
+    formatDataCreditCard() {
+      let data = {}
+      data.name = this.creditCard.name
+      data.owner = this.creditCard.owner
+      data.number = this.creditCard.number
+      data.securityCode = this.creditCard.securityCode
+      if (this.creditCard.id == 0) {
+        data.newCreditCard = true
+      } else {
+        data.newCreditCard = false
+      }
+      data.expireDate = this.formatDate(this.creditCard.expireDate)
+      data.value = this.ammountCreditCard
+      data.profileId = this.profile.id
+      return data
+    },
+    formatDate(date) {
+      if (!date) return null
+      date = date.split('/').join('/27/')
+      let newDate = new Date(date)
+      let formattedDate = newDate.toISOString()
+      return formattedDate
     },
   },
 }
