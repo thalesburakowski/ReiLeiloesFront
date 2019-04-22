@@ -4,6 +4,7 @@ import Home from './views/Client/Home.vue'
 import User from './views/Client/User.vue'
 import Address from './views/Client/Address.vue'
 import Auction from './views/Client/Auction.vue'
+import NewAuction from './views/Client/NewAuction.vue'
 import BankAccount from './views/Client/BankAccount.vue'
 import CreditCard from './views/Client/CreditCard.vue'
 import Login from './views/Login.vue'
@@ -85,6 +86,11 @@ export default new Router({
       path: '/carteira',
       name: 'Wallet',
       component: Wallet,
+    },
+    {
+      path: '/novo-leilao',
+      name: 'NewAuction',
+      component: NewAuction,
     },
     {
       path: '/analise',

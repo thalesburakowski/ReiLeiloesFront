@@ -48,6 +48,8 @@
 
 <script>
 import SweetAlert from '../../components/SweetAlert'
+import AuctionAPI from '@/api/Auction'
+import SweetAlertVue from '../../components/SweetAlert.vue'
 
 export default {
   name: 'AuthorizeAuctions',
@@ -78,37 +80,16 @@ export default {
           finish: 450.5,
           status: 'Aberto',
         },
-        {
-          id: 2,
-          authorName: 'Testezinho 2',
-          name: 'Teste Leilão 2',
-          category: 'Colecionaveis',
-          start: 423.5,
-          finish: 450.5,
-          status: 'Aberto',
-        },
-        {
-          id: 3,
-          authorName: 'Testezinho 3',
-          name: 'Teste Leilão 3',
-          category: 'Brinquedos',
-          start: 534.5,
-          finish: 450.5,
-          status: 'Fechado',
-        },
-        {
-          id: 4,
-          authorName: 'Testezinho 4',
-          name: 'Teste Leilão 4',
-          category: 'Outros',
-          start: 123.5,
-          finish: 450.5,
-          status: 'Fechado',
-        },
       ],
     }
   },
+  mounted() {
+    this.getAuctions()
+  },
   methods: {
+    async getAuctions() {
+      let response = await AuctionAPI.getAllPendent()
+    },
     clickAuction(id) {
       this.$router.push(`/leilao`)
       console.log('redirect', id)

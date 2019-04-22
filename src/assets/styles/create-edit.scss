@@ -14,12 +14,13 @@
   padding: 2rem;
   border-radius: 5px;
   box-shadow: 2px 5px 15px #ccc;
-  &--no-shadow{
+  &--no-shadow {
     box-shadow: none;
   }
-
+  input,
   input[type='text'],
   input[type='email'],
+  input[type='tel'],
   input[type='password'] {
     border-bottom: solid 1px #cccccc;
   }
