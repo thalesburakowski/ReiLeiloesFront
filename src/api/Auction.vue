@@ -15,5 +15,9 @@ export default {
     const response = await axios.get(`${serverUrl}-pendente`)
     return response.data
   },
+  approved: async function(data) {
+    const response = await axios.post(`${serverUrl}-pendente`, data)
+    return response.data
+  },
 }
 </script>
