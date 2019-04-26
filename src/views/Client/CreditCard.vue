@@ -2,7 +2,7 @@
   <div class="page">
     <h1 class="page-title">Meus Cartões</h1>
 
-    <div v-if="!creditCards" class="warnig-message warnig-message--card">
+    <div v-if="!creditCards.length" class="warnig-message warnig-message--card">
       <h3 class="warnig-message__title">Você ainda não possui um cartão cadastrado</h3>
       <p
         class="warnig-message__description"
@@ -59,7 +59,7 @@
           <button class="button button-cancel" @click="deletecreditCard(creditCard)">EXCLUIR</button>
           <button
             class="button button-principal"
-            @click="showModal = true, modalcreditCard = creditCard, newCreditCard = false"
+            @click="showModal = true, modalCreditCard = creditCard, newCreditCard = false"
           >EDITAR</button>
         </div>
       </div>
@@ -70,30 +70,30 @@
       <div class="modal-content w3-animate-zoom">
         <div class="fields fields--no-shadow">
           <h2 v-if="newCreditCard" class="title-form">Novo Cartão</h2>
-          <h2 v-else class="title-form">{{modalcreditCard.name}}</h2>
+          <h2 v-else class="title-form">{{modalCreditCard.name}}</h2>
           <div class="line-inputs">
             <label v-if="newCreditCard" class="label-input">
-              <input type="text" required :value="modalcreditCard.name">
+              <input type="text" required :value="modalCreditCard.name">
               <div class="label-text">Titular</div>
             </label>
             <label class="label-input">
-              <input type="text" required :value="modalcreditCard.number">
+              <input type="text" required :value="modalCreditCard.number">
               <div class="label-text">Número</div>
             </label>
             <label class="label-input">
-              <input type="text" required :value="modalcreditCard.expireDate">
+              <input type="text" required :value="modalCreditCard.expireDate">
               <div class="label-text">Vencimento</div>
             </label>
-            
+
             <label class="label-input">
-              <input type="text" required :value="modalcreditCard.securityCode">
+              <input type="text" required :value="modalCreditCard.securityCode">
               <div class="label-text">Código</div>
             </label>
           </div>
           <div class="form__actions">
             <button
               class="button button-cancel"
-              @click="showModal = false, modalcreditCard = {}"
+              @click="showModal = false, modalCreditCard = {}"
             >CANCELAR</button>
             <button
               v-if="newCreditCard"
@@ -111,6 +111,7 @@
 <script>
 import SweetAlert from '../../components/SweetAlert'
 import Swal from 'sweetalert2'
+import CardAPI from '@/api/Card'
 export default {
   name: 'creditCard',
   data() {
@@ -119,13 +120,19 @@ export default {
       newCreditCard: false,
       showModal: false,
       creditCards: false,
-      modalcreditCard: {},
+      modalCreditCard: {},
     }
   },
   components: {
     SweetAlert,
   },
+  mounted() {
+    this.getAllCreditCards()
+  },
   methods: {
+    async getAllCreditCards() {
+      this.creditCards = await CardAPI.getAll()
+    },
     async addcreditCard() {
       this.showModal = false
       await SweetAlert.showSuccessModal()
@@ -137,31 +144,34 @@ export default {
       }
     },
     async createcreditCard() {
+      console.log(this.modalCreditCard)
+      // const result = await CardAPI.create(this.modalCreditCard)
+
       this.showModal = false
-      ;(this.creditCards = [
-        {
-          id: 1,
-          name: 'Paulinha da Silva',
-          number: '***.****.***.789',
-          expireDate: '10/21',
-          securityCode: '**9',
-        },
-        {
-          id: 2,
-          name: 'Rogério da Silva',
-          number: '***.****.***.789',
-          expireDate: '10/21',
-          securityCode: '**9',
-        },
-        {
-          id: 3,
-          name: 'Saulo da Silva',
-          number: '***.****.***.789',
-          expireDate: '10/21',
-          securityCode: '**9',
-        },
-      ]),
-        await SweetAlert.showSuccessModal()
+      // ;(this.creditCards = [
+      //   {
+      //     id: 1,
+      //     name: 'Paulinha da Silva',
+      //     number: '***.****.***.789',
+      //     expireDate: '10/21',
+      //     securityCode: '**9',
+      //   },
+      //   {
+      //     id: 2,
+      //     name: 'Rogério da Silva',
+      //     number: '***.****.***.789',
+      //     expireDate: '10/21',
+      //     securityCode: '**9',
+      //   },
+      //   {
+      //     id: 3,
+      //     name: 'Saulo da Silva',
+      //     number: '***.****.***.789',
+      //     expireDate: '10/21',
+      //     securityCode: '**9',
+      //   },
+      // ]),
+      await SweetAlert.showSuccessModal()
     },
     async updatecreditCard() {
       this.showModal = false
