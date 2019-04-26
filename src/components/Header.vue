@@ -38,6 +38,7 @@
         <router-link to="/endereco" class="user-menu__link">Endereços</router-link>
         <router-link to="/cartao" class="user-menu__link">Cartões</router-link>
         <router-link to="/carteira" class="user-menu__link">Carteira</router-link>
+          <router-link to="/novo-leilao" class="user-menu__link">Cadastrar Leilão</router-link>
         <router-link to="/autorizacao-leiloes" class="user-menu__link">ADMIN - Leilões</router-link>
         <router-link to="/autorizacao-troca" class="user-menu__link">ADMIN - Trocas</router-link>
         <router-link to="/analise" class="user-menu__link">ADMIN - Gráficos</router-link>

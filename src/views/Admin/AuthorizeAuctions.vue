@@ -10,16 +10,19 @@
       </div>
       <div v-for="auction in auctions" :key="auction.id">
         <div class="table-line">
-          <div class="item" @click="clickAuction(auction.id)">{{ auction.authorName }}</div>
-          <div class="item" @click="clickAuction(auction.id)">{{ auction.name }}</div>
-          <div class="item" @click="clickAuction(auction.id)">{{ auction.category }}</div>
-          <div class="item" @click="clickAuction(auction.id)">R$ {{ auction.start | number }}</div>
-          <div class="item" @click="clickAuction(auction.id)">R$ {{ auction.finish | number }}</div>
+          <!-- <div class="item" @click="clickAuction(auction.id)">{{ auction.authorName }}</div> -->
+          <div class="item" @click="clickAuction(auction.id)">{{ auction.title }}</div>
+          <!-- <div class="item" @click="clickAuction(auction.id)">{{ auction.category }}</div> -->
+          <div class="item" @click="clickAuction(auction.id)">R$ {{ auction.initialPrice | number }}</div>
+          <div class="item" @click="clickAuction(auction.id)">R$ {{ auction.closePrice | number }}</div>
           <div class="item">
             <div class="actions">
               <!-- <i class="icon edit fas fa-marker"></i> -->
-              <i class="icon check fas fa-check" @click="authorizeAuction(true)"></i>
-              <i class="icon trash fas fa-times" @click="showModal = true"></i>
+              <i class="icon check fas fa-check" @click="authorizeAuction(auction)"></i>
+              <i
+                class="icon trash fas fa-times"
+                @click="showModal = true, reprovedAuction.id = auction.id"
+              ></i>
             </div>
           </div>
         </div>
@@ -33,12 +36,12 @@
           <h2 class="title-form">Motivo para o não aceite do leilão</h2>
           <div class="line-inputs">
             <label class="label-input">
-              <textarea placeholder="Digite o motivo " required></textarea>
+              <textarea placeholder="Digite o motivo " required v-model="reprovedAuction.reason"></textarea>
             </label>
           </div>
           <div class="form__actions">
             <button class="button button-cancel" @click="showModal = false">CANCELAR</button>
-            <button class="button button-principal" @click="authorizeAuction(false)">CONFIRMAR</button>
+            <button class="button button-principal" @click="reproveAuction()">CONFIRMAR</button>
           </div>
         </div>
       </div>
@@ -48,79 +51,77 @@
 
 <script>
 import SweetAlert from '../../components/SweetAlert'
+import AuctionAPI from '@/api/Auction'
 
 export default {
   name: 'AuthorizeAuctions',
   data() {
     return {
       showModal: false,
-      options: [
-        'Obras de arte',
-        'Colecionaveis',
-        'Brinquedos',
-        'Automotivo',
-        'Outros',
-      ],
-      titles: [
-        'Leiloeiro',
-        'Nome',
-        'Categoria',
-        'Valor Inicial',
-        'Valor Arremate',
-      ],
-      auctions: [
-        {
-          id: 1,
-          authorName: 'Testezinho 1',
-          name: 'Teste Leilão 1',
-          category: 'Obras de Arte',
-          start: 123.5,
-          finish: 450.5,
-          status: 'Aberto',
-        },
-        {
-          id: 2,
-          authorName: 'Testezinho 2',
-          name: 'Teste Leilão 2',
-          category: 'Colecionaveis',
-          start: 423.5,
-          finish: 450.5,
-          status: 'Aberto',
-        },
-        {
-          id: 3,
-          authorName: 'Testezinho 3',
-          name: 'Teste Leilão 3',
-          category: 'Brinquedos',
-          start: 534.5,
-          finish: 450.5,
-          status: 'Fechado',
-        },
-        {
-          id: 4,
-          authorName: 'Testezinho 4',
-          name: 'Teste Leilão 4',
-          category: 'Outros',
-          start: 123.5,
-          finish: 450.5,
-          status: 'Fechado',
-        },
-      ],
+      titles: ['Nome', 'Valor Inicial', 'Valor Arremate'],
+      auctions: [],
+      reprovedAuction: {
+        reason: '',
+        id: '',
+      },
     }
   },
+  mounted() {
+    this.getAuctions()
+  },
   methods: {
+    async getAuctions() {
+      this.auctions = await AuctionAPI.getAllPendent()
+    },
     clickAuction(id) {
       this.$router.push(`/leilao`)
       console.log('redirect', id)
     },
-    async authorizeAuction(accept) {
+    async authorizeAuction(auction) {
       const result = await SweetAlert.showConfirmationModal(
-        `Deseja mesmo ${accept ? 'aceitar' : 'rejeitar'} o leilão?`
+        'Deseja mesmo aceitar o leilão?'
       )
       if (result.value) {
-        SweetAlert.showSuccessModal()
+        let response = await AuctionAPI.approved({
+          approved: true,
+          reason: '',
+          auctionId: auction.id,
+        })
+        if (response.approved) {
+          this.showModal = false
+          SweetAlert.showSuccessModal('Leilão aprovado com sucesso!')
+          this.getAuctions()
+        } else {
+          this.showModal = false
+          SweetAlert.showFailModal('Não foi possível aprovar esse leilão!')
+        }
       }
-      this.showModal = false
+    },
+    async reproveAuction() {
+      if (!this.reprovedAuction.reason) {
+        SweetAlert.showFailModal('Preencha o motivo do não aceite!')
+        return
+      }
+      const result = await SweetAlert.showConfirmationModal(
+        'Deseja mesmo rejeitar o leilão?'
+      )
+      if (result.value) {
+        let response = await AuctionAPI.approved({
+          approved: false,
+          reason: this.reprovedAuction.reason,
+          auctionId: this.reprovedAuction.id,
+        })
+        this.reprovedAuction.reason = ''
+        this.reprovedAuction.id = ''
+        if (!response.approved) {
+          this.showModal = false
+          SweetAlert.showSuccessModal('Leilão reprovado com sucesso!')
+          this.getAuctions()
+        } else {
+          SweetAlert.showFailModal('Não foi possível rejeitar esse leilão!')
+          this.showModal = false
+        }
+      }
     },
   },
 }
@@ -135,7 +136,8 @@ export default {
   }
 }
 .table-line {
-  grid-template-columns: 15% 35% 20% 10% 10% 10%;
+  grid-template-columns: 40% 20% 20% 20%;
+
   .item:first-child {
     padding-left: 1rem;
   }
@@ -162,4 +164,4 @@ export default {
 }
 </style>
 
-<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
+
