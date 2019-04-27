@@ -53,7 +53,7 @@ export default new Router({
       component: Address,
     },
     {
-      path: '/leilao',
+      path: '/leilao/:id',
       name: 'auction',
       component: Auction,
     },
