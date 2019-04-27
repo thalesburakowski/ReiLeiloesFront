@@ -1,45 +1,53 @@
 <template>
   <div class="page">
-    <h1 class="page-title">{{auctionInfo.name}}</h1>
+    <h1 class="page-title">{{auction.title}}</h1>
     <div class="fields">
       <div class="merchandise">
         <carousel class="carousel">
-          <slide v-for="image in linkImages" :key="image.id">
-            <img class="carousel__image" :src="image.source" alt>
+          <slide v-for="(image, index) in auction.images" :key="index">
+            <img class="carousel__image" :src="image" alt>
           </slide>
         </carousel>
         <div class="merchandise-description">
           <div class="merchandise-description__title">Categorias</div>
           <p class="merchandise-description__info">
             <span
-              v-for="(category, index) in auctionInfo.categories"
+              v-for="(category, index) in auction.categories"
               :key="category.id"
-            >{{auctionInfo.categories.length > index + 1 ? `${category.name} - ` : `${category.name}` }}</span>
+            >{{auction.categories.length > index + 1 ? `${category.name} - ` : `${category.name}` }}</span>
           </p>
           <div class="merchandise-description__title">Descrição</div>
-          <p class="merchandise-description__info">{{auctionInfo.description}}</p>
+          <p class="merchandise-description__info">{{auction.description}}</p>
           <div class="merchandise-description__title">Dimensões</div>
           <div class="merchandise-description__table">
             <div class="merchandise-description__table__line">
               <p class="merchandise-description__table__title">Altura</p>
-              <p class="merchandise-description__table__value">10 cm</p>
+              <p class="merchandise-description__table__value">{{auction.height}} cm</p>
             </div>
             <div class="merchandise-description__table__line">
               <p class="merchandise-description__table__title">Largura</p>
-              <p class="merchandise-description__table__value">7 cm</p>
+              <p class="merchandise-description__table__value">{{auction.width}} cm</p>
             </div>
             <div class="merchandise-description__table__line">
               <p class="merchandise-description__table__title">Profundidade</p>
-              <p class="merchandise-description__table__value">3 cm</p>
+              <p class="merchandise-description__table__value">{{auction.depth}} cm</p>
             </div>
           </div>
         </div>
       </div>
 
       <div class="bids">
-        <div class="bids__wallet-info">Seu saldo disponível é de R$ 150,00!</div>
-
-        <div class="bids__chat">
+        <div class="bids__wallet-info">Seu saldo disponível é de R$ {{creditsUser | number}}!</div>
+        <div v-if="auction.status === 'approved'" class="closed-auction bids__chat">
+          <span class="closed-auction__message">Esse leilão ainda não esta aberto</span>
+          <span
+            class="closed-auction__message"
+          >Início do leilão: {{auction.initialDate | formatDate}}</span>
+        </div>
+        <div v-if="!auction.status === 'approved'" class="closed-auction bids__chat">
+          <span class="closed-auction__message">Esse leilão já esta encerrado</span>
+        </div>
+        <div class="bids__chat" v-if="!auction.status === 'approved'">
           <div
             class="bids__chat__message"
             v-for="bid in bids"
@@ -51,7 +59,7 @@
           </div>
         </div>
 
-        <div class="bids__actions">
+        <div class="bids__actions" v-if="!auction.status === 'approved'">
           <input type="text" class="bids__actions__input" placeholder="250,00">
           <button class="button button-principal">DAR LANCE</button>
         </div>
@@ -63,44 +71,23 @@
 <script>
 import { Carousel, Slide } from 'vue-carousel'
 
+import { Money } from 'v-money'
+import SweetAlert from '../../components/SweetAlert'
+
+import AuctionAPI from '@/api/Auction'
+import WalletAPI from '@/api/Wallet'
+
 export default {
   name: 'Auction',
+  components: {
+    Carousel,
+    Slide,
+  },
   data() {
     return {
-      linkImages: [
-        {
-          id: 1,
-          source:
-            'https://images-submarino.b2w.io/produtos/01/00/offers/01/00/item/134186/8/134186808_1GG.jpg',
-        },
-        {
-          id: 2,
-          source:
-            'https://images-submarino.b2w.io/produtos/01/00/offers/01/00/item/134186/8/134186808_2GG.jpg',
-        },
-        {
-          id: 3,
-          source:
-            'https://images-submarino.b2w.io/produtos/01/00/offers/01/00/item/134186/8/134186808_3GG.jpg',
-        },
-        {
-          id: 4,
-          source:
-            'https://images-submarino.b2w.io/produtos/01/00/offers/01/00/item/134186/8/134186808_4GG.jpg',
-        },
-      ],
-
-      auctionInfo: {
-        name: 'Smartphone Galaxy J8',
-        categories: [
-          { id: '1', name: 'Smartphone' },
-          { id: '2', name: 'Samsung' },
-          { id: '3', name: 'Tecnologia' },
-        ],
-        description:
-          'Esse celular é realmente muito boom, esta na caixa, não aberto. ESTE PRODUTO NÃO É REEMBALADO, É NOVO. Minha filha tem um igual e ela gosta muito, nunca qiebrou e da pra ficar no whatsApp o dia inteiro. Ela gosta de whatsApp.',
-      },
-
+      auction: {},
+      creditsUser: '',
+      profile: '',
       bids: [
         { id: 1, username: '@mariazinha', price: 'R$ 150,00' },
         { id: 2, username: '@manoBrownnie', price: 'R$ 180,00' },
@@ -111,9 +98,23 @@ export default {
       ],
     }
   },
-  components: {
-    Carousel,
-    Slide,
+  async mounted() {
+    this.getAuction()
+    await this.getInfo()
+    this.loadCredits()
+  },
+  methods: {
+    async getAuction() {
+      this.auction = await AuctionAPI.getAuction(this.$route.params.id)
+    },
+    getInfo() {
+      // this.user = JSON.parse(localStorage.getItem('user'))
+      this.profile = JSON.parse(localStorage.getItem('profile'))
+    },
+    async loadCredits() {
+      const response = await WalletAPI.getCredits(this.profile.id)
+      this.creditsUser = response.credits
+    },
   },
 }
 </script>
@@ -240,6 +241,17 @@ export default {
         border-radius: 10px 10px 0px 10px;
         align-self: flex-end;
       }
+    }
+  }
+
+  .closed-auction {
+    border-bottom: none;
+    padding: 30px 20px;
+    height: auto;
+
+    &__message {
+      font-size: 18px;
+      margin-bottom: 15px;
     }
   }
   .button {
