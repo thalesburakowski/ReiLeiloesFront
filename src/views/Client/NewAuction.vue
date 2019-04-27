@@ -37,6 +37,17 @@
             <div class="label-text">Preço de arremate</div>
           </label>
         </div>
+        <div class="line-inputs">
+          <span class="date-holder">
+            <label class="label-input label-input--date">Inicio do leilão</label>
+            <datepicker :language="ptBR" v-model="initialDate" v-validate="'required'"></datepicker>
+          </span>
+
+          <span class="date-holder">
+            <label class="label-input label-input--date">Final do leilão</label>
+            <datepicker :language="ptBR" v-model="closeDate" v-validate="'required'"></datepicker>
+          </span>
+        </div>
 
         <div class="line-inputs">
           <label class="label-input">
@@ -97,6 +108,23 @@
           </div>
         </div>
 
+        <div class="line-inputs">
+          <label class="label-input">
+            <input type="text" required v-model="imageUrl ">
+            <div class="label-text">Link da imagem:</div>
+          </label>
+          <button class="button button-cancel" @click="addImage">Adicionar imagem</button>
+        </div>
+
+        <div v-if="auction.images.length > 0">
+          Imagens selecionadas:
+          <carousel class="carousel">
+            <slide v-for="(image, index) in auction.images" :key="index">
+              <img class="carousel__image" :src="image" alt>
+            </slide>
+          </carousel>
+        </div>
+
         <div class="form__actions">
           <!-- <button class="button button-cancel" name="inativar-conta">Inativar Conta</button> -->
           <button class="button button-principal" @click="validate">CADASTRAR</button>
@@ -114,13 +142,26 @@ import CategoryAPI from '@/api/Category'
 import AuctionAPI from '@/api/Auction'
 import SweetAlertVue from '../../components/SweetAlert.vue'
 
+import Datepicker from 'vuejs-datepicker'
+
+import { en, ptBR } from 'vuejs-datepicker/dist/locale'
+import { Carousel, Slide } from 'vue-carousel'
+
 export default {
   name: 'NewAuction',
-  components: { Multiselect, mixins: [Vue2Filters.mixin], Money },
+  components: {
+    Multiselect,
+    mixins: [Vue2Filters.mixin],
+    Money,
+    Datepicker,
+    Carousel,
+    Slide,
+  },
   data() {
     return {
       user: {},
       profile: {},
+      imageUrl: '',
       options: [
         'Obras de arte',
         'Colecionaveis',
@@ -137,8 +178,13 @@ export default {
         depth: '',
         initialPrice: '',
         closePrice: '',
+        initialDate: '',
+        closeDate: '',
+        images: [],
       },
-
+      initialDate: '',
+      closeDate: '',
+      ptBR: ptBR,
       price: 123.45,
       money: {
         decimal: ',',
@@ -157,9 +203,13 @@ export default {
     async getCategories() {
       this.options = await CategoryAPI.getAll()
     },
+    addImage() {
+      if (this.imageUrl !== '') this.auction.images.push(this.imageUrl)
+      this.imageUrl = ''
+    },
     async createAuction() {
+      this.formatDates()
       let categoriesIds = this.auction.categories.map(category => category.id)
-
       let response = await AuctionAPI.create({
         ...this.auction,
         categories: categoriesIds,
@@ -172,12 +222,22 @@ export default {
         )
       }
     },
+    formatDates() {
+      let date = new Date(this.initialDate)
+      this.auction.initialDate = date.toISOString()
+      date = new Date(this.closeDate)
+      this.auction.closeDate = date.toISOString()
+    },
     async validate() {
       let isValid = await this.$validator.validate()
       console.log(isValid)
 
       if (isValid) {
-        this.createAuction()
+        if (this.auction.images.length > 0) {
+          this.createAuction()
+        } else {
+          SweetAlert.showFailModal('Adicione uma imagem ao seu leilão')
+        }
       } else {
         SweetAlert.showFailModal('Preencha todos os campos!')
       }
@@ -226,6 +286,18 @@ export default {
       }
     }
 
+    .date-holder {
+      position: relative;
+    }
+
+    .label-input--date {
+      position: absolute;
+      left: 0;
+      font-size: 0.8rem;
+      font-family: 'Roboto-Regular';
+      top: -10px;
+    }
+
     .holder-money {
       display: flex;
       flex-direction: column;
@@ -246,5 +318,27 @@ export default {
       justify-content: flex-end;
     }
   }
+
+  .carousel__image {
+    max-height: 200px;
+  }
+
+  .VueCarousel-slide {
+    position: relative;
+    height: 200px;
+  }
+
+  .VueCarousel {
+    width: 50rem;
+  }
+}
+</style>
+<style>
+.vdp-datepicker__calendar .cell.selected {
+  background-color: #ffb914 !important;
+}
+
+.vdp-datepicker__calendar .cell:not(.blank):not(.disabled).day:hover {
+  border: 1px solid #ffb914;
 }
 </style>
