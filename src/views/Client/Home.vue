@@ -7,6 +7,7 @@
           v-model="value"
           :options="options"
           :multiple="true"
+          label="name"
           :close-on-select="false"
           placeholder="Pesquise por categorias"
           selectLabel
@@ -22,11 +23,12 @@
         @click="clickAuction(auction)"
       >
         <span class="auction__img-holder">
-          <img :src="auction.url" alt class="auction__img">
+          <img :src="auction.images ?  auction.images[0] : ''" alt class="auction__img">
         </span>
-        <div class="auction__name">{{ auction.name }}</div>
-        <div class="auction__date">{{ auction.closingTime }}</div>
-        <div class="auction__price">R$ {{ auction.price }}</div>
+        <div class="auction__name">{{ auction.title }}</div>
+        <div class="auction__date">De: {{ auction.initialDate | formatDate }}</div>
+        <div class="auction__date">Até: {{ auction.closeDate | formatDate }}</div>
+        <div class="auction__price">R$ {{auction.actualPrice | number}}</div>
       </div>
     </div>
   </div>
@@ -35,99 +37,45 @@
 <script>
 // @ is an alias to /src
 import Multiselect from 'vue-multiselect'
+import AuctionAPI from '@/api/Auction'
+import CategoryAPI from '@/api/Category'
+import { Money } from 'v-money'
 
 export default {
   name: 'Home',
-  components: { Multiselect },
+  components: { Multiselect, Money },
   data() {
     return {
       value: null,
-      options: [
-        'Obras de arte',
-        'Colecionaveis',
-        'Brinquedos',
-        'Automotivo',
-        'Outros',
-      ],
-      auctions: [
-        {
-          id: 1,
-          name: 'Smartwatch Samsung Gear',
-          closingTime: 'Tempo restante - 12:20:23',
-          price: '50,00',
-          url:
-            'https://images.livrariasaraiva.com.br/imagemnet/imagem.aspx/?pro_id=10148606&qld=90&l=430&a=-1=1005256167',
-        },
-        {
-          id: 2,
-          name: 'Fone de Ouvido',
-          closingTime: 'Tempo restante - 06:20:23',
-          price: '60,00',
-          url:
-            'https://images.livrariasaraiva.com.br/imagemnet/imagem.aspx/?pro_id=10505294&qld=90&l=430&a=-1',
-        },
-
-        {
-          id: 3,
-          name: 'Smartphone Galaxy J8',
-          closingTime: 'Tempo restante - 12:20:23',
-          price: '399,99',
-          url:
-            'https://images.livrariasaraiva.com.br/imagemnet/imagem.aspx/?pro_id=10288158&qld=90&l=430&a=-1=1005640192',
-        },
-        {
-          id: 4,
-          name: 'Jump Force - PS4',
-          closingTime: 'Tempo restante - 12:20:23',
-          price: '9,99',
-          url:
-            'https://images.livrariasaraiva.com.br/imagemnet/imagem.aspx/?pro_id=10506211&qld=90&l=430&a=-1=1006603491',
-        },
-        {
-          id: 29,
-          name: 'Fone De Ouvido Supra Auricular Philips ',
-          closingTime: 'Tempo restante - 12:20:23',
-          price: '50,00',
-          url:
-            'https://images.livrariasaraiva.com.br/imagemnet/imagem.aspx/?pro_id=10148648&qld=90&l=430&a=-1=1005256288',
-        },
-        {
-          id: 25,
-          name: 'Mac Pro Apple Me253bz/A',
-          closingTime: 'Tempo restante - 12:20:23',
-          price: '2.000,00',
-          url:
-            'https://images.livrariasaraiva.com.br/imagemnet/imagem.aspx/?pro_id=6761417&qld=90&l=430&a=-1=1006148497',
-        },
-        {
-          id: 32,
-          name: ' Câmera Digital Sony Action',
-          closingTime: 'Tempo restante - 02:20:23',
-          price: '129,99',
-          url:
-            'https://images.livrariasaraiva.com.br/imagemnet/imagem.aspx/?pro_id=10148614&qld=90&l=430&a=-1=1005256186',
-        },
-        {
-          id: 40,
-          name: 'Caixa De Som Bluetooth',
-          closingTime: 'Tempo restante - 12:20:23',
-          price: '99,99',
-          url:
-            'https://images.livrariasaraiva.com.br/imagemnet/imagem.aspx/?pro_id=10148413&qld=90&l=430&a=-1=1005255732',
-        },
-      ],
+      options: [],
+      auctions: [],
+      price: 0,
+      money: {
+        decimal: ',',
+        thousands: '.',
+        prefix: 'R$ ',
+        precision: 2,
+        masked: false,
+      },
     }
   },
+  mounted() {
+    this.getAuctions()
+    this.getCategories()
+  },
   methods: {
+    async getCategories() {
+      this.options = await CategoryAPI.getAll()
+    },
+    async getAuctions() {
+      this.auctions = await AuctionAPI.getApproved()
+    },
     clickAuction(auction) {
       // this.$router.push(`/mercadoria/:${auction.id}`);
-      this.$router.push('/leilao')
-      console.log('redirect')
+      this.$router.push(`/leilao/${auction.id}`)
     },
   },
-  countingDown(time) {
-    //
-  },
+  countingDown(time) {},
 }
 </script>
 
@@ -209,6 +157,16 @@ export default {
   &__price {
     font-size: 1.5rem;
     color: $green;
+  }
+
+  .money {
+    outline: 0;
+    background-color: transparent;
+    font-size: 1.5rem;
+    color: $green;
+    border: none;
+    max-width: 200px;
+    text-align: center;
   }
 }
 </style>
