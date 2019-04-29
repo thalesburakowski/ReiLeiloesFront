@@ -26,8 +26,9 @@
           <img :src="auction.images ?  auction.images[0] : ''" alt class="auction__img">
         </span>
         <div class="auction__name">{{ auction.title }}</div>
-        <div class="auction__date">Até: {{ auction.closeDate | formatDate }} às 23:59</div>
-        <div class="auction__price">{{auction.actualPrice | number}}</div>
+        <div class="auction__date">De: {{ auction.initialDate | formatDate }}</div>
+        <div class="auction__date">Até: {{ auction.closeDate | formatDate }}</div>
+        <div class="auction__price">R$ {{auction.actualPrice | number}}</div>
       </div>
     </div>
   </div>

@@ -37,17 +37,18 @@
       </div>
 
       <div class="bids">
-        <div class="bids__wallet-info">Seu saldo disponível é de R$ {{creditsUser | number}}!</div>
+        <div class="bids__wallet-info">O lance atual é de é de R$ {{auction.actualPrice | number}}</div>
+        <div class="bids__wallet-info">Seu saldo atual é de R$ {{creditsUser | number}}</div>
         <div v-if="auction.status === 'approved'" class="closed-auction bids__chat">
           <span class="closed-auction__message">Esse leilão ainda não esta aberto</span>
           <span
             class="closed-auction__message"
           >Início do leilão: {{auction.initialDate | formatDate}}</span>
         </div>
-        <div v-if="!auction.status === 'approved'" class="closed-auction bids__chat">
+        <div v-else-if="auction.status !== 'active'" class="closed-auction bids__chat">
           <span class="closed-auction__message">Esse leilão já esta encerrado</span>
         </div>
-        <div class="bids__chat" v-if="!auction.status === 'approved'">
+        <div class="bids__chat" v-else-if="auction.status === 'active'">
           <div
             class="bids__chat__message"
             v-for="bid in bids"
@@ -59,9 +60,16 @@
           </div>
         </div>
 
-        <div class="bids__actions" v-if="!auction.status === 'approved'">
-          <input type="text" class="bids__actions__input" placeholder="250,00">
-          <button class="button button-principal">DAR LANCE</button>
+        <div class="bids__actions" v-if="auction.status === 'active'">
+          <money
+            class="input-money"
+            required
+            v-model="bidValue"
+            v-validate="'required|min_value:1'"
+            v-bind="money"
+            style="outline:0"
+          ></money>
+          <button class="button button-principal" @click="validateBid">DAR LANCE</button>
         </div>
       </div>
     </div>
@@ -70,6 +78,7 @@
 
 <script>
 import { Carousel, Slide } from 'vue-carousel'
+import { PulseLoader } from 'vue-spinner/dist/vue-spinner.min.js'
 
 import { Money } from 'v-money'
 import SweetAlert from '../../components/SweetAlert'
@@ -82,19 +91,27 @@ export default {
   components: {
     Carousel,
     Slide,
+    PulseLoader,
+    Money,
   },
   data() {
     return {
       auction: {},
       creditsUser: '',
       profile: '',
+      bidValue: '',
+      price: 0,
+      money: {
+        decimal: ',',
+        thousands: '.',
+        prefix: 'R$ ',
+        precision: 2,
+        masked: false,
+      },
       bids: [
         { id: 1, username: '@mariazinha', price: 'R$ 150,00' },
         { id: 2, username: '@manoBrownnie', price: 'R$ 180,00' },
         { id: 5, username: '@paulinha', price: 'R$ 220,00' },
-        // { id: 1, username: '@mariazinha', price: 'R$ 150,00' },
-        // { id: 2, username: '@manoBrownnie', price: 'R$ 180,00' },
-        // { id: 3, username: '@mariazinha', price: 'R$ 200,00' },
       ],
     }
   },
@@ -106,14 +123,36 @@ export default {
   methods: {
     async getAuction() {
       this.auction = await AuctionAPI.getAuction(this.$route.params.id)
+      this.getBids()
     },
     getInfo() {
       // this.user = JSON.parse(localStorage.getItem('user'))
       this.profile = JSON.parse(localStorage.getItem('profile'))
     },
+    async getBids() {
+      let response = await AuctionAPI.getBids(this.auction.id)
+    },
     async loadCredits() {
       const response = await WalletAPI.getCredits(this.profile.id)
       this.creditsUser = response.credits
+    },
+    validateBid() {
+      if (!this.bidValue || this.auction.actualPrice > this.bidValue) {
+        SweetAlert.showFailModal('Faça um lance válido')
+      } else if (this.bidValue > this.creditsUser) {
+        SweetAlert.showFailModal('Você não possui essa quantidade de créditos')
+      } else {
+        this.toBid()
+      }
+    },
+    async toBid() {
+      let response = await AuctionAPI.toBid({
+        value: this.bidValue,
+        profileId: this.profile.id,
+        auctionId: this.auction.id,
+      })
+      this.getAuction()
+      this.loadCredits()
     },
   },
 }
@@ -182,7 +221,7 @@ export default {
 
 .bids {
   width: 100%;
-  text-align: center;
+  text-align: left;
   // justify-items: center;
   // justify-content: center;
   // justify-self: center;
@@ -279,6 +318,17 @@ export default {
       border-radius: 0 0 0px 8px;
       font-size: 1rem;
     }
+  }
+  .input-money {
+    padding-left: 1rem;
+    height: 45px;
+    border-top: none;
+    border-bottom: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+    background-color: #fafafa;
+    border-radius: 0 0 0px 8px;
+    font-size: 1rem;
+    width: 100%;
   }
 }
 </style>

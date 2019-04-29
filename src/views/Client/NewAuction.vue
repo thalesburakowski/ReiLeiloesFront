@@ -47,6 +47,20 @@
             <label class="label-input label-input--date">Final do leilão</label>
             <datepicker :language="ptBR" v-model="closeDate" v-validate="'required'"></datepicker>
           </span>
+
+          <span class="date-holder" style="display: flex;">
+            <label class="label-input label-input--date">Horário de inicio</label>
+            <vue-timepicker v-model="time"></vue-timepicker>
+          </span>
+
+          <!-- <span class="date-holder">
+            <label class="label-input label-input--date">
+              <select name id>
+                <option v-for="i in 24" :value="i" :key="i">{{i}}</option>
+              </select>
+              <div class="label-text">Horário</div>
+            </label>
+          </span>-->
         </div>
 
         <div class="line-inputs">
@@ -143,9 +157,9 @@ import AuctionAPI from '@/api/Auction'
 import SweetAlertVue from '../../components/SweetAlert.vue'
 
 import Datepicker from 'vuejs-datepicker'
-
 import { en, ptBR } from 'vuejs-datepicker/dist/locale'
 import { Carousel, Slide } from 'vue-carousel'
+import VueTimepicker from 'vue2-timepicker'
 
 export default {
   name: 'NewAuction',
@@ -156,19 +170,14 @@ export default {
     Datepicker,
     Carousel,
     Slide,
+    VueTimepicker,
   },
   data() {
     return {
       user: {},
       profile: {},
       imageUrl: '',
-      options: [
-        'Obras de arte',
-        'Colecionaveis',
-        'Brinquedos',
-        'Automotivo',
-        'Outros',
-      ],
+      options: [],
       auction: {
         title: '',
         categories: [],
@@ -184,8 +193,12 @@ export default {
       },
       initialDate: '',
       closeDate: '',
+      time: {
+        HH: '',
+        mm: '',
+      },
       ptBR: ptBR,
-      price: 123.45,
+      price: 0,
       money: {
         decimal: ',',
         thousands: '.',
@@ -224,19 +237,23 @@ export default {
     },
     formatDates() {
       let date = new Date(this.initialDate)
+      date.setHours(this.time.HH, this.time.mm)
+      console.log(date)
+
       this.auction.initialDate = date.toISOString()
       date = new Date(this.closeDate)
       this.auction.closeDate = date.toISOString()
     },
     async validate() {
       let isValid = await this.$validator.validate()
-      console.log(isValid)
 
       if (isValid) {
-        if (this.auction.images.length > 0) {
-          this.createAuction()
-        } else {
+        if (!this.auction.images.length > 0) {
           SweetAlert.showFailModal('Adicione uma imagem ao seu leilão')
+        } else if (!this.validateDate) {
+          SweetAlert.showFailModal('Insira datas válidas')
+        } else {
+          this.createAuction()
         }
       } else {
         SweetAlert.showFailModal('Preencha todos os campos!')
@@ -245,6 +262,16 @@ export default {
     getUserInfo() {
       this.user = JSON.parse(localStorage.getItem('user'))
       this.profile = JSON.parse(localStorage.getItem('profile'))
+    },
+    validateDate() {
+      let dateInitialAuction = new Date(this.initialDate)
+      dateInitialAuction.setHours(this.time.HH, this.time.mm)
+      let dateCloseAuction = new Date(this.closeDate)
+      let now = new Date(Date.now())
+      if (dateInitialAuction.getTime() < now.getTime()) return false
+      if (dateInitialAuction.getTime() > dateCloseAuction.getTime())
+        return false
+      return true
     },
   },
 }
@@ -336,6 +363,28 @@ export default {
 <style>
 .vdp-datepicker__calendar .cell.selected {
   background-color: #ffb914 !important;
+}
+
+.time-picker {
+  width: 100%;
+  border-bottom: solid 1px #cccccc;
+  text-align: left;
+}
+
+.time-picker .dropdown ul li.active,
+.time-picker .dropdown ul li.active:hover {
+  background-color: #ffb914 !important;
+}
+
+.time-picker input.display-time {
+  border: none;
+}
+
+.time-picker input.display-time {
+  height: auto;
+  padding-bottom: 0 !important;
+  padding-left: 0 !important;
+  width: auto;
 }
 
 .vdp-datepicker__calendar .cell:not(.blank):not(.disabled).day:hover {

@@ -29,5 +29,15 @@ export default {
     const response = await axios.get(`${serverUrl}-aprovado`)
     return response.data
   },
+  toBid: async function(data) {
+    const response = await axios.post(`${serverUrl}-lance`, data)
+    return response.data
+  },
+  getBids: async function(auctionId) {
+    const response = await axios.get(
+      `${serverUrl}-historico-lance/${auctionId}`
+    )
+    return response.data
+  },
 }
 </script>
