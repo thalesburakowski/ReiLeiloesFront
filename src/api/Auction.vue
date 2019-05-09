@@ -5,10 +5,11 @@ const profileId = JSON.parse(localStorage.getItem('profileId'))
 
 export default {
   create: async function(auctionData) {
-    const response = await axios.post(`${serverUrl}`, {
-      ...auctionData,
-      profileId,
-    })
+    const response = await axios.post(`${serverUrl}`, { auctionData })
+    if (response.message) {
+      console.log(response.message)
+      return
+    }
     return response.data
   },
   approved: async function(data) {

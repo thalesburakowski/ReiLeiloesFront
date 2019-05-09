@@ -62,13 +62,14 @@ $border-color: #cccccc;
         }
         .icon {
           cursor: pointer;
+          border-radius: 3px;
         }
         .edit {
-          color: $purple-light;
+          color: green;
         }
         .edit:hover {
           color: white;
-          background-color: $purple-light;
+          background-color: green;
         }
         .check {
           color: #39ff14;
@@ -83,6 +84,15 @@ $border-color: #cccccc;
         .trash:hover {
           color: white;
           background-color: $red-light;
+        }
+
+        .sad{
+          color: $purple-light;;
+        }
+
+        .sad:hover {
+          color: white;
+          background-color:$purple-light;;;
         }
       }
     }
