@@ -40,5 +40,12 @@ export default {
     )
     return response.data
   },
+  requestCancel: async function(infoCancel) {
+    const response = await axios.post(
+      `${serverUrl}-criar-cancelamento`,
+      infoCancel
+    )
+    return response.data
+  },
 }
 </script>

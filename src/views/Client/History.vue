@@ -32,9 +32,10 @@
           <div class="item">{{ auction.status }}</div>
           <div class="item">
             <div class="actions">
-              <i class="icon sad far fa-frown"></i>
-              <i class="icon edit fas fa-check"></i>
-              <i class="icon trash far fa-trash-alt"></i>
+              <i class="icon sad far fa-frown" @click="complain(auction)"></i>
+              <i class="icon delete far fa-times-circle" @click="cancel(auction)"></i>
+              <i class="icon edit fas fa-check" @click="close(auction)"></i>
+              <i class="icon trash far fa-trash-alt" @click="remove(auction)"></i>
             </div>
           </div>
         </div>
@@ -66,12 +67,33 @@
         </div>
       </div>
     </div>
+
+    <div :class="{ show: showModal }" class="modal">
+      <!-- Modal content -->
+      <div class="modal-content modal-content--small w3-animate-zoom">
+        <div class="fields fields--no-shadow">
+          <h2 class="title-form">Motivo para a devolução da mercadoria</h2>
+          <div class="line-inputs">
+            <label class="label-input">
+              <textarea placeholder="Digite o motivo" v-model="reasonComplain"></textarea>
+            </label>
+          </div>
+          <div class="form__actions">
+            <button class="button button-cancel" @click="showModal = false">CANCELAR</button>
+            <button class="button button-principal" @click="sendComplain">CONFIRMAR</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import ProfileAPI from '@/api/Profile'
 import CategoryAPI from '@/api/Category'
+import AuctionAPI from '@/api/Auction'
+
+import SweetAlert from '../../components/SweetAlert'
 
 export default {
   name: 'History',
@@ -96,6 +118,9 @@ export default {
           status: 'Arrematado',
         },
       ],
+      showModal: false,
+      reasonComplain: '',
+      auctionIdToComplain: '',
     }
   },
   mounted() {
@@ -120,11 +145,52 @@ export default {
     async getCategories() {
       this.options = await CategoryAPI.getAll()
     },
+    async complain(auction) {
+      let resp = await SweetAlert.showConfirmationModal(
+        'Deseja efetivar uma reclamação e devolver a mercadoria?'
+      )
+      if (resp) {
+        this.showModal = true
+        this.auctionIdToComplain = auction.id
+      }
+    },
+    async sendComplain() {
+      if (this.reasonComplain.length < 5) {
+        SweetAlert.showFailModal('Digite um motivo válido')
+      } else {
+        this.showModal = false
+        let resp = await AuctionAPI.requestComplain({})
+      }
+    },
+    async cancel(auction) {
+      let resp = await SweetAlert.showConfirmationModal(
+        'Deseja cancelar o leilão? Uma taxa de TALVALOR será cobrada!'
+      )
+      if (resp) {
+        let resp = await AuctionAPI.requestCancel()
+      }
+    },
+    async remove(auction) {
+      let resp = await SweetAlert.showConfirmationModal(
+        'Deseja excluir esse leilão do histórico?'
+      )
+      if (resp) {
+      }
+    },
+    async close(auction) {
+      let resp = await SweetAlert.showConfirmationModal(
+        'Deseja confirmar o recebimento da sua mercadoria?',
+        'Quase lá!'
+      )
+      if (resp) {
+      }
+    },
   },
 }
 </script>
 <style lang="scss" scoped>
 @import '@/assets/styles/variables.scss';
+@import '@/assets/styles/modal.scss';
 
 .page {
   & .page-title {
@@ -171,6 +237,22 @@ export default {
       color: $text-color;
       font-size: 14px;
     }
+  }
+}
+
+.title-form {
+  font-size: 1.8rem;
+  color: $text-color;
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+.form__actions {
+  display: flex;
+  justify-content: flex-end;
+
+  & button:not(:last-child) {
+    margin-right: 10px;
   }
 }
 </style>

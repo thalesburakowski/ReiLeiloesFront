@@ -85,14 +85,22 @@ $border-color: #cccccc;
           color: white;
           background-color: $red-light;
         }
+        .delete{
+          color: #dca014;
+        }
+
+        .delete:hover {
+          color: white;
+          background-color: #dca014;
+        }
 
         .sad{
-          color: $purple-light;;
+          color: $purple-light;
         }
 
         .sad:hover {
           color: white;
-          background-color:$purple-light;;;
+          background-color:$purple-light;
         }
       }
     }
