@@ -26,16 +26,37 @@
       </span>
 
       <div v-for="auction in auctioned" :key="auction.id">
-        <div class="table-line" @click="clickAuction(auction.id)">
-          <div class="item">{{ auction.title }}</div>
+        <div class="table-line table-line--no-pointer">
+          <div class="item item--clickable" @click="clickAuction(auction.id)">{{ auction.title }}</div>
           <div class="item">R$ {{ auction.finalPrice | number }}</div>
-          <div class="item">{{ auction.status }}</div>
+          <div class="item">{{ dictionaryStatus[auction.status] }}</div>
           <div class="item">
             <div class="actions">
-              <i class="icon sad far fa-frown" @click="complain(auction)"></i>
-              <i class="icon delete far fa-times-circle" @click="cancel(auction)"></i>
-              <i class="icon edit fas fa-check" @click="close(auction)"></i>
-              <i class="icon trash far fa-trash-alt" @click="remove(auction)"></i>
+              <i
+                class="icon sad far fa-frown"
+                v-if="auction.status == 'received'"
+                @click="complain(auction)"
+              ></i>
+              <i
+                class="icon delete far fa-times-circle"
+                v-if="auction.status == 'finalized'"
+                @click="cancel(auction)"
+              ></i>
+              <i
+                class="icon check fas fa-check"
+                v-if="auction.status == 'delivering'"
+                @click="setReceived(auction)"
+              ></i>
+              <i
+                class="icon edit fas fa-home"
+                v-if="auction.status == 'finalized'"
+                @click="showModalAddressFunction(auction)"
+              ></i>
+              <i
+                class="icon trash far fa-trash-alt"
+                v-if="auction.status == 'received' || auction.status == 'cancelled' || auction.status == 'annuled'"
+                @click="remove(auction)"
+              ></i>
             </div>
           </div>
         </div>
@@ -53,7 +74,7 @@
         <div class="table-line" @click="clickAuction(auction.id)">
           <div class="item">{{ auction.title }}</div>
           <div class="item">R$ {{ auction.finalPrice | number }}</div>
-          <div class="item">{{ auction.status }}</div>
+          <div class="item">{{ dictionaryStatus[auction.status]}}</div>
           <div class="item">
             <div class="actions">
               <i class="icon edit fas fa-check"></i>
@@ -85,22 +106,54 @@
         </div>
       </div>
     </div>
+
+    <div :class="{ show: showModalAddress }" class="modal">
+      <!-- Modal content -->
+      <div class="modal-content modal-content--small w3-animate-zoom">
+        <div class="fields fields--no-shadow">
+          <h2 class="title-form">Escolha um endereço</h2>
+          <div class="line-inputs">
+            <div class="select">
+              <Multiselect
+                v-model="address"
+                label="name"
+                :options="addresses"
+                :multiple="false"
+                :close-on-select="true"
+                selectedLabel="Selecionado"
+                placeholder="Selecione"
+                selectLabel
+                deselectLabel
+              ></Multiselect>
+            </div>
+          </div>
+          <div class="form__actions">
+            <button class="button button-cancel" @click="showModalAddress = false">CANCELAR</button>
+            <button class="button button-principal" @click="chooseAddress">CONFIRMAR</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import ProfileAPI from '@/api/Profile'
 import CategoryAPI from '@/api/Category'
+import AddressAPI from '@/api/Address'
 import AuctionAPI from '@/api/Auction'
+import Multiselect from 'vue-multiselect'
 
 import SweetAlert from '../../components/SweetAlert'
 
 export default {
   name: 'History',
+  components: { Multiselect },
   data() {
     return {
       profile: {},
       options: [],
+      addresses: [],
       tab: 'AUCTIONED',
       titlesAuctioned: ['Nome', 'Valor de arremate', 'Status'],
       titlesCreated: [
@@ -118,9 +171,20 @@ export default {
           status: 'Arrematado',
         },
       ],
+      dictionaryStatus: {
+        finalized: 'Finalizado',
+        delivering: 'Em tranporte',
+        received: 'Recebido',
+        annuled: 'Anulado',
+        cancelled: 'Cancelado',
+        annuledRequest: 'Anulação pendente',
+      },
       showModal: false,
+      showModalAddress: false,
+      address: '',
       reasonComplain: '',
       auctionIdToComplain: '',
+      auctionIdToChooseAddress: '',
     }
   },
   mounted() {
@@ -135,6 +199,7 @@ export default {
       await this.getUserInfo()
       this.getHistory()
       this.getCategories()
+      this.getAddress()
     },
     async getUserInfo() {
       this.profile = JSON.parse(await localStorage.getItem('profile'))
@@ -145,11 +210,14 @@ export default {
     async getCategories() {
       this.options = await CategoryAPI.getAll()
     },
+    async getAddress() {
+      this.addresses = (await AddressAPI.getAddress()).entities
+    },
     async complain(auction) {
       let resp = await SweetAlert.showConfirmationModal(
         'Deseja efetivar uma reclamação e devolver a mercadoria?'
       )
-      if (resp) {
+      if (resp.value) {
         this.showModal = true
         this.auctionIdToComplain = auction.id
       }
@@ -159,15 +227,30 @@ export default {
         SweetAlert.showFailModal('Digite um motivo válido')
       } else {
         this.showModal = false
-        let resp = await AuctionAPI.requestComplain({})
+        let resp = await AuctionAPI.requestAnnulment({
+          reason: this.reasonComplain,
+          auctionId: this.auctionIdToComplain,
+        })
+        if (resp) {
+          this.getHistory()
+          SweetAlert.showSuccessModal(
+            'Sua requisição foi enviada e será analisada em breve!'
+          )
+        }
       }
     },
     async cancel(auction) {
       let resp = await SweetAlert.showConfirmationModal(
-        'Deseja cancelar o leilão? Uma taxa de TALVALOR será cobrada!'
+        `Deseja cancelar o leilão? Uma taxa de R$ ${auction.actualPrice *
+          0.2} será cobrada!`
       )
-      if (resp) {
-        let resp = await AuctionAPI.requestCancel()
+      if (resp.value) {
+        let resp = await AuctionAPI.cancelAuction(auction.id)
+        SweetAlert.showSuccessModal(
+          `Esse leilão foi cancelado e voce recebeu uma cobrança de R$ ${auction.actualPrice *
+            0.2}`
+        )
+        this.getHistory()
       }
     },
     async remove(auction) {
@@ -175,14 +258,50 @@ export default {
         'Deseja excluir esse leilão do histórico?'
       )
       if (resp) {
+        this.getHistory()
       }
     },
-    async close(auction) {
+
+    async setDelivering() {
+      let resp = await SweetAlert.showConfirmationModal(
+        'Deseja confirmar o envio da sua mercadoria?',
+        'Quase lá!'
+      )
+      if (resp) {
+        this.getHistory()
+      }
+    },
+
+    async setReceived(auction) {
       let resp = await SweetAlert.showConfirmationModal(
         'Deseja confirmar o recebimento da sua mercadoria?',
         'Quase lá!'
       )
-      if (resp) {
+      if (resp.value) {
+        const response = await AuctionAPI.setReceived(auction.id)
+        if (response) {
+          SweetAlert.showSuccessModal()
+          this.getHistory()
+        }
+      }
+    },
+    showModalAddressFunction(auction) {
+      this.showModalAddress = true
+      this.auctionIdToChooseAddress = auction.id
+    },
+
+    async chooseAddress(auction) {
+      if (!this.address) {
+        SweetAlert.showFailModal('Selecione um endereço válido!')
+        return
+      }
+      this.showModalAddress = false
+      const response = await AuctionAPI.chooseAddress({
+        auctionId: this.auctionIdToChooseAddress,
+        addressId: this.address.id,
+      })
+      if (response) {
+        SweetAlert.showSuccessModal('Endereço escolhido com sucesso!')
       }
     },
   },
@@ -202,6 +321,14 @@ export default {
   .item:first-child {
     padding-left: 1rem;
   }
+
+  &--no-pointer {
+    cursor: auto;
+  }
+}
+
+.item--clickable {
+  cursor: pointer;
 }
 
 .tabs {

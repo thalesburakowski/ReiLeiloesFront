@@ -6,20 +6,24 @@
     <div class="table">
       <div class="table-line">
         <div class="table-line-title" v-for="title in titles" :key="title">{{ title }}</div>
-        <div class="table-line-title action">Motivo</div>
       </div>
-      <div v-for="request in devolutionRequests" :key="request.id">
+      <div v-for="request in auctions" :key="request.id">
         <div class="table-line">
-          <div class="item" @click="showReason(request.id)">{{ request.client }}</div>
-          <div class="item" @click="showReason(request.id)">{{ request.seller }}</div>
-          <div class="item" @click="showReason(request.id)">{{ request.category }}</div>
-          <div class="item" @click="showReason(request.id)">R$ {{ request.value | number }}</div>
-          <div class="item" @click="showReason(request.id)">{{ request.reason }}</div>
+          <div class="item">{{ request.auction.winner.name }}</div>
+          <div class="item">{{ request.auction.owner.name }}</div>
+          <div class="item">{{ request.auction.title }}</div>
+          <div class="item">R$ {{ request.auction.actualPrice | number }}</div>
+          <div class="item" @click="showReason(request)">{{ request.reasonRequest }}</div>
           <div class="item">
             <div class="actions">
-              <!-- <i class="icon edit fas fa-marker"></i> -->
-              <i class="icon check fas fa-check" @click="showModal = true; accept = true"></i>
-              <i class="icon trash fas fa-times" @click="showModal = true; accept = false"></i>
+              <i
+                class="icon check fas fa-check"
+                @click="showModal = true; accept = true; requestObj = request"
+              ></i>
+              <i
+                class="icon trash fas fa-times"
+                @click="showModal = true, accept = false, requrequestObjest = request"
+              ></i>
             </div>
           </div>
         </div>
@@ -34,12 +38,12 @@
           <h2 v-else class="title-form">Motivo para o não cancelamento do leilão</h2>
           <div class="line-inputs">
             <label class="label-input">
-              <textarea placeholder="Digite o motivo " required></textarea>
+              <textarea placeholder="Digite o motivo" v-model="reasonResponse" required></textarea>
             </label>
           </div>
           <div class="form__actions">
             <button class="button button-cancel" @click="showModal = false">CANCELAR</button>
-            <button class="button button-principal" @click="acceptReason">CONFIRMAR</button>
+            <button class="button button-principal" @click="sendResponse">CONFIRMAR</button>
           </div>
         </div>
       </div>
@@ -66,6 +70,7 @@
 
 <script>
 import SweetAlert from '../../components/SweetAlert'
+import AuctionAPI from '@/api/Auction'
 
 export default {
   name: 'AuthorizeReturn',
@@ -74,62 +79,51 @@ export default {
       showModal: false,
       showReasonModal: false,
       accept: undefined,
+      auctions: [],
+      requestObj: {},
+      reasonResponse: '',
       reason: {
-        title: 'Me enviaram um tijolo!',
-        text:
-          'Olha só, eu achei totalmente desnecessário o que o leiloeiro fez, ele me enviou um tijolo!',
+        title: 'Razão para o pedido de cancelamento',
+        text: '',
       },
-      titles: ['Cliente', 'Leiloeiro', 'Mercadoria', 'Valor Vendido', 'Razão'],
-      devolutionRequests: [
-        {
-          id: 1,
-          client: 'Testezinho 1',
-          seller: 'Teste Leilão 1',
-          category: 'Obras de Arte',
-          value: 450.5,
-          reason: 'Aberto',
-        },
-        {
-          id: 2,
-          client: 'Testezinho 2',
-          seller: 'Teste Leilão 2',
-          category: 'Colecionaveis',
-          value: 450.5,
-          reason: 'Aberto',
-        },
-        {
-          id: 3,
-          client: 'Testezinho 3',
-          seller: 'Teste Leilão 3',
-          category: 'Brinquedos',
-          value: 450.5,
-          reason: 'Fechado',
-        },
-        {
-          id: 4,
-          client: 'Testezinho 4',
-          seller: 'Teste Leilão 4',
-          category: 'Outros',
-          value: 450.5,
-          reason: 'Fechado',
-        },
+      titles: [
+        'Cliente',
+        'Leiloeiro',
+        'Mercadoria',
+        'Valor Vendido',
+        'Razão',
+        'Ações',
       ],
     }
   },
+  mounted() {
+    this.getAuctions()
+  },
   methods: {
-    async showReason(id) {
-      // this.$router.push(`/mercadoria/:${id}`);
-      this.showReasonModal = true
-      console.log('redirect', id)
-
-      // await SweetAlert.showSuccessModal()
+    async getAuctions() {
+      this.auctions = (await AuctionAPI.getRequestAnnulments()).auctionCancellationRequests
     },
-    async acceptReason() {
-      const result = await SweetAlert.showConfirmationModal()
-      if (result.value) {
-        SweetAlert.showSuccessModal()
+    async showReason(request) {
+      this.reason.text = request.reasonRequest
+      this.showReasonModal = true
+    },
+    async sendResponse() {
+      if (this.reasonResponse.length < 5) {
+        SweetAlert.showFailModal('Insira um motivo válido')
+        return
       }
       this.showModal = false
+      let data = {
+        reasonResponse: this.reasonResponse,
+        status: this.accept,
+        auctionCancellationId: this.requestObj.id,
+      }
+      const response = await AuctionAPI.responseRequesAnnulament(data)
+      if (response) {
+        SweetAlert.showSucessModal()
+      } else {
+        SweetAlert.showFailModal()
+      }
     },
   },
 }

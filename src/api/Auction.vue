@@ -17,8 +17,6 @@ export default {
     return response.data
   },
   getAuction: async function(auctionId) {
-    console.log('asas', auctionId)
-
     const response = await axios.get(`${serverUrl}/${auctionId}`)
     return response.data
   },
@@ -40,12 +38,48 @@ export default {
     )
     return response.data
   },
-  requestCancel: async function(infoCancel) {
-    const response = await axios.post(
-      `${serverUrl}-criar-cancelamento`,
-      infoCancel
-    )
+  cancelAuction: async function(auctionId) {
+    const response = await axios.post(`${serverUrl}-criar-cancelamento`, {
+      auctionId,
+    })
     return response.data
   },
+
+  requestAnnulment: async function(data) {
+    const response = await axios.post(`${serverUrl}-criar-anulamento`, data)
+    return response.data
+  },
+
+  getRequestAnnulments: async function() {
+    const response = await axios.get(`${serverUrl}-pendente-anulamento/`)
+    return response.data
+  },
+
+  responseRequesAnnulament: async function(data) {
+    const response = await axios.post(`${serverUrl}-pendente-anulamento`, data)
+    return response.data
+  },
+  chooseAddress: async function(data) {
+    const response = await axios.post(`${serverUrl}-transporte`, data)
+    return response.data
+  },
+  setDelivering: async function(auctionId) {
+    const response = await axios.post(`${serverUrl}-transporte-andamento`, {
+      auctionId,
+    })
+    return response.data
+  },
+  setReceived: async function(auctionId) {
+    const response = await axios.post(`${serverUrl}-transporte-finalizado`, {
+      auctionId,
+    })
+    return response.data
+  },
+  // status: delivering
+  // status: received
+
+  // /leilao-transporte-andamento
+  // /leilao-transporte-finalizado
+  // getRequestCancels: async function() { },
 }
 </script>
