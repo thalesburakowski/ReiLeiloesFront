@@ -1,25 +1,19 @@
 <script>
 import axios from 'axios'
 const serverUrl = 'https://localhost:44348/api/address'
-const profileId = JSON.parse(localStorage.getItem('profileId'))
+// const profileId = JSON.parse(localStorage.getItem('profileId'))
 
 export default {
   create: async function(addressData) {
-    const response = await axios.post(`${serverUrl}`, {
-      ...addressData,
-      profileId,
-    })
+    const response = await axios.post(`${serverUrl}`, addressData)
     return response.data
   },
-  getAddress: async function() {
+  getAddress: async function(profileId) {
     const response = await axios.get(`${serverUrl}/${profileId}`)
     return response.data
   },
   updateAddress: async function(addressData) {
-    const response = await axios.put(`${serverUrl}`, {
-      ...addressData,
-      profileId,
-    })
+    const response = await axios.put(`${serverUrl}`, addressData)
     return response.data
   },
   delete: async function(id) {

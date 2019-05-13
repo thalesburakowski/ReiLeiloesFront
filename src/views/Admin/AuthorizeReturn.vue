@@ -18,11 +18,11 @@
             <div class="actions">
               <i
                 class="icon check fas fa-check"
-                @click="showModal = true; accept = true; requestObj = request"
+                @click="showModal = true; accept = true; requestObj = request, reasonResponse = ''"
               ></i>
               <i
                 class="icon trash fas fa-times"
-                @click="showModal = true, accept = false, requrequestObjest = request"
+                @click="showModal = true, accept = false, requestObj = request, reasonResponse = ''"
               ></i>
             </div>
           </div>
@@ -116,11 +116,15 @@ export default {
       let data = {
         reasonResponse: this.reasonResponse,
         status: this.accept,
+        auctionId: this.requestObj.auction.id,
         auctionCancellationId: this.requestObj.id,
       }
       const response = await AuctionAPI.responseRequesAnnulament(data)
-      if (response) {
-        SweetAlert.showSucessModal()
+      console.log(response.active)
+
+      if (!response.active) {
+        SweetAlert.showSuccessModal()
+        this.getAuctions()
       } else {
         SweetAlert.showFailModal()
       }

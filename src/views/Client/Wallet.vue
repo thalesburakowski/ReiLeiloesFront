@@ -164,12 +164,15 @@ export default {
     }
   },
   mounted() {
-    this.getInfo()
-    this.loadCreditCards()
-    this.loadBankAccount()
-    this.loadCredits()
+    this.loadInfo()
   },
   methods: {
+    async loadInfo() {
+      await this.getInfo()
+      this.loadCreditCards()
+      this.loadBankAccount()
+      this.loadCredits()
+    },
     getInfo() {
       this.user = JSON.parse(localStorage.getItem('user'))
       this.profile = JSON.parse(localStorage.getItem('profile'))
@@ -180,8 +183,8 @@ export default {
     },
     async loadBankAccount() {
       this.bankAccounts = await BankAccountAPI.getBank(this.profile.id)
-      if (this.bankAccounts.length === 0)
-        this.bankAccounts.push({ name: 'Cadastrar conta', id: 0 })
+      // if (this.bankAccounts.length === 0)
+      this.bankAccounts.push({ name: 'Cadastrar conta', id: 0 })
     },
     async loadCredits() {
       const response = await WalletAPI.getCredits(this.profile.id)

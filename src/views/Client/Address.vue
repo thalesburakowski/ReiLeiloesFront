@@ -70,7 +70,7 @@
               <input type="text" required v-model="modalAddress.city" :disabled="!newAddress">
               <div class="label-text" :class="[!newAddress ? 'valid-field' : '']">Cidade</div>
             </label>
-            
+
             <label class="label-input">
               <input type="text" required v-model="modalAddress.zipCode" :disabled="!newAddress">
               <div class="label-text" :class="[!newAddress ? 'valid-field' : '']">Cep</div>
@@ -79,7 +79,7 @@
               <input type="text" required v-model="modalAddress.street" :disabled="!newAddress">
               <div class="label-text" :class="[!newAddress ? 'valid-field' : '']">Rua</div>
             </label>
-            
+
             <label class="label-input">
               <input type="text" required v-model="modalAddress.number" :disabled="!newAddress">
               <div class="label-text" :class="[!newAddress ? 'valid-field' : '']">Número</div>
@@ -93,7 +93,7 @@
               >
               <div class="label-text" :class="[!newAddress ? 'valid-field' : '']">Bairro</div>
             </label>
-            
+
             <label class="label-input">
               <input type="text" v-model="modalAddress.complement" :disabled="!newAddress">
               <div class="label-text" :class="[!newAddress ? 'valid-field' : '']">Complemento</div>
@@ -144,15 +144,23 @@ export default {
         name: '',
         complement: '',
       },
+      profile: {},
     }
   },
   components: {
     SweetAlert,
   },
   mounted: function() {
-    this.getAddress()
+    this.loadInfo()
   },
   methods: {
+    async loadInfo() {
+      await this.getInfo()
+      this.getAddress()
+    },
+    getInfo() {
+      this.profile = JSON.parse(localStorage.getItem('profile'))
+    },
     cleanModel() {
       this.modalAddress = {
         zipCode: '',
@@ -169,7 +177,7 @@ export default {
       this.modalAddress = Object.assign(this.modalAddress, address)
     },
     async getAddress() {
-      const response = await AddressAPI.getAddress()
+      const response = await AddressAPI.getAddress(this.profile.id)
       if (response.msg) await SweetAlert.showFailModal(response.msg)
       this.addresses = response.entities
     },
@@ -188,7 +196,10 @@ export default {
     },
     async createAddress() {
       this.showModal = false
-      const response = await AddressAPI.create(this.modalAddress)
+      const response = await AddressAPI.create({
+        ...this.modalAddress,
+        profileId: this.profile.id,
+      })
       if (response.msg) await SweetAlert.showFailModal(response.msg)
       else await SweetAlert.showSuccessModal()
       this.getAddress()
@@ -198,6 +209,7 @@ export default {
       const response = await AddressAPI.updateAddress({
         id: modalAddress.id,
         name: modalAddress.name,
+        profileId: this.profile.id,
       })
       if (response.msg) await SweetAlert.showFailModal(response.msg)
       else await SweetAlert.showSuccessModal()

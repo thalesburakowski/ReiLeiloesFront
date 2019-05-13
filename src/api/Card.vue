@@ -4,7 +4,7 @@ const serverUrl = 'http://localhost:3000/cartao'
 const profileId = JSON.parse(localStorage.getItem('profileId'))
 
 export default {
-  getAll: async function() {
+  getAll: async function(profileId) {
     const response = await axios.get(`${serverUrl}/${profileId}`)
     return response.data
   },

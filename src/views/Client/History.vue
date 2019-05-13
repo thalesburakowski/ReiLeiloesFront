@@ -52,11 +52,6 @@
                 v-if="auction.status == 'finalized'"
                 @click="showModalAddressFunction(auction)"
               ></i>
-              <i
-                class="icon trash far fa-trash-alt"
-                v-if="auction.status == 'received' || auction.status == 'cancelled' || auction.status == 'annuled'"
-                @click="remove(auction)"
-              ></i>
             </div>
           </div>
         </div>
@@ -66,23 +61,22 @@
       <span class="table-complete-first-line">
         <div class="table-line">
           <div class="table-line-title" v-for="title in titlesCreated" :key="title">{{ title }}</div>
-          <div class="table-line-title action">Excluir</div>
+          <div class="table-line-title action">Ações</div>
         </div>
       </span>
 
       <div v-for="auction in created" :key="auction.id">
-        <div class="table-line" @click="clickAuction(auction.id)">
-          <div class="item">{{ auction.title }}</div>
+        <div class="table-line table-line--no-pointer">
+          <div class="item item--clickable" @click="clickAuction(auction.id)">{{ auction.title }}</div>
           <div class="item">R$ {{ auction.finalPrice | number }}</div>
           <div class="item">{{ dictionaryStatus[auction.status]}}</div>
           <div class="item">
             <div class="actions">
-              <i class="icon edit fas fa-check"></i>
-            </div>
-          </div>
-          <div class="item">
-            <div class="actions">
-              <i class="icon trash far fa-trash-alt"></i>
+              <i
+                v-if="auction.status == 'finalized'"
+                class="icon edit fas fa-check"
+                @click="setDelivering(auction)"
+              ></i>
             </div>
           </div>
         </div>
@@ -156,28 +150,17 @@ export default {
       addresses: [],
       tab: 'AUCTIONED',
       titlesAuctioned: ['Nome', 'Valor de arremate', 'Status'],
-      titlesCreated: [
-        'Nome',
-        'Valor de arremate',
-        'Status',
-        'Marcar como enviado',
-      ],
+      titlesCreated: ['Nome', 'Valor de arremate', 'Status'],
       auctioned: [],
-      created: [
-        {
-          title: 'Exemplo mocado',
-          id: 1,
-          closePrice: 250,
-          status: 'Arrematado',
-        },
-      ],
+      created: [],
       dictionaryStatus: {
         finalized: 'Finalizado',
         delivering: 'Em tranporte',
         received: 'Recebido',
-        annuled: 'Anulado',
         cancelled: 'Cancelado',
         annuledRequest: 'Anulação pendente',
+        annuled: 'Anulado',
+        annulmentRejected: 'Anulação rejeitada',
       },
       showModal: false,
       showModalAddress: false,
@@ -192,12 +175,12 @@ export default {
   },
   methods: {
     clickAuction(id) {
-      // this.$router.push(`/mercadoria/:${id}`);
       console.log('redirect', id)
     },
     async loadInfo() {
       await this.getUserInfo()
       this.getHistory()
+      this.getHistoryCreate()
       this.getCategories()
       this.getAddress()
     },
@@ -207,11 +190,14 @@ export default {
     async getHistory() {
       this.auctioned = await ProfileAPI.getHistory(this.profile.id)
     },
+    async getHistoryCreate() {
+      this.created = await ProfileAPI.getHistoryCreate(this.profile.id)
+    },
     async getCategories() {
       this.options = await CategoryAPI.getAll()
     },
     async getAddress() {
-      this.addresses = (await AddressAPI.getAddress()).entities
+      this.addresses = (await AddressAPI.getAddress(this.profile.id)).entities
     },
     async complain(auction) {
       let resp = await SweetAlert.showConfirmationModal(
@@ -257,18 +243,28 @@ export default {
       let resp = await SweetAlert.showConfirmationModal(
         'Deseja excluir esse leilão do histórico?'
       )
-      if (resp) {
-        this.getHistory()
+      if (resp.value) {
+        const response = await ProfileAPI.delete(auction.id)
+        if (response) {
+          SweetAlert.showSuccessModal()
+          this.getHistory()
+        }
       }
     },
 
-    async setDelivering() {
+    async setDelivering(auction) {
       let resp = await SweetAlert.showConfirmationModal(
         'Deseja confirmar o envio da sua mercadoria?',
         'Quase lá!'
       )
-      if (resp) {
-        this.getHistory()
+      if (resp.value) {
+        const response = await AuctionAPI.setDelivering(auction.id)
+        if (response) {
+          SweetAlert.showSuccessModal()
+          this.getHistory()
+        } else {
+          SweetAlert.showFailModal()
+        }
       }
     },
 
@@ -324,6 +320,10 @@ export default {
 
   &--no-pointer {
     cursor: auto;
+  }
+
+  &--other {
+    grid-template-columns: 35% 20% 20% 12% 10%;
   }
 }
 

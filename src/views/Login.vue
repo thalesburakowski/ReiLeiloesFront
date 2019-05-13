@@ -46,15 +46,17 @@ export default {
         Email: this.email,
         Password: this.password,
       })
-      if (response.entities) {
+      if (!response.msg) {
         localStorage.setItem('user', JSON.stringify(response.entities[0]))
         const profileResponse = await ProfileAPI.getProfile(
           response.entities[0].id
         )
-        localStorage.setItem(
-          'profileId',
-          JSON.stringify(profileResponse.entities[0].id)
-        )
+        if (response.entities.lenght > 0) {
+          localStorage.setItem(
+            'profileId',
+            JSON.stringify(profileResponse.entities[0].id)
+          )
+        }
         this.$router.push('/')
       } else SweetAlert.showFailModal(response.msg)
     },
