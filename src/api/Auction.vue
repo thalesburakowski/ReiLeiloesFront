@@ -75,6 +75,12 @@ export default {
     })
     return response.data
   },
+  getAddress: async function(auctionId) {
+    const response = await axios.post(`${serverUrl}-transporte-informacao`, {
+      auctionId,
+    })
+    return response.data
+  },
   // status: delivering
   // status: received
 

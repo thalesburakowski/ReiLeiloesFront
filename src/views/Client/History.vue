@@ -74,6 +74,11 @@
             <div class="actions">
               <i
                 v-if="auction.status == 'finalized'"
+                class="icon sad fas fa-check"
+                @click="getAuctionAddress(auction)"
+              ></i>
+              <i
+                v-if="auction.status == 'finalized'"
                 class="icon edit fas fa-check"
                 @click="setDelivering(auction)"
               ></i>
@@ -128,6 +133,53 @@
         </div>
       </div>
     </div>
+
+    <div :class="{ show: showAuctionAdressModal }" class="modal">
+      <!-- Modal content -->
+      <div class="modal-content modal-content--small w3-animate-zoom">
+        <div class="fields fields--no-shadow">
+          <h2 class="title-form">Endereço de destino</h2>
+          <div class="line-inputs">
+            <label class="label-input">
+              <input type="text" required v-model="addressAuction.state" disabled>
+              <div class="label-text valid-field">Estado</div>
+            </label>
+            <label class="label-input">
+              <input type="text" required v-model="addressAuction.city" disabled>
+              <div class="label-text valid-field">Cidade</div>
+            </label>
+
+            <label class="label-input">
+              <input type="text" required v-model="addressAuction.zipCode" disabled>
+              <div class="label-text valid-field">Cep</div>
+            </label>
+
+            <label class="label-input">
+              <input type="text" required v-model="addressAuction.neighboorhood" disabled>
+              <div class="label-text valid-field">Bairro</div>
+            </label>
+
+            <label class="label-input">
+              <input type="text" required v-model="addressAuction.street" disabled>
+              <div class="label-text valid-field">Rua</div>
+            </label>
+
+            <label class="label-input">
+              <input type="text" required v-model="addressAuction.number" disabled>
+              <div class="label-text valid-field">Número</div>
+            </label>
+
+            <label class="label-input">
+              <input type="text" required v-model="addressAuction.complement" disabled>
+              <div class="label-text valid-field">Complemento</div>
+            </label>
+          </div>
+          <div class="form__actions">
+            <button class="button button-principal" @click="hideAuctionAddressModal()">ENTENDI</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -164,10 +216,20 @@ export default {
       },
       showModal: false,
       showModalAddress: false,
+      showAuctionAdressModal: false,
       address: '',
       reasonComplain: '',
       auctionIdToComplain: '',
       auctionIdToChooseAddress: '',
+      addressAuction: {
+        state: '',
+        city: '',
+        zipCode: '',
+        neighboorhood: '',
+        street: '',
+        number: '',
+        complement: '',
+      },
     }
   },
   mounted() {
@@ -300,6 +362,22 @@ export default {
         SweetAlert.showSuccessModal('Endereço escolhido com sucesso!')
       }
     },
+    async getAuctionAddress(auction) {
+      this.addressAuction = await AuctionAPI.getAddress(auction.id)
+      this.showAuctionAdressModal = true
+    },
+    hideAuctionAddressModal() {
+      this.showAuctionAdressModal = false
+      this.addressAuction = {
+        state: '',
+        city: '',
+        zipCode: '',
+        neighboorhood: '',
+        street: '',
+        number: '',
+        complement: '',
+      }
+    },
   },
 }
 </script>
@@ -381,6 +459,10 @@ export default {
   & button:not(:last-child) {
     margin-right: 10px;
   }
+}
+
+.valid-field {
+  transform: translateY(-1rem) !important;
 }
 </style>
 
