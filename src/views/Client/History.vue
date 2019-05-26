@@ -28,7 +28,7 @@
       <div v-for="auction in auctioned" :key="auction.id">
         <div class="table-line table-line--no-pointer">
           <div class="item item--clickable" @click="clickAuction(auction.id)">{{ auction.title }}</div>
-          <div class="item">R$ {{ auction.finalPrice | number }}</div>
+          <div class="item">R$ {{ auction.actualPrice | number }}</div>
           <div class="item">{{ dictionaryStatus[auction.status] }}</div>
           <div class="item">
             <div class="actions">
@@ -68,13 +68,13 @@
       <div v-for="auction in created" :key="auction.id">
         <div class="table-line table-line--no-pointer">
           <div class="item item--clickable" @click="clickAuction(auction.id)">{{ auction.title }}</div>
-          <div class="item">R$ {{ auction.finalPrice | number }}</div>
+          <div class="item">R$ {{ auction.actualPrice | number }}</div>
           <div class="item">{{ dictionaryStatus[auction.status]}}</div>
           <div class="item">
             <div class="actions">
               <i
                 v-if="auction.status == 'finalized'"
-                class="icon sad fas fa-check"
+                class="icon sad far fa-eye"
                 @click="getAuctionAddress(auction)"
               ></i>
               <i
@@ -323,7 +323,7 @@ export default {
         const response = await AuctionAPI.setDelivering(auction.id)
         if (response) {
           SweetAlert.showSuccessModal()
-          this.getHistory()
+          this.getHistoryCreate()
         } else {
           SweetAlert.showFailModal()
         }
@@ -458,6 +458,21 @@ export default {
 
   & button:not(:last-child) {
     margin-right: 10px;
+  }
+}
+
+.fields {
+  margin-top: 1rem;
+  text-align: left;
+  // width: 80%;
+  .line-inputs {
+    grid-template-columns: repeat(3, 1fr);
+    grid-column-gap: 70px;
+    grid-row-gap: 2rem;
+
+    &--small {
+      grid-template-columns: 30% 50%;
+    }
   }
 }
 
