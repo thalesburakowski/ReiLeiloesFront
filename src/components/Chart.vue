@@ -1,6 +1,6 @@
 <template>
   <div>
-    <canvas :id="`chart-${index}`" width="400" height="400"></canvas>
+    <canvas :id="`chart-${index}`"></canvas>
   </div>
 </template>
 
@@ -49,7 +49,7 @@ export default {
               display: true,
               scaleLabel: {
                 display: true,
-                labelString: 'Meses',
+                labelString: 'Dias',
               },
             },
           ],
@@ -58,7 +58,7 @@ export default {
               display: true,
               scaleLabel: {
                 display: true,
-                labelString: 'Valor',
+                labelString: 'Quantidade',
               },
             },
           ],
