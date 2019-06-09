@@ -268,9 +268,15 @@ export default {
         SweetAlert.showFailModal('Preencha todos os campos!')
       }
     },
-    getUserInfo() {
+    async getUserInfo() {
       this.user = JSON.parse(localStorage.getItem('user'))
       this.profile = JSON.parse(localStorage.getItem('profile'))
+      if (!this.profile) {
+        await SweetAlert.showFailModal(
+          'Você deve preencher seus dados pessoais antes de prosseguir!'
+        )
+        this.$router.push('/dados')
+      }
     },
     validateDate() {
       let dateInitialAuction = new Date(this.initialDate)

@@ -3,8 +3,19 @@
 import axios from 'axios'
 const serverUrl = 'http://localhost:3000/analise'
 export default {
-  getlastMonth: async function() {
-    const response = await axios.get(`${serverUrl}/leilao-total`)
+  getlastMonth: async function(initialDate, finalDate) {
+    const response = await axios.post(`${serverUrl}/leilao-total`, {
+      initialDate,
+      finalDate,
+    })
+    return response.data
+  },
+
+  getByCategory: async function(initialDate, finalDate) {
+    const response = await axios.post(`${serverUrl}/leilao-por-categoria`, {
+      initialDate,
+      finalDate,
+    })
     return response.data
   },
 }

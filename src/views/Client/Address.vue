@@ -158,8 +158,14 @@ export default {
       await this.getInfo()
       this.getAddress()
     },
-    getInfo() {
+    async getInfo() {
       this.profile = JSON.parse(localStorage.getItem('profile'))
+      if (!this.profile) {
+        await SweetAlert.showFailModal(
+          'Você deve preencher seus dados pessoais antes de prosseguir!'
+        )
+        this.$router.push('/dados')
+      }
     },
     cleanModel() {
       this.modalAddress = {
@@ -192,6 +198,7 @@ export default {
         const response = await AddressAPI.delete(id)
         if (response.msg) await SweetAlert.showFailModal(response.msg)
         else await SweetAlert.showSuccessModal()
+        this.getAddress()
       }
     },
     async createAddress() {
@@ -215,7 +222,6 @@ export default {
       else await SweetAlert.showSuccessModal()
       this.getAddress()
       this.showModal = false
-      await SweetAlert.showSuccessModal()
     },
   },
 }

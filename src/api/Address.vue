@@ -5,6 +5,8 @@ const serverUrl = 'https://localhost:44348/api/address'
 
 export default {
   create: async function(addressData) {
+    console.log('dsads')
+
     const response = await axios.post(`${serverUrl}`, addressData)
     return response.data
   },

@@ -66,6 +66,51 @@
           </label>
         </div>
 
+        <div class="line-inputs" v-if="bankAccount.id !== 0">
+          <label class="label-input">
+            <input type="text" disabled v-model="bankAccount.bank">
+            <div
+              class="label-text label-text--active"
+              :class="[bankAccount.bank ? 'valid-field' : '']"
+            >Banco</div>
+          </label>
+          <label class="label-input">
+            <input type="text" disabled v-model="bankAccount.accountNumber">
+            <div
+              class="label-text label-text--active"
+              :class="[bankAccount.accountNumber ? 'valid-field' : '']"
+            >Conta</div>
+          </label>
+          <label class="label-input">
+            <input type="text" disabled v-model="bankAccount.agencyNumber">
+            <div
+              class="label-text label-text--active"
+              :class="[bankAccount.agencyNumber ? 'valid-field' : '']"
+            >Agência</div>
+          </label>
+          <label class="label-input">
+            <input type="text" disabled v-model="bankAccount.ownerName">
+            <div
+              class="label-text label-text--active"
+              :class="[bankAccount.ownerName ? 'valid-field' : '']"
+            >Titular</div>
+          </label>
+          <label class="label-input">
+            <input type="text" disabled v-model="bankAccount.name">
+            <div
+              class="label-text label-text--active"
+              :class="[bankAccount.name ? 'valid-field' : '']"
+            >Nome da conta</div>
+          </label>
+          <label class="label-input">
+            <input type="text" v-mask="'###.###.###-##'" disabled v-model="bankAccount.ownerCpf">
+            <div
+              class="label-text label-text--active"
+              :class="[bankAccount.ownerCpf ? 'valid-field' : '']"
+            >CPF do titular</div>
+          </label>
+        </div>
+
         <div class="save">
           <button class="button button-principal" @click="withdraw">Transferir</button>
         </div>
@@ -114,6 +159,31 @@
           <label class="label-input">
             <input type="text" required v-model="creditCard.name">
             <div class="label-text">Nome do cartão</div>
+          </label>
+        </div>
+
+        <div class="line-inputs" v-if="creditCard.id != 0">
+          <label class="label-input">
+            <input type="text" disabled v-model="creditCard.owner">
+            <div class="label-text label-text--active">Titular</div>
+          </label>
+          <label class="label-input">
+            <input type="text" disabled v-model="creditCard.number">
+            <div class="label-text label-text--active">Número</div>
+          </label>
+          <label class="label-input">
+            <input type="text" v-mask="'##/##'" disabled v-model="creditCard.expireDate">
+            <div class="label-text label-text--active">Vencimento</div>
+          </label>
+
+          <label class="label-input">
+            <input type="text" disabled v-model="creditCard.securityCode">
+            <div class="label-text label-text--active">Código</div>
+          </label>
+
+          <label class="label-input">
+            <input type="text" disabled v-model="creditCard.name">
+            <div class="label-text label-text--active">Nome do cartão</div>
           </label>
         </div>
 
@@ -173,9 +243,15 @@ export default {
       this.loadBankAccount()
       this.loadCredits()
     },
-    getInfo() {
+    async getInfo() {
       this.user = JSON.parse(localStorage.getItem('user'))
       this.profile = JSON.parse(localStorage.getItem('profile'))
+      if (!this.profile) {
+        await SweetAlert.showFailModal(
+          'Você deve preencher seus dados pessoais antes de prosseguir!'
+        )
+        this.$router.push('/dados')
+      }
     },
     async loadCreditCards() {
       this.creditCards = await CreditCardAPI.getAll(this.profile.id)
@@ -183,8 +259,8 @@ export default {
     },
     async loadBankAccount() {
       this.bankAccounts = await BankAccountAPI.getBank(this.profile.id)
-      // if (this.bankAccounts.length === 0)
-      this.bankAccounts.push({ name: 'Cadastrar conta', id: 0 })
+      if (this.bankAccounts.length === 0)
+        this.bankAccounts.push({ name: 'Cadastrar conta', id: 0 })
     },
     async loadCredits() {
       const response = await WalletAPI.getCredits(this.profile.id)
@@ -290,6 +366,10 @@ export default {
       display: inline;
     }
   }
+}
+
+.label-text--active {
+  transform: translateY(-1rem);
 }
 
 .valid-field {

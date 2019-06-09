@@ -130,7 +130,7 @@ export default {
       this.auction = await AuctionAPI.getAuction(this.$route.params.id)
       this.getBids()
     },
-    getInfo() {
+    async getInfo() {
       // this.user = JSON.parse(localStorage.getItem('user'))
       this.profile = JSON.parse(localStorage.getItem('profile'))
     },
@@ -141,13 +141,22 @@ export default {
       const response = await WalletAPI.getCredits(this.profile.id)
       this.creditsUser = response.credits
     },
-    validateBid() {
-      if (!this.bidValue || this.auction.actualPrice > this.bidValue) {
-        SweetAlert.showFailModal('Faça um lance válido')
-      } else if (this.bidValue > this.creditsUser) {
-        SweetAlert.showFailModal('Você não possui essa quantidade de créditos')
+    async validateBid() {
+      if (!this.profile) {
+        await SweetAlert.showFailModal(
+          'Você deve preencher seus dados pessoais antes de prosseguir!'
+        )
+        this.$router.push('/dados')
       } else {
-        this.toBid()
+        if (!this.bidValue || this.auction.actualPrice > this.bidValue) {
+          SweetAlert.showFailModal('Faça um lance válido')
+        } else if (this.bidValue > this.creditsUser) {
+          SweetAlert.showFailModal(
+            'Você não possui essa quantidade de créditos'
+          )
+        } else {
+          this.toBid()
+        }
       }
     },
     async toBid() {

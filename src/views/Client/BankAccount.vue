@@ -48,9 +48,23 @@ export default {
   data() {
     return {
       bankAccount: false,
+      profile: '',
     }
   },
+  mounted() {
+    this.getInfo()
+  },
   methods: {
+    async getInfo() {
+      this.profile = JSON.parse(localStorage.getItem('profile'))
+      if (!this.profile) {
+        await SweetAlert.showFailModal(
+          'Você deve preencher seus dados pessoais antes de prosseguir!'
+        )
+        this.$router.push('/dados')
+      }
+    },
+
     async deleteBankAccount() {
       let result = await SweetAlert.showConfirmationModal()
       if (result.value) {

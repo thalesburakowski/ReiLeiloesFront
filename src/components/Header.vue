@@ -10,9 +10,9 @@
           <i class="fas fa-search"></i>
         </button>
       </div>
-      <div class="topbar__icon" @click="notifyMenu = !notifyMenu, userMenu = false">
-        <i class="far fa-bell"></i>
-        <span class="topbar__icon__notify"></span>
+      <div class="topbar__icon">
+        <!-- <i class="far fa-bell"></i>
+        <span class="topbar__icon__notify"></span>-->
       </div>
       <div class="topbar__icon" name="menu" @click="userMenu = !userMenu, notifyMenu = false">
         <i class="fas fa-user-circle"></i>
@@ -32,18 +32,25 @@
 
     <div class="user-menu" v-if="userMenu">
       <span class="user-menu__holder-links">
-        <router-link to="/dados" name="profile" class="user-menu__link">Informações Pessoais</router-link>
-        <router-link to="/conta-bancaria" class="user-menu__link">Conta Bancária</router-link>
-        <router-link to="/historico" class="user-menu__link">Histórico</router-link>
-        <router-link to="/endereco" class="user-menu__link">Endereços</router-link>
-        <router-link to="/cartao" class="user-menu__link">Cartões</router-link>
-        <router-link to="/carteira" class="user-menu__link">Carteira</router-link>
-          <router-link to="/novo-leilao" class="user-menu__link">Cadastrar Leilão</router-link>
-        <router-link to="/autorizacao-leiloes" class="user-menu__link">ADMIN - Leilões</router-link>
-        <router-link to="/autorizacao-troca" class="user-menu__link">ADMIN - Trocas</router-link>
-        <router-link to="/analise" class="user-menu__link">ADMIN - Gráficos</router-link>
-        <router-link to="/cadastrar-admin" class="user-menu__link">ADMIN - Cadastrar</router-link>
-        <a href="#" class="user-menu__link" name="logout" @click="logout()">Sair</a>
+        <router-link
+          v-if="login"
+          to="/dados"
+          name="profile"
+          class="user-menu__link"
+        >Informações Pessoais</router-link>
+        <!-- <router-link to="/conta-bancaria" class="user-menu__link">Conta Bancária</router-link> -->
+        <router-link v-if="login" to="/historico" class="user-menu__link">Histórico</router-link>
+        <router-link v-if="login" to="/endereco" class="user-menu__link">Endereços</router-link>
+        <!-- <router-link to="/cartao" class="user-menu__link">Cartões</router-link> -->
+        <router-link v-if="login" to="/carteira" class="user-menu__link">Carteira</router-link>
+        <router-link v-if="login" to="/novo-leilao" class="user-menu__link">Cadastrar Leilão</router-link>
+        <router-link v-if="admin" to="/autorizacao-leiloes" class="user-menu__link">ADMIN - Leilões</router-link>
+        <router-link v-if="admin" to="/autorizacao-troca" class="user-menu__link">ADMIN - Trocas</router-link>
+        <router-link v-if="admin" to="/analise" class="user-menu__link">ADMIN - Gráficos</router-link>
+        <router-link v-if="admin" to="/cadastrar-admin" class="user-menu__link">ADMIN - Cadastrar</router-link>
+        <a href="#" v-if="login" class="user-menu__link" name="logout" @click="logout()">Sair</a>
+        <router-link v-if="!login" to="/login" class="user-menu__link">Entrar</router-link>
+        <router-link v-if="!login" to="/cadastrar" class="user-menu__link">Cadastrar</router-link>
       </span>
     </div>
   </div>
@@ -55,32 +62,39 @@ export default {
   data() {
     return {
       userMenu: false,
-      notifyMenu: false,
-      notifies: [
-        {
-          id: 1,
-          auctionName: 'Smartphone Galaxy J8',
-          message: 'Seu lance foi encoberto!',
-        },
-        {
-          id: 1,
-          auctionName: 'Smartwatch Samsung Gear',
-          message: 'Esse leilão está perto de encerrar!',
-        },
-      ],
+      login: false,
+      admin: false,
     }
+  },
+  mounted() {
+    this.getInfo()
   },
   methods: {
     logout() {
       localStorage.removeItem('user')
       localStorage.removeItem('profileId')
+      this.login = false
       this.$router.push('/login')
+    },
+    getInfo() {
+      let user = JSON.parse(localStorage.getItem('user'))
+      console.log(user)
+
+      if (!user) {
+        this.login = false
+      } else {
+        this.login = true
+        if (user.flagAdmin) {
+          this.admin = true
+        }
+      }
     },
   },
   watch: {
     $route(to, from) {
       this.userMenu = false
       this.notifyMenu = false
+      this.getInfo()
     },
   },
 }

@@ -125,7 +125,6 @@ export default {
         'Realmente deseja cadastrar esses dados? Depois eles não poderão ser alterados!'
       )
       if (result.value) {
-        console.log(JSON.parse(localStorage.getItem('user')))
         const userId = JSON.parse(localStorage.getItem('user')).id
         let BirthDate = this.model.birthDate.split('/')
         BirthDate = new Date(
@@ -136,13 +135,12 @@ export default {
           BirthDate,
           userId,
         })
-        if (response.entities) {
-          this.model = response.entities[0]
+        if (!response.msg) {
+          this.model = response.entities
           SweetAlert.showSuccessModal()
         } else {
           SweetAlert.showFailModal(response.msg)
         }
-        SweetAlert.showSuccessModal()
       }
     },
     async inativateAccount() {

@@ -7,8 +7,12 @@ export default {
   create: async function(userData) {
     const response = await axios.post(`${serverUrl}`, userData)
     if (response.data.entities) {
-      localStorage.setItem('profile', JSON.stringify(response.data.entities[0]))
+      await localStorage.setItem(
+        'profile',
+        JSON.stringify(response.data.entities[0])
+      )
     }
+    console.log('api', response)
 
     return response.data
   },
