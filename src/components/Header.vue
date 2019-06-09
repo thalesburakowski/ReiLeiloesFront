@@ -33,21 +33,25 @@
     <div class="user-menu" v-if="userMenu">
       <span class="user-menu__holder-links">
         <router-link
-          v-if="login"
+          v-if="login  && !admin"
           to="/dados"
           name="profile"
           class="user-menu__link"
         >Informações Pessoais</router-link>
         <!-- <router-link to="/conta-bancaria" class="user-menu__link">Conta Bancária</router-link> -->
-        <router-link v-if="login" to="/historico" class="user-menu__link">Histórico</router-link>
-        <router-link v-if="login" to="/endereco" class="user-menu__link">Endereços</router-link>
+        <router-link v-if="login && !admin" to="/historico" class="user-menu__link">Histórico</router-link>
+        <router-link v-if="login  && !admin" to="/endereco" class="user-menu__link">Endereços</router-link>
         <!-- <router-link to="/cartao" class="user-menu__link">Cartões</router-link> -->
-        <router-link v-if="login" to="/carteira" class="user-menu__link">Carteira</router-link>
-        <router-link v-if="login" to="/novo-leilao" class="user-menu__link">Cadastrar Leilão</router-link>
+        <router-link v-if="login  && !admin" to="/carteira" class="user-menu__link">Carteira</router-link>
+        <router-link
+          v-if="login  && !admin"
+          to="/novo-leilao"
+          class="user-menu__link"
+        >Cadastrar Leilão</router-link>
         <router-link v-if="admin" to="/autorizacao-leiloes" class="user-menu__link">ADMIN - Leilões</router-link>
         <router-link v-if="admin" to="/autorizacao-troca" class="user-menu__link">ADMIN - Trocas</router-link>
         <router-link v-if="admin" to="/analise" class="user-menu__link">ADMIN - Gráficos</router-link>
-        <router-link v-if="admin" to="/cadastrar-admin" class="user-menu__link">ADMIN - Cadastrar</router-link>
+        <!-- <router-link v-if="admin" to="/cadastrar-admin" class="user-menu__link">ADMIN - Cadastrar</router-link> -->
         <a href="#" v-if="login" class="user-menu__link" name="logout" @click="logout()">Sair</a>
         <router-link v-if="!login" to="/login" class="user-menu__link">Entrar</router-link>
         <router-link v-if="!login" to="/cadastrar" class="user-menu__link">Cadastrar</router-link>
