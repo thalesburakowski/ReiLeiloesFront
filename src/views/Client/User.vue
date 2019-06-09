@@ -136,7 +136,7 @@ export default {
           userId,
         })
         if (!response.msg) {
-          this.model = response.entities
+          this.model = response.entities[0]
           SweetAlert.showSuccessModal()
         } else {
           SweetAlert.showFailModal(response.msg)
