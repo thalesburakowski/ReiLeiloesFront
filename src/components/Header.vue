@@ -74,6 +74,7 @@ export default {
       localStorage.removeItem('user')
       localStorage.removeItem('profileId')
       this.login = false
+      this.admin = false
       this.$router.push('/login')
     },
     getInfo() {
