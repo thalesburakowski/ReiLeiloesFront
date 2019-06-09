@@ -84,7 +84,7 @@ export default {
         this.login = false
       } else {
         this.login = true
-        if (user.flagAdmin) {
+        if (user.flgAdmin) {
           this.admin = true
         }
       }
