@@ -119,9 +119,17 @@ export default {
         auctionId: this.requestObj.auction.id,
         auctionCancellationId: this.requestObj.id,
       }
-      const response = await AuctionAPI.responseRequesAnnulament(data)
-      console.log(response.active)
 
+      let response = {}
+      if (this.accept) {
+        response = await AuctionAPI.acceptAnnuledRequest(
+          data.auctionId,
+          data.auctionCancellationId
+        )
+      } else {
+        response = await AuctionAPI.responseRequesAnnulament(data)
+      }
+      console.log(response.active)
       if (!response.active) {
         SweetAlert.showSuccessModal()
         this.getAuctions()

@@ -113,6 +113,7 @@ export default {
         precision: 2,
         masked: false,
       },
+      user: '',
       bids: [
         // { id: 1, username: '@mariazinha', price: 'R$ 150,00' },
         // { id: 2, username: '@manoBrownnie', price: 'R$ 180,00' },
@@ -131,7 +132,7 @@ export default {
       this.getBids()
     },
     async getInfo() {
-      // this.user = JSON.parse(localStorage.getItem('user'))
+      this.user = JSON.parse(localStorage.getItem('user'))
       this.profile = JSON.parse(localStorage.getItem('profile'))
     },
     async getBids() {
@@ -142,7 +143,12 @@ export default {
       this.creditsUser = response.credits
     },
     async validateBid() {
-      if (!this.profile) {
+      if (!this.user) {
+        await SweetAlert.showFailModal(
+          'Você deve fazer login ou se cadastrar para dar lances!'
+        )
+        this.$router.push('/login')
+      } else if (!this.profile) {
         await SweetAlert.showFailModal(
           'Você deve preencher seus dados pessoais antes de prosseguir!'
         )

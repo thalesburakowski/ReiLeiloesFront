@@ -8,12 +8,14 @@
           :options="options"
           :multiple="true"
           label="name"
+          track-by="name"
           :close-on-select="false"
           placeholder="Pesquise por categorias"
           selectLabel
           deselectLabel
         ></Multiselect>
       </div>
+      <button class="button button-cancel" @click="search">Pesquisar</button>
     </div>
     <div class="grid">
       <div
@@ -40,6 +42,7 @@ import Multiselect from 'vue-multiselect'
 import AuctionAPI from '@/api/Auction'
 import CategoryAPI from '@/api/Category'
 import { Money } from 'v-money'
+import { EventBus } from '@/main'
 
 export default {
   name: 'Home',
@@ -60,19 +63,41 @@ export default {
     }
   },
   mounted() {
-    this.getAuctions()
+    // this.getAuctions()
+    this.search()
     this.getCategories()
+
+    EventBus.$on('search', bool => {
+      this.search()
+    })
   },
   methods: {
     async getCategories() {
       this.options = await CategoryAPI.getAll()
     },
     async getAuctions() {
-      this.auctions = await AuctionAPI.getApproved()
+      // this.auctions = await AuctionAPI.getApproved()
     },
     clickAuction(auction) {
       // this.$router.push(`/mercadoria/:${auction.id}`);
       this.$router.push(`/leilao/${auction.id}`)
+    },
+    async search() {
+      console.log('CAT', this.$root.$data.categoriesFilter)
+      console.log('BAR', this.$root.$data.searchBarValue)
+      console.log('LEIL', this.$root.$data.auctions)
+
+      if (this.value) {
+        this.$root.$data.categoriesFilter = this.value.map(
+          category => category.id
+        )
+      }
+
+      this.auctions = await AuctionAPI.getApproved(
+        this.$root.$data.searchBarValue,
+        this.$root.$data.categoriesFilter
+      )
+      this.$root.$data.auctions = this.auctions
     },
   },
   countingDown(time) {},
@@ -83,7 +108,8 @@ export default {
 @import '@/assets/styles/variables.scss';
 .page-advanced-search {
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
+  align-items: center;
   margin: 1rem;
   .page-advanced-search-label {
     display: flex;
@@ -168,6 +194,10 @@ export default {
     max-width: 200px;
     text-align: center;
   }
+}
+
+.button-cancel {
+  margin: 0 10px;
 }
 </style>
 

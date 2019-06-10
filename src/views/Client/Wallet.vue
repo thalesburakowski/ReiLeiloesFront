@@ -255,6 +255,7 @@ export default {
     },
     async loadCreditCards() {
       this.creditCards = await CreditCardAPI.getAll(this.profile.id)
+      this.formatCreditCards()
       this.creditCards.push({ name: 'Novo cartão', id: 0 })
     },
     async loadBankAccount() {
@@ -265,6 +266,14 @@ export default {
     async loadCredits() {
       const response = await WalletAPI.getCredits(this.profile.id)
       this.wallet = response
+    },
+    formatCreditCards() {
+      this.creditCards.forEach(creditCard => {
+        let formatted = creditCard.expireDate.split('-')
+        formatted = formatted[1] + '/' + formatted[2]
+        formatted = formatted.split('T')[0]
+        creditCard.expireDate = formatted
+      })
     },
     async deposit() {
       const response = await WalletAPI.deposit(this.formatDataCreditCard())
@@ -315,8 +324,12 @@ export default {
       return data
     },
     formatDate(date) {
+      console.log(date)
+
       if (!date) return null
       date = date.split('/').join('/27/')
+      console.log(date)
+
       let newDate = new Date(date)
       let formattedDate = newDate.toISOString()
       return formattedDate

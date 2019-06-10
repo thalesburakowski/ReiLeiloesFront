@@ -5,8 +5,8 @@
         <img src="../assets/imgs/logo.jpg" class="topbar-logo" alt>
       </router-link>
       <div class="topbar-search">
-        <input type="text" class="topbar-search-input">
-        <button class="topbar-search__button">
+        <input type="text" class="topbar-search-input" v-model="searchBarValue">
+        <button class="topbar-search__button" @click="search">
           <i class="fas fa-search"></i>
         </button>
       </div>
@@ -14,12 +14,12 @@
         <!-- <i class="far fa-bell"></i>
         <span class="topbar__icon__notify"></span>-->
       </div>
-      <div class="topbar__icon" name="menu" @click="userMenu = !userMenu, notifyMenu = false">
+      <div class="topbar__icon" name="menu" @click="userMenu = !userMenu">
         <i class="fas fa-user-circle"></i>
       </div>
     </div>
 
-    <div class="notify-menu" v-if="notifyMenu">
+    <!-- <div class="notify-menu" v-if="notifyMenu">
       <span class="notify-menu__holder-links">
         <router-link
           to="/"
@@ -28,7 +28,7 @@
           :key="notify.id"
         >{{notify.auctionName}} - {{notify.message}}</router-link>
       </span>
-    </div>
+    </div>-->
 
     <div class="user-menu" v-if="userMenu">
       <span class="user-menu__holder-links">
@@ -49,7 +49,16 @@
           class="user-menu__link"
         >Cadastrar Leilão</router-link>
         <router-link v-if="admin" to="/autorizacao-leiloes" class="user-menu__link">ADMIN - Leilões</router-link>
-        <router-link v-if="admin" to="/autorizacao-troca" class="user-menu__link">ADMIN - Trocas</router-link>
+        <router-link
+          v-if="admin"
+          to="/autorizacao-troca"
+          class="user-menu__link"
+        >ADMIN - Pedidos de Troca</router-link>
+        <router-link
+          v-if="admin"
+          to="/devolucao-mercadoria"
+          class="user-menu__link"
+        >ADMIN - Devoluções</router-link>
         <router-link v-if="admin" to="/analise" class="user-menu__link">ADMIN - Gráficos</router-link>
         <!-- <router-link v-if="admin" to="/cadastrar-admin" class="user-menu__link">ADMIN - Cadastrar</router-link> -->
         <a href="#" v-if="login" class="user-menu__link" name="logout" @click="logout()">Sair</a>
@@ -61,6 +70,9 @@
 </template>
 
 <script>
+import AuctionAPI from '@/api/Auction'
+
+import { EventBus } from '@/main'
 export default {
   name: 'Header',
   data() {
@@ -68,6 +80,7 @@ export default {
       userMenu: false,
       login: false,
       admin: false,
+      searchBarValue: '',
     }
   },
   mounted() {
@@ -76,15 +89,13 @@ export default {
   methods: {
     logout() {
       localStorage.removeItem('user')
-      localStorage.removeItem('profileId')
+      localStorage.removeItem('profile')
       this.login = false
       this.admin = false
       this.$router.push('/login')
     },
     getInfo() {
       let user = JSON.parse(localStorage.getItem('user'))
-      console.log(user)
-
       if (!user) {
         this.login = false
       } else {
@@ -94,11 +105,15 @@ export default {
         }
       }
     },
+    async search() {
+      this.$root.$data.searchBarValue = this.searchBarValue
+      EventBus.$emit('search', true)
+      this.$router.push('/home')
+    },
   },
   watch: {
     $route(to, from) {
       this.userMenu = false
-      this.notifyMenu = false
       this.getInfo()
     },
   },
@@ -106,6 +121,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.topbar-search__button {
+  cursor: pointer;
+}
+
 @import '@/assets/styles/variables.scss';
 .topbar {
   display: grid;

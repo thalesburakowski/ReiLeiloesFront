@@ -24,8 +24,20 @@ export default {
     const response = await axios.get(`${serverUrl}-pendente`)
     return response.data
   },
-  getApproved: async function(data) {
-    const response = await axios.get(`${serverUrl}-aprovado`)
+  getApproved: async function(title = '', categories = '') {
+    // params?title=celular&categories=["cjurl2koql9mv0b12stoxfnp5"]
+    console.log('api', title, categories)
+
+    let response = []
+    if (categories.length) {
+      response = await axios.get(
+        `${serverUrl}-aprovado/params?title=${title}&categories=[${categories.map(
+          cat => `"${cat}"`
+        )}]`
+      )
+    } else {
+      response = await axios.get(`${serverUrl}-aprovado/params?title=${title}`)
+    }
     return response.data
   },
   toBid: async function(data) {
@@ -54,6 +66,29 @@ export default {
     const response = await axios.get(`${serverUrl}-pendente-anulamento/`)
     return response.data
   },
+
+  acceptAnnuledRequest: async function(auctionId, auctionAnnulmentRequestId) {
+    const response = await axios.post(`${serverUrl}-aceitar-anulamento`, {
+      auctionId,
+      auctionAnnulmentRequestId,
+    })
+    return response.data
+  },
+
+  getAwaitingDevolution: async function() {
+    const response = await axios.get(`${serverUrl}-enviando`)
+    return response.data
+  },
+
+  sendingAnnuledRequest: async function(auctionId) {
+    const response = await axios.post(`${serverUrl}-enviando-anulamento`, {
+      auctionId,
+    })
+    return response.data
+  },
+
+  //  /leilao-enviando-anulamento = annuledSending
+  // /leilao-aceitar-anulamento = annuledAccept
 
   responseRequesAnnulament: async function(data) {
     const response = await axios.post(`${serverUrl}-pendente-anulamento`, data)

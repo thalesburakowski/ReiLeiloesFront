@@ -48,6 +48,11 @@
                 @click="setReceived(auction)"
               ></i>
               <i
+                v-if="auction.status == 'annuledAccept'"
+                class="icon edit fas fa-check"
+                @click="setSendingDevolution(auction)"
+              ></i>
+              <i
                 class="icon edit fas fa-home"
                 v-if="auction.status == 'finalized'"
                 @click="showModalAddressFunction(auction)"
@@ -206,13 +211,18 @@ export default {
       auctioned: [],
       created: [],
       dictionaryStatus: {
+        approved: 'Aprovado',
+        active: 'Aberto',
+        disapproved: 'Reprovado',
         finalized: 'Finalizado',
         delivering: 'Em tranporte',
-        received: 'Recebido',
         cancelled: 'Cancelado',
+        received: 'Recebido',
         annuledRequest: 'Anulação pendente',
-        annuled: 'Anulado',
+        annuledAccept: 'Anulação aprovada', //Aguardadno envio
         annulmentRejected: 'Anulação rejeitada',
+        annuledSending: 'Mercadoria enviada',
+        annuled: 'Anulado',
       },
       showModal: false,
       showModalAddress: false,
@@ -285,6 +295,18 @@ export default {
             'Sua requisição foi enviada e será analisada em breve!'
           )
         }
+      }
+    },
+    async setSendingDevolution(auction) {
+      let resp = await SweetAlert.showConfirmationModal(
+        `Deseja marcar como tendo enviado a mercadoria?`
+      )
+      if (resp.value) {
+        let resp = await AuctionAPI.sendingAnnuledRequest(auction.id)
+        console.log(resp)
+
+        SweetAlert.showSuccessModal()
+        this.getHistory()
       }
     },
     async cancel(auction) {

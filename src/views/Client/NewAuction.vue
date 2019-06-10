@@ -120,6 +120,7 @@
               :close-on-select="false"
               placeholder="Pesquise por categorias"
               label="name"
+              track-by="name"
               selectLabel
               deselectLabel
             ></Multiselect>

@@ -14,6 +14,7 @@ import History from './views/Client/History.vue'
 import Wallet from './views/Client/Wallet.vue'
 import AuthorizeAuctions from './views/Admin/AuthorizeAuctions.vue'
 import AuthorizeReturn from './views/Admin/AuthorizeReturn.vue'
+import RegisterDevolution from './views/Admin/RegisterDevolution.vue'
 import Analyzis from './views/Admin/Analyzis.vue'
 
 Vue.use(Router)
@@ -86,6 +87,11 @@ export default new Router({
       path: '/autorizacao-troca',
       name: 'AuthorizeAuctions',
       component: AuthorizeReturn,
+    }, 
+    {
+      path: '/devolucao-mercadoria',
+      name: 'RegisterDevolution',
+      component: RegisterDevolution,
     }, 
     {
       path: '/carteira',
