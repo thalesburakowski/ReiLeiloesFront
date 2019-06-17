@@ -18,6 +18,14 @@ export default {
     })
     return response.data
   },
+
+  getTotalByDay: async function(initialDate, finalDate) {
+    const response = await axios.post(`${serverUrl}/total-por-dia`, {
+      initialDate,
+      finalDate,
+    })
+    return response.data
+  },
 }
 </script>
 

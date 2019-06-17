@@ -4,11 +4,11 @@
     <div class="fields">
       <div class="line-inputs">
         <label class="label-input">
-          <input type="text" v-model="model.name" maxlength="80" required>
+          <input type="text" v-validate="required" v-model="model.name" maxlength="80" required>
           <div class="label-text">Nome</div>
         </label>
         <label class="label-input">
-          <input type="text" v-model="model.lastName" required>
+          <input type="text" v-validate="required" v-model="model.lastName" required>
           <div class="label-text">Sobrenome</div>
         </label>
         <!-- <label class="label-input">
@@ -16,21 +16,34 @@
           <div class="label-text">Email</div>
         </label>-->
         <label class="label-input">
-          <input type="text" v-model="model.cpf" maxlength="80" v-mask="'###.###.###-##'" required>
+          <input
+            type="text"
+            v-validate="required"
+            v-model="model.cpf"
+            maxlength="80"
+            v-mask="'###.###.###-##'"
+            required
+          >
           <div class="label-text">CPF</div>
         </label>
       </div>
       <div class="line-inputs">
         <label class="label-input">
-          <input type="text" v-model="model.rg" maxlength="80" required>
+          <input type="text" v-validate="required" v-model="model.rg" maxlength="80" required>
           <div class="label-text">RG</div>
         </label>
         <label class="label-input">
-          <input type="text" v-model="model.birthDate" v-mask="'##/##/####'" required>
+          <input
+            type="text"
+            v-validate="required"
+            v-model="model.birthDate"
+            v-mask="'##/##/####'"
+            required
+          >
           <div class="label-text">Data Nascimento</div>
         </label>
         <label class="label-input">
-          <input type="text" v-model="model.nickName" required>
+          <input type="text" v-validate="required" v-model="model.nickName" required>
           <div class="label-text">Nome de Usuário</div>
         </label>
       </div>
@@ -121,6 +134,13 @@ export default {
       }
     },
     async register() {
+      this.$validator.validate().then(valid => {
+        if (!valid) {
+          SweetAlert.showFailModal('Preencha todos os dados obrigatórios')
+          return
+        }
+      })
+
       const result = await SweetAlert.showConfirmationModal(
         'Realmente deseja cadastrar esses dados? Depois eles não poderão ser alterados!'
       )

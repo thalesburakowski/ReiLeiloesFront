@@ -73,11 +73,11 @@ export default {
         this.search = false
         let initial = new Date(this.initialDate).toISOString()
         let final = new Date(this.finalDate).toISOString()
-        console.log(initial, final)
         this.allAuctions = await AnalyzeAPI.getlastMonth(initial, final)
         let other = await AnalyzeAPI.getByCategory(initial, final)
+        const result = await AnalyzeAPI.getTotalByDay(initial, final)
         this.search = true
-        this.datas = [{ ...this.allAuctions }, { ...other }]
+        this.datas = [{ ...this.allAuctions }, { ...other }, { ...result }]
       }
     },
 

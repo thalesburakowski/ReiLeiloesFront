@@ -74,8 +74,7 @@ export default {
       this.auctions = await AuctionAPI.getAllPendent()
     },
     clickAuction(id) {
-      this.$router.push(`/leilao`)
-      console.log('redirect', id)
+      this.$router.push(`/leilao/${id}`)
     },
     async authorizeAuction(auction) {
       const result = await SweetAlert.showConfirmationModal(

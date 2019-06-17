@@ -11,7 +11,7 @@
         <div class="table-line">
           <div class="item">{{ request.auction.winner.name }}</div>
           <div class="item">{{ request.auction.owner.name }}</div>
-          <div class="item">{{ request.auction.title }}</div>
+          <div class="item" @click="clickAuction( request.auction.id)">{{ request.auction.title }}</div>
           <div class="item">R$ {{ request.auction.actualPrice | number }}</div>
           <div class="item" @click="showReason(request)">{{ request.reasonRequest }}</div>
           <div class="item">
@@ -106,6 +106,9 @@ export default {
     async showReason(request) {
       this.reason.text = request.reasonRequest
       this.showReasonModal = true
+    },
+    clickAuction(id) {
+      this.$router.push(`/leilao/${id}`)
     },
     async sendResponse() {
       if (this.reasonResponse.length < 5) {
